@@ -38,11 +38,14 @@
             this.button_contactR = new System.Windows.Forms.Button();
             this.button_contactX = new System.Windows.Forms.Button();
             this.button_contactY = new System.Windows.Forms.Button();
-            this.panel_button = new System.Windows.Forms.Panel();
+            this.panel_Menu = new System.Windows.Forms.Panel();
             this.button_Favorite = new System.Windows.Forms.Button();
-            this.panel_tab = new System.Windows.Forms.Panel();
+            this.panel_tab = new DoubleBufferedPanel();
+            this.panel_SubMenu = new System.Windows.Forms.Panel();
+            this.button_Macro = new System.Windows.Forms.Button();
             this.contextMenuStrip_system.SuspendLayout();
-            this.panel_button.SuspendLayout();
+            this.panel_Menu.SuspendLayout();
+            this.panel_SubMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // notifyIcon_system
@@ -77,7 +80,7 @@
             // 
             // button_Data
             // 
-            this.button_Data.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.button_Data.BackColor = System.Drawing.SystemColors.ControlLight;
             this.button_Data.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_Data.Font = new System.Drawing.Font("Verdana", 12F);
             this.button_Data.ForeColor = System.Drawing.Color.White;
@@ -135,18 +138,18 @@
             this.button_contactY.UseVisualStyleBackColor = false;
             this.button_contactY.Click += new System.EventHandler(this.button_contactY_Click);
             // 
-            // panel_button
+            // panel_Menu
             // 
-            this.panel_button.Controls.Add(this.button_Favorite);
-            this.panel_button.Controls.Add(this.button_contactX);
-            this.panel_button.Controls.Add(this.button_contactY);
-            this.panel_button.Controls.Add(this.button_Data);
-            this.panel_button.Controls.Add(this.button_contactR);
-            this.panel_button.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel_button.Location = new System.Drawing.Point(0, 0);
-            this.panel_button.Name = "panel_button";
-            this.panel_button.Size = new System.Drawing.Size(393, 58);
-            this.panel_button.TabIndex = 0;
+            this.panel_Menu.Controls.Add(this.button_Favorite);
+            this.panel_Menu.Controls.Add(this.button_contactX);
+            this.panel_Menu.Controls.Add(this.button_contactY);
+            this.panel_Menu.Controls.Add(this.button_Data);
+            this.panel_Menu.Controls.Add(this.button_contactR);
+            this.panel_Menu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel_Menu.Location = new System.Drawing.Point(0, 0);
+            this.panel_Menu.Name = "panel_Menu";
+            this.panel_Menu.Size = new System.Drawing.Size(393, 58);
+            this.panel_Menu.TabIndex = 0;
             // 
             // button_Favorite
             // 
@@ -172,14 +175,40 @@
             this.panel_tab.Size = new System.Drawing.Size(393, 403);
             this.panel_tab.TabIndex = 1;
             // 
+            // panel_SubMenu
+            // 
+            this.panel_SubMenu.Controls.Add(this.button_Macro);
+            this.panel_SubMenu.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel_SubMenu.Location = new System.Drawing.Point(0, 403);
+            this.panel_SubMenu.Name = "panel_SubMenu";
+            this.panel_SubMenu.Size = new System.Drawing.Size(393, 58);
+            this.panel_SubMenu.TabIndex = 2;
+            // 
+            // button_Macro
+            // 
+            this.button_Macro.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_Macro.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.button_Macro.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_Macro.Font = new System.Drawing.Font("Verdana", 12F);
+            this.button_Macro.ForeColor = System.Drawing.Color.White;
+            this.button_Macro.Location = new System.Drawing.Point(312, 8);
+            this.button_Macro.Name = "button_Macro";
+            this.button_Macro.Size = new System.Drawing.Size(69, 41);
+            this.button_Macro.TabIndex = 4;
+            this.button_Macro.TabStop = false;
+            this.button_Macro.Text = "Macro";
+            this.button_Macro.UseVisualStyleBackColor = false;
+            this.button_Macro.Click += new System.EventHandler(this.button_Macro_Click);
+            // 
             // BaseForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(393, 461);
+            this.Controls.Add(this.panel_SubMenu);
             this.Controls.Add(this.panel_tab);
-            this.Controls.Add(this.panel_button);
+            this.Controls.Add(this.panel_Menu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(409, 500);
             this.Name = "BaseForm";
@@ -188,7 +217,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BaseForm_FormClosing);
             this.Load += new System.EventHandler(this.BaseForm_Load);
             this.contextMenuStrip_system.ResumeLayout(false);
-            this.panel_button.ResumeLayout(false);
+            this.panel_Menu.ResumeLayout(false);
+            this.panel_SubMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -202,9 +232,11 @@
         private System.Windows.Forms.Button button_contactR;
         private System.Windows.Forms.Button button_contactX;
         private System.Windows.Forms.Button button_contactY;
-        private System.Windows.Forms.Panel panel_button;
+        private System.Windows.Forms.Panel panel_Menu;
         private System.Windows.Forms.Panel panel_tab;
         private System.Windows.Forms.Button button_Favorite;
+        private System.Windows.Forms.Panel panel_SubMenu;
+        private System.Windows.Forms.Button button_Macro;
     }
 }
 

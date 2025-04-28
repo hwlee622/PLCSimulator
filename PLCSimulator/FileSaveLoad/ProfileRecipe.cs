@@ -7,13 +7,19 @@ namespace PLCSimulator
     public class ProfileRecipe
     {
         #region Singleton
-        public static ProfileRecipe Instance { get { return InstanceHolder.Instance; } }
+
+        public static ProfileRecipe Instance
+        { get { return InstanceHolder.Instance; } }
+
         private static class InstanceHolder
         {
             public static ProfileRecipe Instance = new ProfileRecipe();
         }
-        private ProfileRecipe() { }
-        #endregion
+
+        private ProfileRecipe()
+        { }
+
+        #endregion Singleton
 
         [XmlRoot("Profile")]
         public class Profile
@@ -23,11 +29,13 @@ namespace PLCSimulator
 
             public List<string> FavoriteAddress = new List<string>();
             public List<Description> DescriptionList = new List<Description>();
+            public List<MacroContext> MacroContextList = new List<MacroContext>();
 
             public class Description
             {
                 [XmlAttribute]
                 public string Key;
+
                 [XmlAttribute]
                 public string Value;
             }
@@ -65,7 +73,6 @@ namespace PLCSimulator
             }
             catch
             {
-
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -26,7 +25,6 @@ namespace PLCSimulator
             }
             catch
             {
-
             }
         }
 
@@ -53,25 +51,20 @@ namespace PLCSimulator
                 if (e.ColumnIndex == 0)
                     e.Value = sAddress;
                 else if (e.ColumnIndex == 1)
-                {
                     e.Value = GetData(sAddress);
-                }
                 else if (e.ColumnIndex == 2)
-                {
                     e.Value = GetDescription(sAddress);
-                }
             }
             catch
             {
-
             }
         }
 
         private string GetData(string sAddress)
         {
             string result = string.Empty;
-            
-            if (IsDTAddress(sAddress, out int address))
+
+            if (Util.IsDTAddress(sAddress, out int address))
             {
                 if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
                     return result;
@@ -100,7 +93,7 @@ namespace PLCSimulator
                     result = $"{data[0]:X2}";
                 }
             }
-            else if (IsContactAddress(sAddress, out string contactCode, out address, out int hex))
+            else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex))
             {
                 if (!DataManager.Instance.PlcArea.TryGetValue(sAddress.Substring(0, 1), out var contactArea))
                     return result;
@@ -115,11 +108,11 @@ namespace PLCSimulator
         {
             string result = string.Empty;
 
-            if (IsDTAddress(sAddress, out int address))
+            if (Util.IsDTAddress(sAddress, out int address))
             {
                 result = ProfileRecipe.Instance.GetDescription(sAddress);
             }
-            else if (IsContactAddress(sAddress, out string contactCode, out address, out int hex))
+            else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex))
             {
                 result = ProfileRecipe.Instance.GetDescription(sAddress);
             }
@@ -145,9 +138,9 @@ namespace PLCSimulator
                     }
                     sAddress = sAddress.ToUpper();
 
-                    if (IsDTAddress(sAddress, out int address))
+                    if (Util.IsDTAddress(sAddress, out int address))
                         sAddress = $"DT{address:D5}";
-                    else if (IsContactAddress(sAddress, out string contactCode, out address, out int hex))
+                    else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex))
                         sAddress = $"{contactCode}{address:D3}{hex:X}";
                     else
                         return;
@@ -185,13 +178,12 @@ namespace PLCSimulator
             }
             catch
             {
-
             }
         }
 
         private void SetData(string sAddress, string text)
         {
-            if (IsDTAddress(sAddress, out int address))
+            if (Util.IsDTAddress(sAddress, out int address))
             {
                 if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
                     return;
@@ -224,7 +216,7 @@ namespace PLCSimulator
                 }
                 dataArea.SetData(address, data);
             }
-            else if (IsContactAddress(sAddress, out string contactCode, out address, out int hex))
+            else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex))
             {
                 if (!DataManager.Instance.PlcArea.TryGetValue(contactCode, out var contactArea))
                     return;
@@ -239,50 +231,13 @@ namespace PLCSimulator
 
         private void SetDescription(string sAddress, string description)
         {
-            if (IsDTAddress(sAddress, out int address))
+            if (Util.IsDTAddress(sAddress, out int address))
             {
                 ProfileRecipe.Instance.SetDescription(sAddress, description);
             }
-            else if (IsContactAddress(sAddress, out string contactCode, out address, out int hex))
+            else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex))
             {
                 ProfileRecipe.Instance.SetDescription(sAddress, description);
-            }
-        }
-
-        private bool IsDTAddress(string text, out int address)
-        {
-            address = -1;
-            text = text.ToUpper();
-            if (text.Length >= 3 && text.StartsWith("DT") && int.TryParse(text.Substring(2), out address))
-                return true;
-            return false;
-        }
-
-        private bool IsContactAddress(string text, out string contactCode, out int address, out int hex)
-        {
-            contactCode = string.Empty;
-            address = -1;
-            hex = -1;
-            HashSet<string> contactCodeSet = new HashSet<string>() { DataManager.RAreaCode, DataManager.YAreaCode, DataManager.XAreaCode };
-            if (text.Length >= 3 && contactCodeSet.Contains(text.Substring(0, 1)) && int.TryParse(text.Substring(1, text.Length - 2), out address) && TryParseHexToInt(text.Substring(text.Length - 1, 1), out hex))
-            {
-                contactCode = text.Substring(0, 1);
-                return true;
-            }
-            return false;
-        }
-
-        private bool TryParseHexToInt(string hex, out int value)
-        {
-            value = 0;
-            try
-            {
-                value = Convert.ToInt16(hex, 16);
-                return true;
-            }
-            catch
-            {
-                return false;
             }
         }
 
@@ -294,9 +249,9 @@ namespace PLCSimulator
 
                 foreach (var sAddress in m_addressList)
                 {
-                    if (IsDTAddress(sAddress, out int address) && DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
+                    if (Util.IsDTAddress(sAddress, out int address) && DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
                         data.Add(dataArea.GetData(address, 1)[0]);
-                    else if (IsContactAddress(sAddress, out string contactCode, out address, out int hex) && DataManager.Instance.PlcArea.TryGetValue(contactCode, out var contactArea))
+                    else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex) && DataManager.Instance.PlcArea.TryGetValue(contactCode, out var contactArea))
                         data.Add(contactArea.GetData(address, 1)[0]);
                 }
 
@@ -317,7 +272,6 @@ namespace PLCSimulator
             }
             catch
             {
-
             }
         }
 

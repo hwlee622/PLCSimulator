@@ -57,6 +57,16 @@
     <Compile Include="Comm\CommTcpClient.cs" />
     <Compile Include="Comm\CommTcpListenerSingle.cs" />
     <Compile Include="Comm\CommUdp.cs" />
+    <Compile Include="UserControls\DoubleBufferedPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserControls\UserControl_Macro.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UserControl_Macro.Designer.cs">
+      <DependentUpon>UserControl_Macro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Util\MacroManager.cs" />
     <Compile Include="ProfileDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +106,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerComm\ServerComm.cs" />
     <Compile Include="ServerComm\ServerCommUdp.cs" />
+    <Compile Include="Util\Util.cs" />
     <EmbeddedResource Include="BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -121,6 +132,9 @@
     <EmbeddedResource Include="UserControls\UserControl_Favorites.resx">
       <DependentUpon>UserControl_Favorites.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UserControl_Macro.resx">
+      <DependentUpon>UserControl_Macro.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -140,6 +154,9 @@
     </Content>
     <Content Include="Resources\YJ LINK.ico" />
     <Content Include="Resources\YJ LINK.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PLCSimulator
@@ -25,7 +18,7 @@ namespace PLCSimulator
             textBox_Port.Text = ProfileRecipe.Instance.ProfileInfo.Port.ToString();
         }
 
-        private void button_Data_Click(object sender, EventArgs e)
+        private void button_Start_Click(object sender, EventArgs e)
         {
             if (Enum.TryParse(comboBox_Protocol.SelectedItem.ToString(), true, out Protocol protocol))
                 ProfileRecipe.Instance.ProfileInfo.Protocol = protocol;
@@ -36,10 +29,23 @@ namespace PLCSimulator
             DialogResult = DialogResult.OK;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button_Cancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
-            Close();
+        }
+
+        private void textBox_Port_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (Enum.TryParse(comboBox_Protocol.SelectedItem.ToString(), true, out Protocol protocol))
+                    ProfileRecipe.Instance.ProfileInfo.Protocol = protocol;
+                if (int.TryParse(textBox_Port.Text, out int port))
+                    ProfileRecipe.Instance.ProfileInfo.Port = port;
+                ProfileRecipe.Instance.Save();
+
+                DialogResult = DialogResult.OK;
+            }
         }
     }
 }

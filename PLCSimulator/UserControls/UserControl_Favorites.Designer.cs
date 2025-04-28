@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel_control = new System.Windows.Forms.Panel();
+            this.label_Description = new System.Windows.Forms.Label();
             this.radioButton_hex = new System.Windows.Forms.RadioButton();
             this.radioButton_int = new System.Windows.Forms.RadioButton();
             this.radioButton_short = new System.Windows.Forms.RadioButton();
@@ -40,7 +41,6 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timer_gui_update = new System.Windows.Forms.Timer(this.components);
-            this.label_Description = new System.Windows.Forms.Label();
             this.panel_control.SuspendLayout();
             this.panel_Data.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Data)).BeginInit();
@@ -59,6 +59,16 @@
             this.panel_control.Name = "panel_control";
             this.panel_control.Size = new System.Drawing.Size(361, 58);
             this.panel_control.TabIndex = 0;
+            // 
+            // label_Description
+            // 
+            this.label_Description.AutoSize = true;
+            this.label_Description.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.label_Description.Location = new System.Drawing.Point(3, 43);
+            this.label_Description.Name = "label_Description";
+            this.label_Description.Size = new System.Drawing.Size(87, 12);
+            this.label_Description.TabIndex = 5;
+            this.label_Description.Text = "Insert Address";
             // 
             // radioButton_hex
             // 
@@ -160,16 +170,6 @@
             // timer_gui_update
             // 
             this.timer_gui_update.Tick += new System.EventHandler(this.timer_gui_update_Tick);
-            // 
-            // label_Description
-            // 
-            this.label_Description.AutoSize = true;
-            this.label_Description.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.label_Description.Location = new System.Drawing.Point(3, 43);
-            this.label_Description.Name = "label_Description";
-            this.label_Description.Size = new System.Drawing.Size(87, 12);
-            this.label_Description.TabIndex = 5;
-            this.label_Description.Text = "Insert Address";
             // 
             // UserControl_Favorites
             // 

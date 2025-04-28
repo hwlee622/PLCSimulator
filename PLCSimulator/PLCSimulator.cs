@@ -17,11 +17,15 @@
 
         #endregion Singleton
 
+        public MacroManager MacroManager;
+
         private MewtocolServer m_panasonicServer;
         private UpperLinkServer m_omronServer;
 
         public void Start()
         {
+            MacroManager = new MacroManager();
+
             Protocol selectedProtocol = ProfileRecipe.Instance.ProfileInfo.Protocol;
             int serverPort = ProfileRecipe.Instance.ProfileInfo.Port;
 
@@ -31,10 +35,12 @@
                     m_panasonicServer = new MewtocolServer(serverPort);
                     m_panasonicServer.Start();
                     break;
+
                 case Protocol.UpperLink:
                     m_omronServer = new UpperLinkServer(serverPort);
                     m_omronServer.Start();
                     break;
+
                 default:
                     break;
             }

@@ -152,7 +152,7 @@ namespace PLCSimulator
         {
             try
             {
-                if (DataManager.Instance.PlcArea.TryGetValue(m_dataCode, out var dataArea))
+                if (!DataManager.Instance.PlcArea.TryGetValue(m_dataCode, out var dataArea))
                     return;
 
                 ushort[] data = dataArea.GetData(0, DataManager.MaxDataAreaAddress);

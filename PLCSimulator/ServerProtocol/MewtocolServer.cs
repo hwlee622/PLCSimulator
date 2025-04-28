@@ -134,7 +134,7 @@ namespace PLCSimulator
                 for (int i = 0; i < length; i++)
                 {
                     int index = 8 + i * 5;
-                    if (!DataManager.Instance.PlcArea.TryGetValue($"{command[7]}", out var contactArea) || !int.TryParse(command.Substring(index + 1, 3), out int address) ||
+                    if (!DataManager.Instance.PlcArea.TryGetValue($"{command[index]}", out var contactArea) || !int.TryParse(command.Substring(index + 1, 3), out int address) ||
                         !int.TryParse(command.Substring(index + 4, 1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int hex))
                         return ReplyError(command, 61);
 

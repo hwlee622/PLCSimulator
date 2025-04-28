@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.comboBox_Protocol = new System.Windows.Forms.ComboBox();
-            this.button_Data = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button_Start = new System.Windows.Forms.Button();
+            this.button_Cancel = new System.Windows.Forms.Button();
             this.label_Port = new System.Windows.Forms.Label();
             this.textBox_Port = new System.Windows.Forms.TextBox();
             this.label_Protocol = new System.Windows.Forms.Label();
@@ -46,33 +46,33 @@
             this.comboBox_Protocol.Size = new System.Drawing.Size(154, 26);
             this.comboBox_Protocol.TabIndex = 0;
             // 
-            // button_Data
+            // button_Start
             // 
-            this.button_Data.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.button_Data.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_Data.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_Data.ForeColor = System.Drawing.Color.White;
-            this.button_Data.Location = new System.Drawing.Point(12, 193);
-            this.button_Data.Name = "button_Data";
-            this.button_Data.Size = new System.Drawing.Size(69, 41);
-            this.button_Data.TabIndex = 6;
-            this.button_Data.Text = "Start";
-            this.button_Data.UseVisualStyleBackColor = false;
-            this.button_Data.Click += new System.EventHandler(this.button_Data_Click);
+            this.button_Start.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.button_Start.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_Start.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_Start.ForeColor = System.Drawing.Color.White;
+            this.button_Start.Location = new System.Drawing.Point(12, 193);
+            this.button_Start.Name = "button_Start";
+            this.button_Start.Size = new System.Drawing.Size(69, 41);
+            this.button_Start.TabIndex = 6;
+            this.button_Start.Text = "Start";
+            this.button_Start.UseVisualStyleBackColor = false;
+            this.button_Start.Click += new System.EventHandler(this.button_Start_Click);
             // 
-            // button1
+            // button_Cancel
             // 
-            this.button1.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(97, 193);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(69, 41);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Cancel";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button_Cancel.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.button_Cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_Cancel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_Cancel.ForeColor = System.Drawing.Color.White;
+            this.button_Cancel.Location = new System.Drawing.Point(97, 193);
+            this.button_Cancel.Name = "button_Cancel";
+            this.button_Cancel.Size = new System.Drawing.Size(69, 41);
+            this.button_Cancel.TabIndex = 7;
+            this.button_Cancel.Text = "Cancel";
+            this.button_Cancel.UseVisualStyleBackColor = false;
+            this.button_Cancel.Click += new System.EventHandler(this.button_Cancel_Click);
             // 
             // label_Port
             // 
@@ -93,6 +93,7 @@
             this.textBox_Port.Name = "textBox_Port";
             this.textBox_Port.Size = new System.Drawing.Size(154, 27);
             this.textBox_Port.TabIndex = 9;
+            this.textBox_Port.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_Port_KeyDown);
             // 
             // label_Protocol
             // 
@@ -116,8 +117,8 @@
             this.Controls.Add(this.label_Protocol);
             this.Controls.Add(this.textBox_Port);
             this.Controls.Add(this.label_Port);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.button_Data);
+            this.Controls.Add(this.button_Cancel);
+            this.Controls.Add(this.button_Start);
             this.Controls.Add(this.comboBox_Protocol);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ProfileDlg";
@@ -132,8 +133,8 @@
         #endregion
 
         private System.Windows.Forms.ComboBox comboBox_Protocol;
-        private System.Windows.Forms.Button button_Data;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_Start;
+        private System.Windows.Forms.Button button_Cancel;
         private System.Windows.Forms.Label label_Port;
         private System.Windows.Forms.TextBox textBox_Port;
         private System.Windows.Forms.Label label_Protocol;

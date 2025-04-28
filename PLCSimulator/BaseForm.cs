@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PLCSimulator
@@ -10,6 +11,7 @@ namespace PLCSimulator
         private UserControl_Contact m_xAreaUserControl;
         private UserControl_Contact m_yAreaUserControl;
         private UserControl_Favorites m_favoriteUserControl;
+        private UserControl_Macro m_macroUserControl;
 
         public BaseForm()
         {
@@ -36,6 +38,10 @@ namespace PLCSimulator
 
             Text = $"{Text} {ProfileRecipe.Instance.ProfileInfo.Protocol} : {ProfileRecipe.Instance.ProfileInfo.Port}";
             notifyIcon_system.Text = Text;
+
+            m_macroUserControl = new UserControl_Macro();
+            panel_tab.Controls.Add(m_macroUserControl);
+            m_macroUserControl.Dock = DockStyle.Fill;
 
             m_dataAreaUserControl = new UserControl_Data(DataManager.DataCode);
             panel_tab.Controls.Add(m_dataAreaUserControl);
@@ -85,53 +91,98 @@ namespace PLCSimulator
 
         private void button_Data_Click(object sender, EventArgs e)
         {
-            if (m_dataAreaUserControl.Visible)
+            if (m_dataAreaUserControl.Visible && panel_tab.Controls[0] == m_dataAreaUserControl)
                 return;
 
             HidePanel();
+            
+            m_dataAreaUserControl.BringToFront();
             m_dataAreaUserControl.Show();
+            SetSelectedButtonColor(sender, e);
         }
 
         private void button_contactR_Click(object sender, EventArgs e)
         {
-            if (m_rAreaUserControl.Visible)
+            if (m_rAreaUserControl.Visible && panel_tab.Controls[0] == m_rAreaUserControl)
                 return;
 
             HidePanel();
+
+            m_rAreaUserControl.BringToFront();
             m_rAreaUserControl.Show();
+            SetSelectedButtonColor(sender, e);
         }
 
         private void button_contactX_Click(object sender, EventArgs e)
         {
-            if (m_yAreaUserControl.Visible)
+            if (m_xAreaUserControl.Visible && panel_tab.Controls[0] == m_xAreaUserControl)
                 return;
 
             HidePanel();
-            m_yAreaUserControl.Show();
+
+            m_xAreaUserControl.BringToFront();
+            m_xAreaUserControl.Show();
+            SetSelectedButtonColor(sender, e);
         }
 
         private void button_contactY_Click(object sender, EventArgs e)
         {
-            if (m_xAreaUserControl.Visible)
+            if (m_yAreaUserControl.Visible && panel_tab.Controls[0] == m_yAreaUserControl)
                 return;
 
             HidePanel();
-            m_xAreaUserControl.Show();
+
+            m_yAreaUserControl.BringToFront();
+            m_yAreaUserControl.Show();
+            SetSelectedButtonColor(sender, e);
         }
 
         private void button_Favorite_Click(object sender, EventArgs e)
         {
-            if (m_favoriteUserControl.Visible)
+            if (m_favoriteUserControl.Visible && panel_tab.Controls[0] == m_favoriteUserControl)
                 return;
 
             HidePanel();
+
+            m_favoriteUserControl.BringToFront();
             m_favoriteUserControl.Show();
+            SetSelectedButtonColor(sender, e);
+        }
+
+        private void button_Macro_Click(object sender, EventArgs e)
+        {
+            if (m_macroUserControl.Visible)
+                m_macroUserControl.Hide();
+            else
+            {
+                m_macroUserControl.BringToFront();
+                m_macroUserControl.Show();
+            }
         }
 
         private void HidePanel()
         {
             foreach (Control control in panel_tab.Controls)
                 control.Hide();
+        }
+
+        private void SetSelectedButtonColor(object sender, EventArgs e)
+        {
+            if (sender is Button)
+            {
+                ResetButtonColor();
+                Button button = (Button)sender;
+                button.BackColor = SystemColors.ControlLight;
+            }
+        }
+
+        private void ResetButtonColor()
+        {
+            foreach (Control control in panel_Menu.Controls)
+            {
+                if (control is Button)
+                    control.BackColor = SystemColors.ButtonShadow;
+            }
         }
     }
 }
