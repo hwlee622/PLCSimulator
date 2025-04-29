@@ -40,7 +40,7 @@
             this.button_contactY = new System.Windows.Forms.Button();
             this.panel_Menu = new System.Windows.Forms.Panel();
             this.button_Favorite = new System.Windows.Forms.Button();
-            this.panel_tab = new DoubleBufferedPanel();
+            this.panel_tab = new System.Windows.Forms.DoubleBufferedPanel();
             this.panel_SubMenu = new System.Windows.Forms.Panel();
             this.button_Macro = new System.Windows.Forms.Button();
             this.contextMenuStrip_system.SuspendLayout();

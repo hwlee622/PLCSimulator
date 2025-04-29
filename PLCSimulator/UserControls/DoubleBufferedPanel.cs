@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace PLCSimulator
+﻿namespace System.Windows.Forms
 {
     public class DoubleBufferedPanel : Panel
     {

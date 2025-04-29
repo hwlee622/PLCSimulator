@@ -68,18 +68,27 @@ namespace PLCSimulator
                 var context = m_macroContextList[e.RowIndex];
                 if (e.ColumnIndex == 0)
                 {
-                    context.MacroType = (MacroType)e.Value;
+                    if (context.MacroType != (MacroType)e.Value)
+                    {
+                        context.MacroType = (MacroType)e.Value;
+                        context.Address = string.Empty;
+                        context.Value = 0;
+                    }
                 }
                 else if (e.ColumnIndex == 1)
                 {
                     if (context.MacroType == MacroType.Delay)
-                        return;
-
-                    string sAddress = e.Value?.ToString().ToUpper();
-                    if (Util.IsDTAddress(sAddress, out int address))
-                        context.Address = $"DT{address:D5}";
-                    else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex))
-                        context.Address = $"{contactCode}{address:D3}{hex:X}";
+                    {
+                        context.Address = string.Empty;
+                    }
+                    else
+                    {
+                        string sAddress = e.Value?.ToString().ToUpper();
+                        if (Util.IsDTAddress(sAddress, out int address))
+                            context.Address = $"DT{address:D5}";
+                        else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex))
+                            context.Address = $"{contactCode}{address:D3}{hex:X}";
+                    }
                 }
                 else if (e.ColumnIndex == 2)
                 {
@@ -101,6 +110,8 @@ namespace PLCSimulator
                         context.Value = (ushort)value;
                     }
                 }
+
+                dataGridView_Macro.InvalidateRow(e.RowIndex);
             }
             catch
             {
@@ -114,6 +125,8 @@ namespace PLCSimulator
                 if (PLCSimulator.Instance.MacroManager.IsRunMacro())
                 {
                     int step = PLCSimulator.Instance.MacroManager.MacroStep;
+                    if (m_macroContextList.Count <= step)
+                        return;
                     var context = m_macroContextList[step];
                     label_Step.Text = $"{context.MacroType} : {context.Address} To {context.Value}";
 
@@ -124,7 +137,7 @@ namespace PLCSimulator
                     label_Step.Text = "Step";
                 }
             }
-            catch (Exception ex)
+            catch
             {
             }
         }

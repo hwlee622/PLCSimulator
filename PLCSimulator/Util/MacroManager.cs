@@ -9,6 +9,8 @@ namespace PLCSimulator
         Delay,
         SetValue,
         WaitValue,
+        Increase,
+        Decrease,
     }
 
     public class MacroContext
@@ -81,6 +83,12 @@ namespace PLCSimulator
                 case MacroType.WaitValue:
                     return RunWaitValue(context);
 
+                case MacroType.Increase:
+                    return RunIncrease(context);
+
+                case MacroType.Decrease:
+                    return RunDecrease(context);
+
                 default:
                     return false;
             }
@@ -143,6 +151,62 @@ namespace PLCSimulator
                     return true;
                 else
                     return false;
+            }
+            else
+                return false;
+        }
+
+        private bool RunIncrease(MacroContext context)
+        {
+            if (Util.IsDTAddress(context.Address, out int address))
+            {
+                if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
+                    return false;
+
+                ushort[] value = dataArea.GetData(address, 1);
+                value[0] = (ushort)(value[0] + context.Value);
+                dataArea.SetData(address, value);
+                return true;
+            }
+            else if (Util.IsContactAddress(context.Address, out string contactCode, out address, out int hex))
+            {
+                if (!DataManager.Instance.PlcArea.TryGetValue(contactCode, out var contactArea))
+                    return false;
+
+                int mask = 1 << hex;
+                var singleData = contactArea.GetData(address, 1);
+                int newValue = singleData[0] << hex > 0 ? 1 : 0;
+                singleData[0] = newValue > 0 ? (ushort)(singleData[0] | mask) : (ushort)(singleData[0] & ~mask);
+                contactArea.SetData(address, singleData);
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private bool RunDecrease(MacroContext context)
+        {
+            if (Util.IsDTAddress(context.Address, out int address))
+            {
+                if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
+                    return false;
+
+                ushort[] value = dataArea.GetData(address, 1);
+                value[0] = (ushort)(value[0] - context.Value);
+                dataArea.SetData(address, value);
+                return true;
+            }
+            else if (Util.IsContactAddress(context.Address, out string contactCode, out address, out int hex))
+            {
+                if (!DataManager.Instance.PlcArea.TryGetValue(contactCode, out var contactArea))
+                    return false;
+
+                int mask = 1 << hex;
+                var singleData = contactArea.GetData(address, 1);
+                int newValue = singleData[0] << hex > 0 ? 1 : 0;
+                singleData[0] = newValue > 0 ? (ushort)(singleData[0] | mask) : (ushort)(singleData[0] & ~mask);
+                contactArea.SetData(address, singleData);
+                return true;
             }
             else
                 return false;
