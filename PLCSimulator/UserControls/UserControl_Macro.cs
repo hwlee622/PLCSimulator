@@ -6,22 +6,44 @@ namespace PLCSimulator
 {
     public partial class UserControl_Macro : UserControl
     {
-        private List<MacroContext> m_macroContextList;
+        private MacroManager m_macroManager;
+        private int m_selectedIndex = 0;
 
-        public UserControl_Macro()
+        public UserControl_Macro(MacroManager macroManager)
         {
             InitializeComponent();
+
+            m_macroManager = macroManager;
+            comboBox_Macro.Items.Clear();
+            for (int i = 0; i < m_macroManager.GetAllMacroLength(); i++)
+                comboBox_Macro.Items.Add($"Macro{i}");
+
+            dataGridView_Macro.Columns[0].ValueType = typeof(MacroType);
+            (dataGridView_Macro.Columns[0] as DataGridViewComboBoxColumn).DataSource = Enum.GetValues(typeof(MacroType));
         }
 
         private void UserControl_Macro_Load(object sender, EventArgs e)
         {
             try
             {
-                m_macroContextList = PLCSimulator.Instance.MacroManager.MacroContextList;
-                dataGridView_Macro.Columns[0].ValueType = typeof(MacroType);
-                (dataGridView_Macro.Columns[0] as DataGridViewComboBoxColumn).DataSource = Enum.GetValues(typeof(MacroType));
+                comboBox_Macro.SelectedIndex = 0;
+            }
+            catch
+            {
+            }
+        }
 
-                dataGridView_Macro.RowCount = m_macroContextList.Count;
+        private void comboBox_Macro_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                ComboBox cb = sender as ComboBox;
+                if (cb == null)
+                    return;
+
+                m_selectedIndex = cb.SelectedIndex;
+                dataGridView_Macro.RowCount = m_macroManager.GetMacroCount(m_selectedIndex);
+                dataGridView_Macro.Invalidate();
             }
             catch
             {
@@ -39,19 +61,53 @@ namespace PLCSimulator
             }
         }
 
+        private void timer_gui_update_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                bool isRunning = m_macroManager.IsRunMacro(m_selectedIndex);
+                if (isRunning)
+                {
+                    button_RunMacro.Text = "Stop";
+                    dataGridView_Macro.ReadOnly = true;
+
+                    int step = m_macroManager.GetMacroStep(m_selectedIndex);
+                    var context = m_macroManager.GetMacroContext(m_selectedIndex, step);
+                    if (m_macroManager.GetMacroCount(m_selectedIndex) <= step || context == null)
+                        return;
+
+                    label_Step.Text = $"{context.MacroType} : {context.Address} To {context.Value}";
+
+                    if (step < dataGridView_Macro.Rows.Count)
+                        dataGridView_Macro.CurrentCell = dataGridView_Macro.Rows[step].Cells[2];
+                }
+                else
+                {
+                    button_RunMacro.Text = "Start";
+                    dataGridView_Macro.ReadOnly = false;
+
+                    label_Step.Text = "Step";
+                }
+            }
+            catch
+            {
+            }
+        }
+
         private void dataGridView_Macro_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
             try
             {
-                if (e.RowIndex < 0 || e.RowIndex >= m_macroContextList.Count)
+                var context = m_macroManager.GetMacroContext(m_selectedIndex, e.RowIndex);
+                if (e.RowIndex < 0 || e.RowIndex >= m_macroManager.GetMacroCount(m_selectedIndex) || context == null)
                     return;
 
                 if (e.ColumnIndex == 0)
-                    e.Value = m_macroContextList[e.RowIndex].MacroType;
+                    e.Value = context.MacroType;
                 else if (e.ColumnIndex == 1)
-                    e.Value = m_macroContextList[e.RowIndex].Address;
+                    e.Value = context.Address;
                 else if (e.ColumnIndex == 2)
-                    e.Value = m_macroContextList[e.RowIndex].Value;
+                    e.Value = context.Value;
             }
             catch
             {
@@ -62,10 +118,10 @@ namespace PLCSimulator
         {
             try
             {
-                if (e.RowIndex < 0 || e.RowIndex >= m_macroContextList.Count)
+                var context = m_macroManager.GetMacroContext(m_selectedIndex, e.RowIndex);
+                if (e.RowIndex < 0 || e.RowIndex >= m_macroManager.GetMacroCount(m_selectedIndex) || context == null)
                     return;
 
-                var context = m_macroContextList[e.RowIndex];
                 if (e.ColumnIndex == 0)
                 {
                     if (context.MacroType != (MacroType)e.Value)
@@ -118,69 +174,55 @@ namespace PLCSimulator
             }
         }
 
-        private void timer_gui_update_Tick(object sender, EventArgs e)
+        private void button_RunMacro_Click(object sender, EventArgs e)
         {
             try
             {
-                if (PLCSimulator.Instance.MacroManager.IsRunMacro())
-                {
-                    int step = PLCSimulator.Instance.MacroManager.MacroStep;
-                    if (m_macroContextList.Count <= step)
-                        return;
-                    var context = m_macroContextList[step];
-                    label_Step.Text = $"{context.MacroType} : {context.Address} To {context.Value}";
-
-                    dataGridView_Macro.CurrentCell = dataGridView_Macro.Rows[step].Cells[2];
-                }
+                if (!m_macroManager.IsRunMacro(m_selectedIndex))
+                    m_macroManager.RunMacro(m_selectedIndex);
                 else
-                {
-                    label_Step.Text = "Step";
-                }
+                    m_macroManager.StopMacro(m_selectedIndex);
             }
             catch
             {
             }
         }
 
-        private void button_RunMacro_Click(object sender, EventArgs e)
-        {
-            if (!PLCSimulator.Instance.MacroManager.IsRunMacro())
-            {
-                PLCSimulator.Instance.MacroManager.RunMacro();
-                button_RunMacro.Text = "Stop";
-                dataGridView_Macro.ReadOnly = true;
-            }
-            else
-            {
-                PLCSimulator.Instance.MacroManager.StopMacro();
-                button_RunMacro.Text = "Start";
-                dataGridView_Macro.ReadOnly = false;
-            }
-        }
-
         private void button_AddMacro_Click(object sender, EventArgs e)
         {
-            if (PLCSimulator.Instance.MacroManager.IsRunMacro())
-                return;
+            try
+            {
+                if (m_macroManager.IsRunMacro(m_selectedIndex))
+                    return;
 
-            m_macroContextList.Add(new MacroContext());
+                m_macroManager.AddMacroContext(m_selectedIndex);
 
-            dataGridView_Macro.RowCount = m_macroContextList.Count;
-            dataGridView_Macro.Invalidate();
+                dataGridView_Macro.RowCount = m_macroManager.GetMacroCount(m_selectedIndex);
+                dataGridView_Macro.Invalidate();
+            }
+            catch
+            {
+            }
         }
 
         private void button_RemoveMacro_Click(object sender, EventArgs e)
         {
-            if (PLCSimulator.Instance.MacroManager.IsRunMacro())
-                return;
-            if (dataGridView_Macro.SelectedCells.Count == 0)
-                return;
+            try
+            {
+                if (m_macroManager.IsRunMacro(m_selectedIndex))
+                    return;
+                if (dataGridView_Macro.SelectedCells.Count == 0)
+                    return;
 
-            int index = dataGridView_Macro.SelectedCells[0].RowIndex;
-            m_macroContextList.RemoveAt(index);
+                int removeIndex = dataGridView_Macro.SelectedCells[0].RowIndex;
+                m_macroManager.RemoveMacroContext(m_selectedIndex, removeIndex);
 
-            dataGridView_Macro.RowCount = m_macroContextList.Count;
-            dataGridView_Macro.Invalidate();
+                dataGridView_Macro.RowCount = m_macroManager.GetMacroCount(m_selectedIndex);
+                dataGridView_Macro.Invalidate();
+            }
+            catch
+            {
+            }
         }
     }
 }

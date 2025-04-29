@@ -21,26 +21,6 @@ namespace PLCSimulator
 
         #endregion Singleton
 
-        [XmlRoot("Profile")]
-        public class Profile
-        {
-            public Protocol Protocol = Protocol.Mewtocol;
-            public int Port;
-
-            public List<string> FavoriteAddress = new List<string>();
-            public List<Description> DescriptionList = new List<Description>();
-            public List<MacroContext> MacroContextList = new List<MacroContext>();
-
-            public class Description
-            {
-                [XmlAttribute]
-                public string Key;
-
-                [XmlAttribute]
-                public string Value;
-            }
-        }
-
         public Profile ProfileInfo = new Profile();
 
         public void Load()
@@ -91,7 +71,12 @@ namespace PLCSimulator
             if (desc != null)
                 desc.Value = description;
             else
-                ProfileInfo.DescriptionList.Add(new Profile.Description() { Key = address, Value = description });
+                ProfileInfo.DescriptionList.Add(new Description() { Key = address, Value = description });
+        }
+
+        public MacroInfo[] GetMacroInfoArray()
+        {
+            return ProfileInfo.MacroInfoArray;
         }
     }
 }

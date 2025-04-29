@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -57,6 +57,7 @@
     <Compile Include="Comm\CommTcpClient.cs" />
     <Compile Include="Comm\CommTcpListenerSingle.cs" />
     <Compile Include="Comm\CommUdp.cs" />
+    <Compile Include="Profile.cs" />
     <Compile Include="UserControls\DoubleBufferedPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -154,9 +155,6 @@
     </Content>
     <Content Include="Resources\YJ LINK.ico" />
     <Content Include="Resources\YJ LINK.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

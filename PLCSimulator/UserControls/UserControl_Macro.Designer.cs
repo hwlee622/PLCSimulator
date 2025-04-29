@@ -31,15 +31,16 @@
             this.components = new System.ComponentModel.Container();
             this.panel_Data = new System.Windows.Forms.Panel();
             this.dataGridView_Macro = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timer_gui_update = new System.Windows.Forms.Timer(this.components);
             this.panel_control = new System.Windows.Forms.Panel();
+            this.comboBox_Macro = new System.Windows.Forms.ComboBox();
             this.label_Step = new System.Windows.Forms.Label();
             this.button_RemoveMacro = new System.Windows.Forms.Button();
             this.button_AddMacro = new System.Windows.Forms.Button();
             this.button_RunMacro = new System.Windows.Forms.Button();
-            this.Column1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel_Data.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Macro)).BeginInit();
             this.panel_control.SuspendLayout();
@@ -49,9 +50,9 @@
             // 
             this.panel_Data.Controls.Add(this.dataGridView_Macro);
             this.panel_Data.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_Data.Location = new System.Drawing.Point(0, 58);
+            this.panel_Data.Location = new System.Drawing.Point(0, 79);
             this.panel_Data.Name = "panel_Data";
-            this.panel_Data.Size = new System.Drawing.Size(361, 271);
+            this.panel_Data.Size = new System.Drawing.Size(361, 250);
             this.panel_Data.TabIndex = 16;
             // 
             // dataGridView_Macro
@@ -70,69 +71,11 @@
             this.dataGridView_Macro.Name = "dataGridView_Macro";
             this.dataGridView_Macro.RowHeadersVisible = false;
             this.dataGridView_Macro.RowTemplate.Height = 23;
-            this.dataGridView_Macro.Size = new System.Drawing.Size(361, 271);
+            this.dataGridView_Macro.Size = new System.Drawing.Size(361, 250);
             this.dataGridView_Macro.TabIndex = 0;
             this.dataGridView_Macro.VirtualMode = true;
             this.dataGridView_Macro.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Macro_CellValueNeeded);
             this.dataGridView_Macro.CellValuePushed += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Macro_CellValuePushed);
-            // 
-            // timer_gui_update
-            // 
-            this.timer_gui_update.Tick += new System.EventHandler(this.timer_gui_update_Tick);
-            // 
-            // panel_control
-            // 
-            this.panel_control.Controls.Add(this.label_Step);
-            this.panel_control.Controls.Add(this.button_RemoveMacro);
-            this.panel_control.Controls.Add(this.button_AddMacro);
-            this.panel_control.Controls.Add(this.button_RunMacro);
-            this.panel_control.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel_control.Location = new System.Drawing.Point(0, 0);
-            this.panel_control.Margin = new System.Windows.Forms.Padding(0);
-            this.panel_control.Name = "panel_control";
-            this.panel_control.Size = new System.Drawing.Size(361, 58);
-            this.panel_control.TabIndex = 17;
-            // 
-            // label_Step
-            // 
-            this.label_Step.AutoSize = true;
-            this.label_Step.ForeColor = System.Drawing.Color.White;
-            this.label_Step.Location = new System.Drawing.Point(3, 8);
-            this.label_Step.Name = "label_Step";
-            this.label_Step.Size = new System.Drawing.Size(30, 12);
-            this.label_Step.TabIndex = 7;
-            this.label_Step.Text = "Step";
-            // 
-            // button_RemoveMacro
-            // 
-            this.button_RemoveMacro.Location = new System.Drawing.Point(84, 29);
-            this.button_RemoveMacro.Name = "button_RemoveMacro";
-            this.button_RemoveMacro.Size = new System.Drawing.Size(75, 23);
-            this.button_RemoveMacro.TabIndex = 6;
-            this.button_RemoveMacro.Text = "Remove";
-            this.button_RemoveMacro.UseVisualStyleBackColor = true;
-            this.button_RemoveMacro.Click += new System.EventHandler(this.button_RemoveMacro_Click);
-            // 
-            // button_AddMacro
-            // 
-            this.button_AddMacro.Location = new System.Drawing.Point(3, 29);
-            this.button_AddMacro.Name = "button_AddMacro";
-            this.button_AddMacro.Size = new System.Drawing.Size(75, 23);
-            this.button_AddMacro.TabIndex = 5;
-            this.button_AddMacro.Text = "Add";
-            this.button_AddMacro.UseVisualStyleBackColor = true;
-            this.button_AddMacro.Click += new System.EventHandler(this.button_AddMacro_Click);
-            // 
-            // button_RunMacro
-            // 
-            this.button_RunMacro.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_RunMacro.Location = new System.Drawing.Point(283, 29);
-            this.button_RunMacro.Name = "button_RunMacro";
-            this.button_RunMacro.Size = new System.Drawing.Size(75, 23);
-            this.button_RunMacro.TabIndex = 4;
-            this.button_RunMacro.Text = "Start";
-            this.button_RunMacro.UseVisualStyleBackColor = true;
-            this.button_RunMacro.Click += new System.EventHandler(this.button_RunMacro_Click);
             // 
             // Column1
             // 
@@ -151,6 +94,75 @@
             this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column3.HeaderText = "Value";
             this.Column3.Name = "Column3";
+            // 
+            // timer_gui_update
+            // 
+            this.timer_gui_update.Tick += new System.EventHandler(this.timer_gui_update_Tick);
+            // 
+            // panel_control
+            // 
+            this.panel_control.Controls.Add(this.comboBox_Macro);
+            this.panel_control.Controls.Add(this.label_Step);
+            this.panel_control.Controls.Add(this.button_RemoveMacro);
+            this.panel_control.Controls.Add(this.button_AddMacro);
+            this.panel_control.Controls.Add(this.button_RunMacro);
+            this.panel_control.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel_control.Location = new System.Drawing.Point(0, 0);
+            this.panel_control.Margin = new System.Windows.Forms.Padding(0);
+            this.panel_control.Name = "panel_control";
+            this.panel_control.Size = new System.Drawing.Size(361, 79);
+            this.panel_control.TabIndex = 17;
+            // 
+            // comboBox_Macro
+            // 
+            this.comboBox_Macro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_Macro.FormattingEnabled = true;
+            this.comboBox_Macro.Location = new System.Drawing.Point(3, 6);
+            this.comboBox_Macro.Name = "comboBox_Macro";
+            this.comboBox_Macro.Size = new System.Drawing.Size(156, 20);
+            this.comboBox_Macro.TabIndex = 8;
+            this.comboBox_Macro.SelectedIndexChanged += new System.EventHandler(this.comboBox_Macro_SelectedIndexChanged);
+            // 
+            // label_Step
+            // 
+            this.label_Step.AutoSize = true;
+            this.label_Step.ForeColor = System.Drawing.Color.White;
+            this.label_Step.Location = new System.Drawing.Point(3, 35);
+            this.label_Step.Name = "label_Step";
+            this.label_Step.Size = new System.Drawing.Size(30, 12);
+            this.label_Step.TabIndex = 7;
+            this.label_Step.Text = "Step";
+            // 
+            // button_RemoveMacro
+            // 
+            this.button_RemoveMacro.Location = new System.Drawing.Point(84, 50);
+            this.button_RemoveMacro.Name = "button_RemoveMacro";
+            this.button_RemoveMacro.Size = new System.Drawing.Size(75, 23);
+            this.button_RemoveMacro.TabIndex = 6;
+            this.button_RemoveMacro.Text = "Remove";
+            this.button_RemoveMacro.UseVisualStyleBackColor = true;
+            this.button_RemoveMacro.Click += new System.EventHandler(this.button_RemoveMacro_Click);
+            // 
+            // button_AddMacro
+            // 
+            this.button_AddMacro.Location = new System.Drawing.Point(3, 50);
+            this.button_AddMacro.Name = "button_AddMacro";
+            this.button_AddMacro.Size = new System.Drawing.Size(75, 23);
+            this.button_AddMacro.TabIndex = 5;
+            this.button_AddMacro.Text = "Add";
+            this.button_AddMacro.UseVisualStyleBackColor = true;
+            this.button_AddMacro.Click += new System.EventHandler(this.button_AddMacro_Click);
+            // 
+            // button_RunMacro
+            // 
+            this.button_RunMacro.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_RunMacro.Location = new System.Drawing.Point(283, 50);
+            this.button_RunMacro.Name = "button_RunMacro";
+            this.button_RunMacro.Size = new System.Drawing.Size(75, 23);
+            this.button_RunMacro.TabIndex = 4;
+            this.button_RunMacro.Text = "Start";
+            this.button_RunMacro.UseVisualStyleBackColor = true;
+            this.button_RunMacro.Click += new System.EventHandler(this.button_RunMacro_Click);
             // 
             // UserControl_Macro
             // 
@@ -184,5 +196,6 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.ComboBox comboBox_Macro;
     }
 }

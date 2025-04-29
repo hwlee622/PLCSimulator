@@ -24,7 +24,7 @@
 
         public void Start()
         {
-            MacroManager = new MacroManager();
+            MacroManager = new MacroManager(ProfileRecipe.Instance.ProfileInfo.MacroInfoArray);
 
             Protocol selectedProtocol = ProfileRecipe.Instance.ProfileInfo.Protocol;
             int serverPort = ProfileRecipe.Instance.ProfileInfo.Port;
@@ -48,6 +48,9 @@
 
         public void Stop()
         {
+            for (int i = 0; i < MacroManager.GetAllMacroLength(); i++)
+                MacroManager.StopMacro(i);
+
             m_panasonicServer?.Stop();
             m_omronServer?.Stop();
         }

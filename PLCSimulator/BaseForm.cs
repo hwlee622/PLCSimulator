@@ -39,7 +39,7 @@ namespace PLCSimulator
             Text = $"{Text} {ProfileRecipe.Instance.ProfileInfo.Protocol} : {ProfileRecipe.Instance.ProfileInfo.Port}";
             notifyIcon_system.Text = Text;
 
-            m_macroUserControl = new UserControl_Macro();
+            m_macroUserControl = new UserControl_Macro(PLCSimulator.Instance.MacroManager);
             panel_tab.Controls.Add(m_macroUserControl);
             m_macroUserControl.Dock = DockStyle.Fill;
 
@@ -95,7 +95,7 @@ namespace PLCSimulator
                 return;
 
             HidePanel();
-            
+
             m_dataAreaUserControl.BringToFront();
             m_dataAreaUserControl.Show();
             SetSelectedButtonColor(sender, e);
