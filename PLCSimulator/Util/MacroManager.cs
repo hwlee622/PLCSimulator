@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace PLCSimulator
@@ -113,15 +112,15 @@ namespace PLCSimulator
                 var macroContextList = MacroInfoArray[index].MacroContextList;
                 while (!token.IsCancellationRequested)
                 {
-                    Thread.Sleep(20);
                     int step = MacroStepArray[index];
-
                     if (macroContextList.Count <= step)
                         break;
 
                     var context = macroContextList[step];
                     if (RunMacroType(context))
                         MacroStepArray[index] = (step + 1) % macroContextList.Count;
+                    else
+                        Thread.Sleep(20);
                 }
             }
             catch (Exception ex)
