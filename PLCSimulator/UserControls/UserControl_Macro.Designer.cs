@@ -68,9 +68,11 @@
             this.Column3});
             this.dataGridView_Macro.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_Macro.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView_Macro.MultiSelect = false;
             this.dataGridView_Macro.Name = "dataGridView_Macro";
             this.dataGridView_Macro.RowHeadersVisible = false;
             this.dataGridView_Macro.RowTemplate.Height = 23;
+            this.dataGridView_Macro.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dataGridView_Macro.Size = new System.Drawing.Size(361, 250);
             this.dataGridView_Macro.TabIndex = 0;
             this.dataGridView_Macro.VirtualMode = true;

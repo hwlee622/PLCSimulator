@@ -172,7 +172,7 @@
             this.panel_tab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_tab.Location = new System.Drawing.Point(0, 58);
             this.panel_tab.Name = "panel_tab";
-            this.panel_tab.Size = new System.Drawing.Size(393, 403);
+            this.panel_tab.Size = new System.Drawing.Size(393, 345);
             this.panel_tab.TabIndex = 1;
             // 
             // panel_SubMenu
@@ -206,8 +206,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(393, 461);
-            this.Controls.Add(this.panel_SubMenu);
             this.Controls.Add(this.panel_tab);
+            this.Controls.Add(this.panel_SubMenu);
             this.Controls.Add(this.panel_Menu);
             this.MinimumSize = new System.Drawing.Size(409, 500);
             this.Name = "BaseForm";
@@ -232,10 +232,10 @@
         private System.Windows.Forms.Button button_contactX;
         private System.Windows.Forms.Button button_contactY;
         private System.Windows.Forms.Panel panel_Menu;
-        private System.Windows.Forms.Panel panel_tab;
         private System.Windows.Forms.Button button_Favorite;
         private System.Windows.Forms.Panel panel_SubMenu;
         private System.Windows.Forms.Button button_Macro;
+        private System.Windows.Forms.DoubleBufferedPanel panel_tab;
     }
 }
 

@@ -140,9 +140,11 @@
             this.Column3});
             this.dataGridView_Data.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_Data.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView_Data.MultiSelect = false;
             this.dataGridView_Data.Name = "dataGridView_Data";
             this.dataGridView_Data.RowHeadersVisible = false;
             this.dataGridView_Data.RowTemplate.Height = 23;
+            this.dataGridView_Data.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dataGridView_Data.Size = new System.Drawing.Size(361, 271);
             this.dataGridView_Data.TabIndex = 0;
             this.dataGridView_Data.VirtualMode = true;

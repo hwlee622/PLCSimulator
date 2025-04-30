@@ -65,9 +65,11 @@
             this.Column3});
             this.dataGridView_Contact.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_Contact.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView_Contact.MultiSelect = false;
             this.dataGridView_Contact.Name = "dataGridView_Contact";
             this.dataGridView_Contact.RowHeadersVisible = false;
             this.dataGridView_Contact.RowTemplate.Height = 23;
+            this.dataGridView_Contact.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dataGridView_Contact.Size = new System.Drawing.Size(361, 178);
             this.dataGridView_Contact.TabIndex = 0;
             this.dataGridView_Contact.VirtualMode = true;
