@@ -209,7 +209,6 @@
             this.Controls.Add(this.panel_SubMenu);
             this.Controls.Add(this.panel_tab);
             this.Controls.Add(this.panel_Menu);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(409, 500);
             this.Name = "BaseForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
