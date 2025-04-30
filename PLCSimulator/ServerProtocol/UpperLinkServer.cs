@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using YJComm;
+using CommInterface;
 
 namespace PLCSimulator
 {

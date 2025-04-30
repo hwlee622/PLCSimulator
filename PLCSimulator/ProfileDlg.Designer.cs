@@ -34,6 +34,8 @@
             this.label_Port = new System.Windows.Forms.Label();
             this.textBox_Port = new System.Windows.Forms.TextBox();
             this.label_Protocol = new System.Windows.Forms.Label();
+            this.label_Profile = new System.Windows.Forms.Label();
+            this.comboBox_Profile = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // comboBox_Protocol
@@ -41,7 +43,7 @@
             this.comboBox_Protocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_Protocol.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox_Protocol.FormattingEnabled = true;
-            this.comboBox_Protocol.Location = new System.Drawing.Point(12, 30);
+            this.comboBox_Protocol.Location = new System.Drawing.Point(12, 136);
             this.comboBox_Protocol.Name = "comboBox_Protocol";
             this.comboBox_Protocol.Size = new System.Drawing.Size(154, 26);
             this.comboBox_Protocol.TabIndex = 0;
@@ -52,7 +54,7 @@
             this.button_Start.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_Start.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_Start.ForeColor = System.Drawing.Color.White;
-            this.button_Start.Location = new System.Drawing.Point(12, 193);
+            this.button_Start.Location = new System.Drawing.Point(12, 230);
             this.button_Start.Name = "button_Start";
             this.button_Start.Size = new System.Drawing.Size(69, 41);
             this.button_Start.TabIndex = 6;
@@ -66,7 +68,7 @@
             this.button_Cancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_Cancel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_Cancel.ForeColor = System.Drawing.Color.White;
-            this.button_Cancel.Location = new System.Drawing.Point(97, 193);
+            this.button_Cancel.Location = new System.Drawing.Point(97, 230);
             this.button_Cancel.Name = "button_Cancel";
             this.button_Cancel.Size = new System.Drawing.Size(69, 41);
             this.button_Cancel.TabIndex = 7;
@@ -80,7 +82,7 @@
             this.label_Port.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.label_Port.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_Port.ForeColor = System.Drawing.Color.White;
-            this.label_Port.Location = new System.Drawing.Point(12, 70);
+            this.label_Port.Location = new System.Drawing.Point(12, 165);
             this.label_Port.Name = "label_Port";
             this.label_Port.Size = new System.Drawing.Size(46, 18);
             this.label_Port.TabIndex = 8;
@@ -89,7 +91,7 @@
             // textBox_Port
             // 
             this.textBox_Port.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox_Port.Location = new System.Drawing.Point(12, 91);
+            this.textBox_Port.Location = new System.Drawing.Point(12, 186);
             this.textBox_Port.Name = "textBox_Port";
             this.textBox_Port.Size = new System.Drawing.Size(154, 27);
             this.textBox_Port.TabIndex = 9;
@@ -101,19 +103,43 @@
             this.label_Protocol.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.label_Protocol.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_Protocol.ForeColor = System.Drawing.Color.White;
-            this.label_Protocol.Location = new System.Drawing.Point(12, 9);
+            this.label_Protocol.Location = new System.Drawing.Point(12, 115);
             this.label_Protocol.Name = "label_Protocol";
             this.label_Protocol.Size = new System.Drawing.Size(81, 18);
             this.label_Protocol.TabIndex = 10;
             this.label_Protocol.Text = "Protocol";
+            // 
+            // label_Profile
+            // 
+            this.label_Profile.AutoSize = true;
+            this.label_Profile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.label_Profile.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_Profile.ForeColor = System.Drawing.Color.White;
+            this.label_Profile.Location = new System.Drawing.Point(12, 9);
+            this.label_Profile.Name = "label_Profile";
+            this.label_Profile.Size = new System.Drawing.Size(65, 18);
+            this.label_Profile.TabIndex = 12;
+            this.label_Profile.Text = "Profile";
+            // 
+            // comboBox_Profile
+            // 
+            this.comboBox_Profile.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox_Profile.FormattingEnabled = true;
+            this.comboBox_Profile.Location = new System.Drawing.Point(12, 30);
+            this.comboBox_Profile.Name = "comboBox_Profile";
+            this.comboBox_Profile.Size = new System.Drawing.Size(154, 26);
+            this.comboBox_Profile.TabIndex = 11;
+            this.comboBox_Profile.SelectedIndexChanged += new System.EventHandler(this.comboBox_Profile_SelectedIndexChanged);
             // 
             // ProfileDlg
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(178, 246);
+            this.ClientSize = new System.Drawing.Size(178, 283);
             this.ControlBox = false;
+            this.Controls.Add(this.label_Profile);
+            this.Controls.Add(this.comboBox_Profile);
             this.Controls.Add(this.label_Protocol);
             this.Controls.Add(this.textBox_Port);
             this.Controls.Add(this.label_Port);
@@ -138,5 +164,7 @@
         private System.Windows.Forms.Label label_Port;
         private System.Windows.Forms.TextBox textBox_Port;
         private System.Windows.Forms.Label label_Protocol;
+        private System.Windows.Forms.Label label_Profile;
+        private System.Windows.Forms.ComboBox comboBox_Profile;
     }
 }

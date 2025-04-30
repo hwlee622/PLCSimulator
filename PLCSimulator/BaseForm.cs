@@ -20,7 +20,6 @@ namespace PLCSimulator
 
         private void BaseForm_Load(object sender, EventArgs e)
         {
-            ProfileRecipe.Instance.Load();
             using (ProfileDlg dlg = new ProfileDlg())
             {
                 if (dlg.ShowDialog() == DialogResult.Cancel)

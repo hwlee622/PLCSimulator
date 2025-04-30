@@ -22,15 +22,34 @@ namespace PLCSimulator
         #endregion Singleton
 
         public Profile ProfileInfo = new Profile();
+        private string m_currentProfile = "Profile.prof";
 
-        public void Load()
+        public List<string> GetProflieList()
+        {
+            List<string> profileList = new List<string>();
+            try
+            {
+                DirectoryInfo di = new DirectoryInfo(".");
+                var fileList = di.GetFiles("*.prof");
+                foreach (var file in fileList)
+                    profileList.Add(file.Name.Replace(".prof", ""));
+            }
+            catch
+            {
+            }
+            return profileList;
+        }
+
+        public void Load(string profileName)
         {
             try
             {
-                if (!File.Exists("Profile.xml"))
+                if (!string.IsNullOrEmpty(profileName))
+                    m_currentProfile = $"{profileName}.prof";
+                if (!File.Exists(m_currentProfile))
                     return;
 
-                using (FileStream fs = new FileStream("Profile.xml", FileMode.Open))
+                using (FileStream fs = new FileStream(m_currentProfile, FileMode.Open))
                 {
                     XmlSerializer xs = new XmlSerializer(typeof(Profile));
                     ProfileInfo = xs.Deserialize(fs) as Profile;
@@ -45,7 +64,7 @@ namespace PLCSimulator
         {
             try
             {
-                using (FileStream fs = new FileStream("Profile.xml", FileMode.Create))
+                using (FileStream fs = new FileStream(m_currentProfile, FileMode.Create))
                 {
                     XmlSerializer xs = new XmlSerializer(typeof(Profile));
                     xs.Serialize(fs, ProfileInfo);

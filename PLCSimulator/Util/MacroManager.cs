@@ -89,17 +89,31 @@ namespace PLCSimulator
             return MacroInfoArray[index].MacroContextList[step];
         }
 
-        public void AddMacroContext(int index)
+        public void AddMacroContext(int index, int addIndex)
         {
             if (index < 0 || index >= MacroInfoArray.Length)
                 return;
+            if (!m_ctsArray[index].IsCancellationRequested)
+                return;
 
-            MacroInfoArray[index].MacroContextList.Add(new MacroContext());
+            var macroInfo = MacroInfoArray[index];
+            macroInfo.MacroContextList.Add(new MacroContext());
+            if (addIndex >= macroInfo.MacroContextList.Count - 1)
+                return;
+
+            for (int i = macroInfo.MacroContextList.Count - 1; i > addIndex + 1; i--)
+            {
+                var context = macroInfo.MacroContextList[i];
+                macroInfo.MacroContextList[i] = macroInfo.MacroContextList[i - 1];
+                macroInfo.MacroContextList[i - 1] = context;
+            }
         }
 
         public void RemoveMacroContext(int index, int removeIndex)
         {
             if (index < 0 || index >= MacroInfoArray.Length)
+                return;
+            if (!m_ctsArray[index].IsCancellationRequested)
                 return;
 
             MacroInfoArray[index].MacroContextList.RemoveAt(removeIndex);

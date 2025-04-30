@@ -48,8 +48,9 @@
 
         public void Stop()
         {
-            for (int i = 0; i < MacroManager.GetAllMacroLength(); i++)
-                MacroManager.StopMacro(i);
+            if (MacroManager != null)
+                for (int i = 0; i < MacroManager.GetAllMacroLength(); i++)
+                    MacroManager.StopMacro(i);
 
             m_panasonicServer?.Stop();
             m_omronServer?.Stop();

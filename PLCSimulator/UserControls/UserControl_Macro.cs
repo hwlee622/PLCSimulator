@@ -195,7 +195,11 @@ namespace PLCSimulator
                 if (m_macroManager.IsRunMacro(m_selectedIndex))
                     return;
 
-                m_macroManager.AddMacroContext(m_selectedIndex);
+                int index = 0;
+                if (dataGridView_Macro.SelectedCells.Count > 0)
+                    index = dataGridView_Macro.SelectedCells[0].RowIndex;
+
+                m_macroManager.AddMacroContext(m_selectedIndex, index);
 
                 dataGridView_Macro.RowCount = m_macroManager.GetMacroCount(m_selectedIndex);
                 dataGridView_Macro.Invalidate();

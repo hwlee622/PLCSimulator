@@ -7,7 +7,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace YJComm
+namespace CommInterface
 {
     public class ServerCommUdp : ServerComm
     {
@@ -123,16 +123,15 @@ namespace YJComm
             {
                 try
                 {
-                    if (m_sendQueue.Count == 0)
+                    if (!m_sendQueue.TryDequeue(out var message) || !IsConnected())
                         await Task.Delay(20);
-                    else if (m_sendQueue.TryDequeue(out var message) && IsConnected())
+                    else
                     {
-                        Task write = WriteAsync(message);
-                        await Task.WhenAny(write, cancel);
+                        Task send = WriteAsync(message);
+                        await Task.WhenAny(send, cancel);
                         if (token.IsCancellationRequested)
-                            break;
-
-                        write.GetAwaiter().GetResult();
+                            continue;
+                        await send;
                     }
                 }
                 catch (Exception ex)
@@ -163,9 +162,8 @@ namespace YJComm
                         Task read = ReadAsync();
                         await Task.WhenAny(read, cancel);
                         if (token.IsCancellationRequested)
-                            break;
-
-                        read.GetAwaiter().GetResult();
+                            continue;
+                        await read;
                     }
                 }
                 catch (Exception ex)

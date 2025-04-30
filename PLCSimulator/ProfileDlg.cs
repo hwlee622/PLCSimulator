@@ -14,19 +14,26 @@ namespace PLCSimulator
 
         private void ProfileDlg_Load(object sender, EventArgs e)
         {
+            ProfileRecipe.Instance.Load(string.Empty);
+            ProfileRecipe.Instance.Save();
+
+            var profileList = ProfileRecipe.Instance.GetProflieList();
+            foreach (var profile in profileList)
+                comboBox_Profile.Items.Add(profile);
+            if (comboBox_Profile.Items.Count > 0)
+                comboBox_Profile.SelectedIndex = 0;
+        }
+
+        private void comboBox_Profile_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ProfileRecipe.Instance.Load(comboBox_Profile.SelectedItem.ToString());
             comboBox_Protocol.SelectedIndex = (int)ProfileRecipe.Instance.ProfileInfo.Protocol;
             textBox_Port.Text = ProfileRecipe.Instance.ProfileInfo.Port.ToString();
         }
 
         private void button_Start_Click(object sender, EventArgs e)
         {
-            if (Enum.TryParse(comboBox_Protocol.SelectedItem.ToString(), true, out Protocol protocol))
-                ProfileRecipe.Instance.ProfileInfo.Protocol = protocol;
-            if (int.TryParse(textBox_Port.Text, out int port))
-                ProfileRecipe.Instance.ProfileInfo.Port = port;
-            ProfileRecipe.Instance.Save();
-
-            DialogResult = DialogResult.OK;
+            SelectProfile();
         }
 
         private void button_Cancel_Click(object sender, EventArgs e)
@@ -38,14 +45,22 @@ namespace PLCSimulator
         {
             if (e.KeyCode == Keys.Enter)
             {
-                if (Enum.TryParse(comboBox_Protocol.SelectedItem.ToString(), true, out Protocol protocol))
-                    ProfileRecipe.Instance.ProfileInfo.Protocol = protocol;
-                if (int.TryParse(textBox_Port.Text, out int port))
-                    ProfileRecipe.Instance.ProfileInfo.Port = port;
-                ProfileRecipe.Instance.Save();
-
-                DialogResult = DialogResult.OK;
+                SelectProfile();
             }
+        }
+
+        private void SelectProfile()
+        {
+            string profileName = comboBox_Profile.Text;
+            ProfileRecipe.Instance.Load(profileName);
+
+            if (Enum.TryParse(comboBox_Protocol.SelectedItem.ToString(), true, out Protocol protocol))
+                ProfileRecipe.Instance.ProfileInfo.Protocol = protocol;
+            if (int.TryParse(textBox_Port.Text, out int port))
+                ProfileRecipe.Instance.ProfileInfo.Port = port;
+            ProfileRecipe.Instance.Save();
+
+            DialogResult = DialogResult.OK;
         }
     }
 }
