@@ -162,7 +162,7 @@
             this.button_Favorite.Size = new System.Drawing.Size(69, 41);
             this.button_Favorite.TabIndex = 4;
             this.button_Favorite.TabStop = false;
-            this.button_Favorite.Text = "";
+            this.button_Favorite.Text = "\uE728";
             this.button_Favorite.UseVisualStyleBackColor = false;
             this.button_Favorite.Click += new System.EventHandler(this.button_Favorite_Click);
             // 
