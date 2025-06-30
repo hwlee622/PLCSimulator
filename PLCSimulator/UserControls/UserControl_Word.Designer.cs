@@ -1,6 +1,6 @@
 ﻿namespace PLCSimulator
 {
-    partial class UserControl_Data
+    partial class UserControl_Word
     {
         /// <summary> 
         /// 필수 디자이너 변수입니다.
@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel_Data = new System.Windows.Forms.Panel();
-            this.dataGridView_Data = new System.Windows.Forms.DataGridView();
+            this.dataGridView_Word = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,42 +43,41 @@
             this.radioButton_hex = new System.Windows.Forms.RadioButton();
             this.panel_control = new System.Windows.Forms.Panel();
             this.panel_Data.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Data)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Word)).BeginInit();
             this.panel_control.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel_Data
             // 
-            this.panel_Data.Controls.Add(this.dataGridView_Data);
+            this.panel_Data.Controls.Add(this.dataGridView_Word);
             this.panel_Data.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_Data.Location = new System.Drawing.Point(0, 58);
             this.panel_Data.Name = "panel_Data";
             this.panel_Data.Size = new System.Drawing.Size(361, 271);
             this.panel_Data.TabIndex = 3;
             // 
-            // dataGridView_Data
+            // dataGridView_Word
             // 
-            this.dataGridView_Data.AllowUserToAddRows = false;
-            this.dataGridView_Data.AllowUserToDeleteRows = false;
-            this.dataGridView_Data.AllowUserToResizeColumns = false;
-            this.dataGridView_Data.AllowUserToResizeRows = false;
-            this.dataGridView_Data.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_Data.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridView_Word.AllowUserToAddRows = false;
+            this.dataGridView_Word.AllowUserToDeleteRows = false;
+            this.dataGridView_Word.AllowUserToResizeRows = false;
+            this.dataGridView_Word.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_Word.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2,
             this.Column3});
-            this.dataGridView_Data.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView_Data.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView_Data.MultiSelect = false;
-            this.dataGridView_Data.Name = "dataGridView_Data";
-            this.dataGridView_Data.RowHeadersVisible = false;
-            this.dataGridView_Data.RowTemplate.Height = 23;
-            this.dataGridView_Data.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView_Data.Size = new System.Drawing.Size(361, 271);
-            this.dataGridView_Data.TabIndex = 0;
-            this.dataGridView_Data.VirtualMode = true;
-            this.dataGridView_Data.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_DT_CellValueNeeded);
-            this.dataGridView_Data.CellValuePushed += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Data_CellValuePushed);
+            this.dataGridView_Word.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView_Word.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView_Word.MultiSelect = false;
+            this.dataGridView_Word.Name = "dataGridView_Word";
+            this.dataGridView_Word.RowHeadersVisible = false;
+            this.dataGridView_Word.RowTemplate.Height = 23;
+            this.dataGridView_Word.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataGridView_Word.Size = new System.Drawing.Size(361, 271);
+            this.dataGridView_Word.TabIndex = 0;
+            this.dataGridView_Word.VirtualMode = true;
+            this.dataGridView_Word.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Word_CellValueNeeded);
+            this.dataGridView_Word.CellValuePushed += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Data_CellValuePushed);
             // 
             // Column1
             // 
@@ -184,19 +183,19 @@
             this.panel_control.Size = new System.Drawing.Size(361, 58);
             this.panel_control.TabIndex = 0;
             // 
-            // UserControl_Data
+            // UserControl_Word
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.Controls.Add(this.panel_Data);
             this.Controls.Add(this.panel_control);
-            this.Name = "UserControl_Data";
+            this.Name = "UserControl_Word";
             this.Size = new System.Drawing.Size(361, 329);
             this.Load += new System.EventHandler(this.UserControlData_Load);
             this.VisibleChanged += new System.EventHandler(this.UserControlData_VisibleChanged);
             this.panel_Data.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Data)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Word)).EndInit();
             this.panel_control.ResumeLayout(false);
             this.panel_control.PerformLayout();
             this.ResumeLayout(false);
@@ -206,7 +205,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panel_Data;
-        private System.Windows.Forms.DataGridView dataGridView_Data;
+        private System.Windows.Forms.DataGridView dataGridView_Word;
         private System.Windows.Forms.TextBox textBox_search;
         private System.Windows.Forms.Label label_search;
         private System.Windows.Forms.Timer timer_gui_update;

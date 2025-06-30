@@ -6,10 +6,10 @@ namespace PLCSimulator
 {
     public partial class BaseForm : Form
     {
-        private UserControl_Data m_dataAreaUserControl;
-        private UserControl_Contact m_rAreaUserControl;
-        private UserControl_Contact m_xAreaUserControl;
-        private UserControl_Contact m_yAreaUserControl;
+        private UserControl_Word m_dataAreaUserControl;
+        private UserControl_Bit m_rAreaUserControl;
+        private UserControl_Bit m_xAreaUserControl;
+        private UserControl_Bit m_yAreaUserControl;
         private UserControl_Favorites m_favoriteUserControl;
         private UserControl_Macro m_macroUserControl;
 
@@ -38,33 +38,40 @@ namespace PLCSimulator
             Text = $"{Text} {ProfileRecipe.Instance.ProfileInfo.Protocol} : {ProfileRecipe.Instance.ProfileInfo.Port}";
             notifyIcon_system.Text = Text;
 
-            m_macroUserControl = new UserControl_Macro(PLCSimulator.Instance.MacroManager);
-            panel_tab.Controls.Add(m_macroUserControl);
-            m_macroUserControl.Dock = DockStyle.Fill;
-
-            m_dataAreaUserControl = new UserControl_Data(DataManager.DataCode);
-            panel_tab.Controls.Add(m_dataAreaUserControl);
-            m_dataAreaUserControl.Dock = DockStyle.Fill;
-
-            m_rAreaUserControl = new UserControl_Contact(DataManager.RAreaCode);
-            panel_tab.Controls.Add(m_rAreaUserControl);
-            m_rAreaUserControl.Dock = DockStyle.Fill;
-
-            m_yAreaUserControl = new UserControl_Contact(DataManager.YAreaCode);
-            panel_tab.Controls.Add(m_yAreaUserControl);
-            m_yAreaUserControl.Dock = DockStyle.Fill;
-
-            m_xAreaUserControl = new UserControl_Contact(DataManager.XAreaCode);
-            panel_tab.Controls.Add(m_xAreaUserControl);
-            m_xAreaUserControl.Dock = DockStyle.Fill;
-
             m_favoriteUserControl = new UserControl_Favorites();
             panel_tab.Controls.Add(m_favoriteUserControl);
             m_favoriteUserControl.Dock = DockStyle.Fill;
 
+            m_macroUserControl = new UserControl_Macro(PLCSimulator.Instance.MacroManager);
+            panel_tab.Controls.Add(m_macroUserControl);
+            m_macroUserControl.Dock = DockStyle.Fill;
+
+            AddBitDataControl();
+            AddWordDataControl();
+
             foreach (Control control in panel_tab.Controls)
                 control.Hide();
             m_dataAreaUserControl.Show();
+        }
+
+        private void AddBitDataControl()
+        {
+            foreach (var key in DataManager.Instance.BitDataDict.Keys)
+            {
+                var uc = new UserControl_Bit(key);
+                panel_tab.Controls.Add(uc);
+                uc.Dock = DockStyle.Fill;
+            }
+        }
+
+        private void AddWordDataControl()
+        {
+            foreach (var key in DataManager.Instance.WordDataDict.Keys)
+            {
+                var uc = new UserControl_Word(key);
+                panel_tab.Controls.Add(uc);
+                uc.Dock = DockStyle.Fill;
+            }
         }
 
         private void BaseForm_FormClosing(object sender, FormClosingEventArgs e)

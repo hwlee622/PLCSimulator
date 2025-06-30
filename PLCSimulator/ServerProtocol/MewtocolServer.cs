@@ -7,6 +7,11 @@ namespace PLCSimulator
 {
     public class MewtocolServer
     {
+        public const string DT = "DT";
+        public const string R = "R";
+        public const string X = "X";
+        public const string Y = "Y";
+
         private ServerComm m_comm;
 
         public MewtocolServer(int port)
@@ -15,6 +20,11 @@ namespace PLCSimulator
             m_comm.SetETX(Encoding.ASCII.GetBytes(new char[] { (char)0x0D }));
             m_comm.OnError += ex => LogWriter.Instance.LogError(ex);
             m_comm.OnReceiveMessage += MessageHandler;
+
+            DataManager.Instance.BitDataDict.Add(R, new DataManager.BitData(1600, true));
+            DataManager.Instance.BitDataDict.Add(X, new DataManager.BitData(1600, true));
+            DataManager.Instance.BitDataDict.Add(Y, new DataManager.BitData(1600, true));
+            DataManager.Instance.WordDataDict.Add(DT, new DataManager.WordData(50000));
         }
 
         public void Start()
@@ -101,13 +111,12 @@ namespace PLCSimulator
         {
             if (command.Length != 15)
                 return ReplyError(command, 41);
-            else if (!DataManager.Instance.PlcArea.TryGetValue($"{command[7]}", out var contactArea) || !int.TryParse(command.Substring(8, 3), out int address) ||
-                     !int.TryParse(command.Substring(11, 1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int hex))
+            else if (!DataManager.Instance.BitDataDict.TryGetValue($"{command[7]}", out var bitData) || !int.TryParse(command.Substring(8, 3), out int address) ||
+                     !TryParseHexToInt(command.Substring(11,1), out int hex))
                 return ReplyError(command, 61);
             else
             {
-                int singleData = contactArea.GetData(address, 1)[0];
-                singleData = (singleData >> hex) & 1;
+                int singleData = bitData.GetData(address * 16 + hex, 1)[0] ? 1 : 0;
 
                 StringBuilder sb = new StringBuilder();
                 sb.Append(command.Substring(0, 3));
@@ -134,12 +143,11 @@ namespace PLCSimulator
                 for (int i = 0; i < length; i++)
                 {
                     int index = 8 + i * 5;
-                    if (!DataManager.Instance.PlcArea.TryGetValue($"{command[index]}", out var contactArea) || !int.TryParse(command.Substring(index + 1, 3), out int address) ||
-                        !int.TryParse(command.Substring(index + 4, 1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int hex))
+                    if (!DataManager.Instance.BitDataDict.TryGetValue($"{command[index]}", out var bitData) || !int.TryParse(command.Substring(index + 1, 3), out int address) ||
+                        !TryParseHexToInt(command.Substring(index + 4, 1), out int hex))
                         return ReplyError(command, 61);
 
-                    int singleData = contactArea.GetData(address, 1)[0];
-                    singleData = (singleData >> hex) & 1;
+                    int singleData = bitData.GetData(address * 16 + hex, 1)[0] ? 1 : 0;
                     multiData[i] = singleData;
                 }
 
@@ -159,24 +167,34 @@ namespace PLCSimulator
         {
             if (command.Length != 19)
                 return ReplyError(command, 41);
-            else if (!DataManager.Instance.PlcArea.TryGetValue($"{command[7]}", out var contactArea) || !int.TryParse(command.Substring(8, 4), out int startAddress) || !int.TryParse(command.Substring(12, 4), out int endAddress))
+            else if (!DataManager.Instance.BitDataDict.TryGetValue($"{command[7]}", out var bitData) || !int.TryParse(command.Substring(8, 4), out int startAddress) || !int.TryParse(command.Substring(12, 4), out int endAddress))
                 return ReplyError(command, 41);
-            else if (endAddress < startAddress || startAddress >= DataManager.MaxContactAddress || endAddress >= DataManager.MaxContactAddress)
+            else if (endAddress < startAddress || startAddress >= bitData.DataLength || endAddress >= bitData.DataLength)
                 return ReplyError(command, 61);
             else
             {
                 int length = endAddress - startAddress + 1;
-                ushort[] blockData = contactArea.GetData(startAddress, length);
+                bool[] bitBlockData = bitData.GetData(startAddress * 16, length * 16);
+                ushort[] blockData = new ushort[length];
+                for (int i = 0; i < length; i++)
+                {
+                    bool[] data = bitData.GetData((startAddress + i) * 16, 16);
+                    for (int j = 0; j < 16; j++)
+                    {
+                        int value = data[j] ? 1 : 0;
+                        blockData[i] = (ushort)(blockData[i] << 1 & value);
+                    }
+                }                
 
                 StringBuilder sb = new StringBuilder();
                 sb.Append(command.Substring(0, 3));
                 sb.Append("$RC");
                 for (int i = 0; i < length; i++)
                 {
-                    byte[] bitData = BitConverter.GetBytes(blockData[i]);
+                    byte[] bits = BitConverter.GetBytes(blockData[i]);
                     if (!BitConverter.IsLittleEndian)
-                        Array.Reverse(bitData);
-                    sb.Append($"{bitData[0]:X2}{bitData[1]:X2}");
+                        Array.Reverse(bits);
+                    sb.Append($"{bits[0]:X2}{bits[1]:X2}");
                 }
 
                 string reply = sb.ToString();
@@ -189,15 +207,13 @@ namespace PLCSimulator
         {
             if (command.Length != 16)
                 return ReplyError(command, 41);
-            else if (!DataManager.Instance.PlcArea.TryGetValue($"{command[7]}", out var contactArea) || !int.TryParse(command.Substring(8, 3), out int address) || !int.TryParse(command.Substring(11, 1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int hex))
+            else if (!DataManager.Instance.BitDataDict.TryGetValue($"{command[7]}", out var bitData) || !int.TryParse(command.Substring(8, 3), out int address) ||
+                     !TryParseHexToInt(command.Substring(11,1), out int hex))
                 return ReplyError(command, 61);
             else
             {
-                int value = command[12] > '0' ? 1 : 0;
-                int mask = 1 << hex;
-                var singleData = contactArea.GetData(address, 1);
-                singleData[0] = value > 0 ? (ushort)(singleData[0] | mask) : (ushort)(singleData[0] & ~mask);
-                contactArea.SetData(address, singleData);
+                bool value = command[12] > '0';
+                bitData.SetData(address * 16 + hex, new bool[] { value });
 
                 StringBuilder sb = new StringBuilder();
                 sb.Append(command.Substring(0, 3));
@@ -221,15 +237,12 @@ namespace PLCSimulator
                 for (int i = 0; i < length; i++)
                 {
                     int index = 8 + i * 6;
-                    if (!DataManager.Instance.PlcArea.TryGetValue($"{command[7]}", out var contactArea) || !int.TryParse(command.Substring(index + 1, 3), out int address) ||
-                        !int.TryParse(command.Substring(index + 4, 1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int hex))
+                    if (!DataManager.Instance.BitDataDict.TryGetValue($"{command[7]}", out var bitData) || !int.TryParse(command.Substring(index + 1, 3), out int address) ||
+                        !TryParseHexToInt(command.Substring(index + 4, 1), out int hex))
                         return ReplyError(command, 61);
 
-                    int value = command[index + 5] > '0' ? 1 : 0;
-                    int mask = 1 << hex;
-                    var singleData = contactArea.GetData(address, 1);
-                    singleData[0] = value > 0 ? (ushort)(singleData[0] | mask) : (ushort)(singleData[0] & ~mask);
-                    contactArea.SetData(address, singleData);
+                    bool value = command[index + 5] > '0';
+                    bitData.SetData(address * 16 + hex, new bool[] { value });
                 }
 
                 StringBuilder sb = new StringBuilder();
@@ -246,22 +259,23 @@ namespace PLCSimulator
         {
             if (command.Length < 23 || ((command.Length - 19) % 4) != 0)
                 return ReplyError(command, 41);
-            else if (!DataManager.Instance.PlcArea.TryGetValue($"{command[7]}", out var contactArea) || !int.TryParse(command.Substring(8, 4), out int startAddress) || !int.TryParse(command.Substring(12, 4), out int endAddress))
+            else if (!DataManager.Instance.BitDataDict.TryGetValue($"{command[7]}", out var bitData) || !int.TryParse(command.Substring(8, 4), out int startAddress) || !int.TryParse(command.Substring(12, 4), out int endAddress))
                 return ReplyError(command, 41);
-            else if (endAddress < startAddress || startAddress >= DataManager.MaxContactAddress || endAddress >= DataManager.MaxContactAddress)
+            else if (endAddress < startAddress || startAddress >= bitData.DataLength || endAddress >= bitData.DataLength)
                 return ReplyError(command, 61);
             else
             {
                 int length = endAddress - startAddress + 1;
-                var blockData = contactArea.GetData(startAddress, length);
+                bool[] data = new bool[length * 16];
                 for (int i = 0; i < length; i++)
                 {
                     int index = 16 + i * 4;
                     string sValue = $"{command.Substring(index + 2, 2)}{command.Substring(index, 2)}";
                     ushort value = Convert.ToUInt16(sValue, 16);
-                    blockData[i] = value;
+                    for (int j = 0; j < 16; j++)
+                        data[i * 16 + j] = (value >> j & 1) == 1;
                 }
-                contactArea.SetData(startAddress, blockData);
+                bitData.SetData(startAddress * 16, data);
 
                 StringBuilder sb = new StringBuilder();
                 sb.Append(command.Substring(0, 3));
@@ -277,17 +291,15 @@ namespace PLCSimulator
         {
             if (command.Length != 20)
                 return ReplyError(command, 41);
-            else if (!int.TryParse(command.Substring(7, 5), out int startAddress) || !int.TryParse(command.Substring(12, 5), out int endAddress))
+            else if (!DataManager.Instance.WordDataDict.TryGetValue(DT, out var wordData) ||
+                     !int.TryParse(command.Substring(7, 5), out int startAddress) || !int.TryParse(command.Substring(12, 5), out int endAddress))
                 return ReplyError(command, 41);
-            else if (endAddress < startAddress || startAddress >= DataManager.MaxDataAreaAddress || endAddress >= DataManager.MaxDataAreaAddress)
+            else if (endAddress < startAddress || startAddress >= wordData.DataLength || endAddress >= wordData.DataLength)
                 return ReplyError(command, 61);
             else
             {
                 int length = endAddress - startAddress + 1;
-                if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
-                    return ReplyError(command, 41);
-
-                var data = dataArea.GetData(startAddress, length);
+                var data = wordData.GetData(startAddress, length);
 
                 StringBuilder sb = new StringBuilder();
                 sb.Append(command.Substring(0, 3));
@@ -310,9 +322,10 @@ namespace PLCSimulator
         {
             if (command.Length < 24 || ((command.Length - 20) % 4) != 0)
                 return ReplyError(command, 41);
-            else if (!int.TryParse(command.Substring(7, 5), out int startAddress) || !int.TryParse(command.Substring(12, 5), out int endAddress))
+            else if (!DataManager.Instance.WordDataDict.TryGetValue(DT, out var wordData) ||
+                     !int.TryParse(command.Substring(7, 5), out int startAddress) || !int.TryParse(command.Substring(12, 5), out int endAddress))
                 return ReplyError(command, 41);
-            else if (endAddress < startAddress || startAddress >= DataManager.MaxDataAreaAddress || endAddress > DataManager.MaxDataAreaAddress)
+            else if (endAddress < startAddress || startAddress >= wordData.DataLength || endAddress > wordData.DataLength)
                 return ReplyError(command, 61);
             else
             {
@@ -325,11 +338,7 @@ namespace PLCSimulator
                     ushort singleValue = Convert.ToUInt16(sValue, 16);
                     value[i] = singleValue;
                 }
-
-                if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
-                    return ReplyError(command, 41);
-
-                dataArea.SetData(startAddress, value);
+                wordData.SetData(startAddress, value);
 
                 StringBuilder sb = new StringBuilder();
                 sb.Append(command.Substring(0, 3));
@@ -389,6 +398,20 @@ namespace PLCSimulator
                 return true;
             else
                 return false;
+        }
+
+        private bool TryParseHexToInt(string hex, out int value)
+        {
+            value = 0;
+            try
+            {
+                value = Convert.ToInt16(hex, 16);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

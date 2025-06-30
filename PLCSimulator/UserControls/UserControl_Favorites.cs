@@ -7,8 +7,9 @@ namespace PLCSimulator
 {
     public partial class UserControl_Favorites : UserControl
     {
-        private List<string> m_addressList;
-        private List<ushort> m_prevData = new List<ushort>();
+        private List<string> _addressList;
+        private List<string> _prevData = new List<string>();
+        private WordDataType _dataType = WordDataType.ASCII;
 
         public UserControl_Favorites()
         {
@@ -19,8 +20,8 @@ namespace PLCSimulator
         {
             try
             {
-                m_addressList = ProfileRecipe.Instance.ProfileInfo.FavoriteAddress;
-                dataGridView_Data.RowCount = m_addressList.Count + 1;
+                _addressList = ProfileRecipe.Instance.ProfileInfo.FavoriteAddress;
+                dataGridView_Data.RowCount = _addressList.Count + 1;
                 radioButton_short.Checked = true;
             }
             catch
@@ -43,10 +44,10 @@ namespace PLCSimulator
         {
             try
             {
-                if (e.RowIndex < 0 || e.RowIndex >= m_addressList.Count)
+                if (e.RowIndex < 0 || e.RowIndex >= _addressList.Count)
                     return;
 
-                string sAddress = m_addressList[e.RowIndex].ToUpper();
+                string sAddress = _addressList[e.RowIndex].ToUpper();
 
                 if (e.ColumnIndex == 0)
                     e.Value = sAddress;
@@ -64,41 +65,15 @@ namespace PLCSimulator
         {
             string result = string.Empty;
 
-            if (Util.IsDTAddress(sAddress, out int address))
+            if (Util.ValidWordAddress(sAddress, out string code, out int index))
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
-                    return result;
-
-                var data = dataArea.GetData(address, 2);
-                if (radioButton_ASCII.Checked)
-                {
-                    byte[] bitData = BitConverter.GetBytes(data[0]);
-                    if (BitConverter.IsLittleEndian)
-                        Array.Reverse(bitData);
-                    result = Encoding.ASCII.GetString(bitData);
-                }
-                else if (radioButton_short.Checked)
-                {
-                    result = ((short)data[0]).ToString();
-                }
-                else if (radioButton_int.Checked)
-                {
-                    if (address < DataManager.MaxDataAreaAddress - 1)
-                        result = ((data[1] << 16) | data[0]).ToString();
-                    else
-                        result = ((int)data[0]).ToString();
-                }
-                else if (radioButton_hex.Checked)
-                {
-                    result = $"{data[0]:X2}";
-                }
+                var data = DataManager.Instance.WordDataDict[code].GetData(index, 2);
+                result = Util.StringParseWordData(data, _dataType);
             }
-            else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex))
+            else if (Util.ValidBitAddress(sAddress, out code, out index))
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(sAddress.Substring(0, 1), out var contactArea))
-                    return result;
-
-                result = ((contactArea.GetData(address, 1)[0] >> hex) & 1).ToString();
+                var data = DataManager.Instance.BitDataDict[code].GetData(index, 1)[0];
+                return data ? "1" : "0";
             }
 
             return result;
@@ -108,14 +83,8 @@ namespace PLCSimulator
         {
             string result = string.Empty;
 
-            if (Util.IsDTAddress(sAddress, out int address))
-            {
+            if (Util.ValidWordAddress(sAddress, out string code, out int index) || Util.ValidBitAddress(sAddress, out code, out index))
                 result = ProfileRecipe.Instance.GetDescription(sAddress);
-            }
-            else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex))
-            {
-                result = ProfileRecipe.Instance.GetDescription(sAddress);
-            }
 
             return result;
         }
@@ -124,46 +93,44 @@ namespace PLCSimulator
         {
             try
             {
-                if (e.RowIndex < 0 || e.RowIndex > m_addressList.Count)
+                if (e.RowIndex < 0 || e.RowIndex > _addressList.Count)
                     return;
+
+                string sAddress = e.Value?.ToString().ToUpper();
 
                 if (e.ColumnIndex == 0)
                 {
-                    string sAddress = e.Value?.ToString();
                     if (string.IsNullOrEmpty(sAddress))
                     {
-                        m_addressList.RemoveAt(e.RowIndex);
+                        _addressList.RemoveAt(e.RowIndex);
                         dataGridView_Data.RowCount--;
                         return;
                     }
-                    sAddress = sAddress.ToUpper();
 
-                    if (Util.IsDTAddress(sAddress, out int address))
-                        sAddress = $"DT{address:D5}";
-                    else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex))
-                        sAddress = $"{contactCode}{address:D3}{hex:X}";
+                    if (Util.ValidBitAddress(sAddress, out string code, out int index))
+                        sAddress = DataManager.Instance.BitDataDict[code].GetAddress(index);
+                    else if (Util.ValidWordAddress(sAddress, out code, out index))
+                        sAddress = DataManager.Instance.WordDataDict[code].GetAddress(index);
                     else
                         return;
 
-                    if (e.RowIndex < m_addressList.Count)
-                        m_addressList[e.RowIndex] = sAddress;
+                    if (e.RowIndex < _addressList.Count)
+                        _addressList[e.RowIndex] = sAddress;
                     else
-                        m_addressList.Add(sAddress);
+                        _addressList.Add(sAddress);
                 }
                 else if (e.ColumnIndex == 1)
                 {
-                    if (e.RowIndex >= m_addressList.Count)
+                    if (e.RowIndex >= _addressList.Count)
                         return;
 
-                    string sAddress = m_addressList[e.RowIndex];
                     SetData(sAddress, e.Value?.ToString());
                 }
                 else if (e.ColumnIndex == 2)
                 {
-                    if (e.RowIndex >= m_addressList.Count)
+                    if (e.RowIndex >= _addressList.Count)
                         return;
 
-                    string sAddress = m_addressList[e.RowIndex];
                     SetDescription(sAddress, e.Value?.ToString());
                 }
 
@@ -183,49 +150,16 @@ namespace PLCSimulator
 
         private void SetData(string sAddress, string text)
         {
-            if (Util.IsDTAddress(sAddress, out int address))
+            if (Util.ValidWordAddress(sAddress, out string code, out int index))
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
-                    return;
-
-                ushort[] data = dataArea.GetData(address, 2);
-                if (radioButton_ASCII.Checked)
-                {
-                    if (text.Length % 2 != 0)
-                        text += "\0\0";
-                    text = text.Substring(0, 2);
-                    data[0] = (ushort)(text[0] << 8 | text[1]);
-                }
-                else if (radioButton_short.Checked)
-                {
-                    short.TryParse(text, out short value);
-                    data[0] = (ushort)value;
-                }
-                else if (radioButton_int.Checked)
-                {
-                    int.TryParse(text, out int value);
-                    data[0] = (ushort)(value & 0xFFFF);
-                    data[1] = (ushort)((value >> 16) & 0x0FFFF);
-                }
-                else if (radioButton_hex.Checked)
-                {
-                    if (text.Length % 4 != 0)
-                        text += "\0\0\0\0";
-                    text = text.Substring(0, 4);
-                    data[0] = Convert.ToUInt16(text, 16);
-                }
-                dataArea.SetData(address, data);
+                var data = Util.UShortParseWordData(text, _dataType);
+                DataManager.Instance.WordDataDict[code].SetData(index, data);
             }
-            else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex))
+            else if (Util.ValidBitAddress(sAddress, out code, out index))
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(contactCode, out var contactArea))
-                    return;
-
-                int.TryParse(text, out int newValue);
-                int mask = 1 << hex;
-                var singleData = contactArea.GetData(address, 1);
-                singleData[0] = newValue > 0 ? (ushort)(singleData[0] | mask) : (ushort)(singleData[0] & ~mask);
-                contactArea.SetData(address, singleData);
+                int.TryParse(text, out int value);
+                var data = value == 1;
+                DataManager.Instance.BitDataDict[code].SetData(index, new bool[] { data });
             }
         }
 
@@ -245,17 +179,17 @@ namespace PLCSimulator
         {
             try
             {
-                List<ushort> data = new List<ushort>();
+                List<string> data = new List<string>();
 
-                foreach (var sAddress in m_addressList)
+                foreach (var sAddress in _addressList)
                 {
-                    if (Util.IsDTAddress(sAddress, out int address) && DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
-                        data.Add(dataArea.GetData(address, 1)[0]);
-                    else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex) && DataManager.Instance.PlcArea.TryGetValue(contactCode, out var contactArea))
-                        data.Add(contactArea.GetData(address, 1)[0]);
+                    if (Util.ValidWordAddress(sAddress, out string code, out int index))
+                        data.Add(DataManager.Instance.WordDataDict[code].GetData(index, 1)[0].ToString());
+                    else if (Util.ValidBitAddress(sAddress, out code, out index))
+                        data.Add(DataManager.Instance.BitDataDict[code].GetData(index, 1)[0].ToString());
                 }
 
-                if (data.Count != m_prevData.Count)
+                if (data.Count != _prevData.Count)
                 {
                     dataGridView_Data.Invalidate();
                 }
@@ -263,12 +197,12 @@ namespace PLCSimulator
                 {
                     for (int i = 0; i < data.Count; i++)
                     {
-                        if (data[i] != m_prevData[i])
+                        if (data[i] != _prevData[i])
                             dataGridView_Data.InvalidateRow(i);
                     }
                 }
 
-                m_prevData = data;
+                _prevData = data;
             }
             catch
             {

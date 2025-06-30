@@ -4,28 +4,33 @@ using System.Windows.Forms;
 
 namespace PLCSimulator
 {
-    public partial class UserControl_Contact : UserControl
+    public partial class UserControl_Bit : UserControl
     {
-        private string m_contactCode;
-        private ushort[] m_prevData = new ushort[DataManager.MaxContactAddress];
+        private readonly string _code;
+        private bool[] _prevData = new bool[0];
 
-        public UserControl_Contact()
+        public UserControl_Bit()
         {
             InitializeComponent();
         }
 
-        public UserControl_Contact(string contactCode)
+        public UserControl_Bit(string contactCode)
         {
             InitializeComponent();
 
-            m_contactCode = contactCode;
+            _code = contactCode;
+            if (DataManager.Instance.BitDataDict.TryGetValue(_code, out var bitData))
+                _prevData = new bool[bitData.DataLength];
         }
 
         private void UserControl_Contact_Load(object sender, EventArgs e)
         {
             try
             {
-                dataGridView_Contact.RowCount = DataManager.MaxContactAddress * 16;
+                if (!DataManager.Instance.BitDataDict.TryGetValue(_code, out var bitData))
+                    return;
+
+                dataGridView_Bit.RowCount = bitData.DataLength;
             }
             catch
             {
@@ -47,25 +52,18 @@ namespace PLCSimulator
         {
             try
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(m_contactCode, out var contactArea))
+                if (!DataManager.Instance.BitDataDict.TryGetValue(_code, out var bitData))
                     return;
-                if (e.RowIndex < 0 || e.RowIndex >= DataManager.MaxContactAddress * 16)
+                if (e.RowIndex < 0 || e.RowIndex >= bitData.DataLength)
                     return;
 
-                var data = contactArea.GetData(e.RowIndex / 16, 1);
-                var showData = new bool[data.Length * 16];
-                for (int i = 0; i < showData.Length; i++)
-                {
-                    int index = i / 16;
-                    int hex = i % 16;
-                    showData[i] = ((data[0] >> hex) & 1) == 1;
-                }
-                string address = $"{m_contactCode}{e.RowIndex / 16:D3}{e.RowIndex % 16:X}".ToUpper();
+                var data = bitData.GetData(e.RowIndex, 1);
+                string address = $"{_code}{bitData.GetAddress(e.RowIndex)}".ToUpper();
 
                 if (e.ColumnIndex == 0)
                     e.Value = address;
                 else if (e.ColumnIndex == 1)
-                    e.Value = showData[e.RowIndex % 16] ? 1 : 0;
+                    e.Value = data[0] ? 1 : 0;
                 else if (e.ColumnIndex == 2)
                     e.Value = ProfileRecipe.Instance.GetDescription(address);
             }
@@ -78,28 +76,25 @@ namespace PLCSimulator
         {
             try
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(m_contactCode, out var contactArea))
+                if (!DataManager.Instance.BitDataDict.TryGetValue(_code, out var bitData))
                     return;
-                if (e.RowIndex < 0 || e.RowIndex >= DataManager.MaxContactAddress * 16)
+                if (e.RowIndex < 0 || e.RowIndex >= bitData.DataLength)
                     return;
+
+                string address = $"{_code}{bitData.GetAddress(e.RowIndex)}".ToUpper();
+                
                 if (e.ColumnIndex == 1)
                 {
                     int.TryParse(e.Value?.ToString(), out int newValue);
-                    int address = e.RowIndex / 16;
-                    int hex = e.RowIndex % 16;
-                    int mask = 1 << hex;
-                    var singleData = contactArea.GetData(address, 1);
-                    singleData[0] = newValue > 0 ? (ushort)(singleData[0] | mask) : (ushort)(singleData[0] & ~mask);
-                    contactArea.SetData(address, singleData);
+                    bool value = newValue > 0;
+                    bitData.SetData(e.RowIndex, new bool[] { value });
                 }
                 else if (e.ColumnIndex == 2)
                 {
-                    string address = $"{m_contactCode}{e.RowIndex / 16:D3}{e.RowIndex % 16:X}".ToUpper();
-
                     ProfileRecipe.Instance.SetDescription(address, e.Value?.ToString());
                     ProfileRecipe.Instance.Save();
                 }
-                dataGridView_Contact.InvalidateRow(e.RowIndex);
+                dataGridView_Bit.InvalidateRow(e.RowIndex);
             }
             catch
             {
@@ -110,15 +105,14 @@ namespace PLCSimulator
         {
             try
             {
-                if (DataManager.Instance.PlcArea.TryGetValue(m_contactCode, out var contactArea))
+                if (DataManager.Instance.BitDataDict.TryGetValue(_code, out var bitData))
                     return;
 
-                ushort[] data = contactArea.GetData(0, DataManager.MaxContactAddress);
+                var data = bitData.GetData(0, bitData.DataLength);
                 for (int i = 0; i < data.Length; i++)
-                    for (int j = 0; j < 16; j++)
-                        if ((data[i] >> j) != m_prevData[i] >> j)
-                            dataGridView_Contact.InvalidateRow(i * 16 + j);
-                m_prevData = data;
+                    if (data[i] != _prevData[i])
+                        dataGridView_Bit.InvalidateRow(i);
+                _prevData = data;
             }
             catch
             {
@@ -151,13 +145,13 @@ namespace PLCSimulator
 
                     int index = address * 16 + hex;
 
-                    if (index < 0 || index >= dataGridView_Contact.RowCount)
+                    if (index < 0 || index >= dataGridView_Bit.RowCount)
                         return;
 
-                    dataGridView_Contact.ClearSelection();
-                    dataGridView_Contact.CurrentCell = dataGridView_Contact.Rows[index].Cells[0];
-                    dataGridView_Contact.Rows[index].Cells[0].Selected = true;
-                    dataGridView_Contact.FirstDisplayedScrollingRowIndex = index;
+                    dataGridView_Bit.ClearSelection();
+                    dataGridView_Bit.CurrentCell = dataGridView_Bit.Rows[index].Cells[0];
+                    dataGridView_Bit.Rows[index].Cells[0].Selected = true;
+                    dataGridView_Bit.FirstDisplayedScrollingRowIndex = index;
                 }
             }
             catch

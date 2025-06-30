@@ -4,28 +4,33 @@ using System.Windows.Forms;
 
 namespace PLCSimulator
 {
-    public partial class UserControl_Data : UserControl
+    public partial class UserControl_Word : UserControl
     {
-        private string m_dataCode;
-        private ushort[] m_prevData = new ushort[DataManager.MaxDataAreaAddress];
+        private readonly string _code;
+        private ushort[] _prevData = new ushort[0];
 
-        public UserControl_Data()
+        public UserControl_Word()
         {
             InitializeComponent();
         }
 
-        public UserControl_Data(string dataCode)
+        public UserControl_Word(string dataCode)
         {
             InitializeComponent();
 
-            m_dataCode = dataCode;
+            _code = dataCode;
+            if (DataManager.Instance.WordDataDict.TryGetValue(_code, out var wordData))
+                _prevData = new ushort[wordData.DataLength];
         }
 
         private void UserControlData_Load(object sender, EventArgs e)
         {
             try
             {
-                dataGridView_Data.RowCount = DataManager.MaxDataAreaAddress;
+                if (!DataManager.Instance.WordDataDict.TryGetValue(_code, out var wordData))
+                    return;
+
+                dataGridView_Word.RowCount = wordData.DataLength;
                 radioButton_short.Checked = true;
             }
             catch
@@ -44,17 +49,17 @@ namespace PLCSimulator
             }
         }
 
-        private void dataGridView_DT_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
+        private void dataGridView_Word_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
             try
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(m_dataCode, out var dataArea))
+                if (!DataManager.Instance.WordDataDict.TryGetValue(_code, out var wordData))
                     return;
-                if (e.RowIndex < 0 || e.RowIndex >= DataManager.MaxDataAreaAddress)
+                if (e.RowIndex < 0 || e.RowIndex >= wordData.DataLength)
                     return;
 
-                var data = dataArea.GetData(e.RowIndex, 2);
-                string address = $"DT{e.RowIndex:D5}".ToUpper();
+                var data = wordData.GetData(e.RowIndex, 2);
+                string address = $"{_code}{wordData.GetAddress(e.RowIndex)}".ToUpper();
 
                 if (e.ColumnIndex == 0)
                     e.Value = address;
@@ -73,7 +78,7 @@ namespace PLCSimulator
                     }
                     else if (radioButton_int.Checked)
                     {
-                        if (e.RowIndex < DataManager.MaxDataAreaAddress - 1)
+                        if (e.RowIndex < wordData.DataLength - 1)
                             e.Value = (data[1] << 16) | data[0];
                         else
                             e.Value = (int)data[0];
@@ -95,14 +100,17 @@ namespace PLCSimulator
         {
             try
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(m_dataCode, out var dataArea))
+                if (!DataManager.Instance.WordDataDict.TryGetValue(_code, out var wordData))
                     return;
-                if (e.RowIndex < 0 || e.RowIndex >= DataManager.MaxDataAreaAddress)
+                if (e.RowIndex < 0 || e.RowIndex >= wordData.DataLength)
                     return;
+
+                string address = $"{_code}{wordData.GetAddress(e.RowIndex)}".ToUpper();
+
                 if (e.ColumnIndex == 1)
                 {
                     string text = e.Value?.ToString();
-                    ushort[] data = dataArea.GetData(e.RowIndex, 2);
+                    ushort[] data = wordData.GetData(e.RowIndex, 2);
                     if (radioButton_ASCII.Checked)
                     {
                         if (text.Length % 2 != 0)
@@ -129,16 +137,15 @@ namespace PLCSimulator
                         data[0] = Convert.ToUInt16(text, 16);
                     }
 
-                    dataArea.SetData(e.RowIndex, data);
+                    wordData.SetData(e.RowIndex, data);
                     if (e.RowIndex > 0)
-                        dataGridView_Data.InvalidateRow(e.RowIndex - 1);
-                    dataGridView_Data.InvalidateRow(e.RowIndex);
-                    if (e.RowIndex < dataGridView_Data.RowCount - 1)
-                        dataGridView_Data.InvalidateRow(e.RowIndex + 1);
+                        dataGridView_Word.InvalidateRow(e.RowIndex - 1);
+                    dataGridView_Word.InvalidateRow(e.RowIndex);
+                    if (e.RowIndex < dataGridView_Word.RowCount - 1)
+                        dataGridView_Word.InvalidateRow(e.RowIndex + 1);
                 }
                 else if (e.ColumnIndex == 2)
                 {
-                    string address = $"DT{e.RowIndex:D5}".ToUpper();
                     ProfileRecipe.Instance.SetDescription(address, e.Value?.ToString());
                     ProfileRecipe.Instance.Save();
                 }
@@ -152,20 +159,20 @@ namespace PLCSimulator
         {
             try
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(m_dataCode, out var dataArea))
+                if (!DataManager.Instance.WordDataDict.TryGetValue(_code, out var wordData))
                     return;
 
-                ushort[] data = dataArea.GetData(0, DataManager.MaxDataAreaAddress);
+                ushort[] data = wordData.GetData(0, wordData.DataLength);
                 for (int i = 0; i < data.Length; i++)
-                    if (data[i] != m_prevData[i])
+                    if (data[i] != _prevData[i])
                     {
-                        dataGridView_Data.InvalidateRow(i);
+                        dataGridView_Word.InvalidateRow(i);
                         if (i > 0)
-                            dataGridView_Data.InvalidateRow(i - 1);
+                            dataGridView_Word.InvalidateRow(i - 1);
                         if (i < data.Length - 1)
-                            dataGridView_Data.InvalidateRow(i + 1);
+                            dataGridView_Word.InvalidateRow(i + 1);
                     }
-                m_prevData = data;
+                _prevData = data;
             }
             catch
             {
@@ -181,13 +188,13 @@ namespace PLCSimulator
                     if (!int.TryParse(textBox_search.Text, out int index))
                         return;
 
-                    if (index < 0 || index >= dataGridView_Data.RowCount)
+                    if (index < 0 || index >= dataGridView_Word.RowCount)
                         return;
 
-                    dataGridView_Data.ClearSelection();
-                    dataGridView_Data.CurrentCell = dataGridView_Data.Rows[index].Cells[0];
-                    dataGridView_Data.Rows[index].Cells[0].Selected = true;
-                    dataGridView_Data.FirstDisplayedScrollingRowIndex = index;
+                    dataGridView_Word.ClearSelection();
+                    dataGridView_Word.CurrentCell = dataGridView_Word.Rows[index].Cells[0];
+                    dataGridView_Word.Rows[index].Cells[0].Selected = true;
+                    dataGridView_Word.FirstDisplayedScrollingRowIndex = index;
                 }
             }
             catch
@@ -199,7 +206,7 @@ namespace PLCSimulator
         {
             try
             {
-                dataGridView_Data.Invalidate();
+                dataGridView_Word.Invalidate();
             }
             catch
             {

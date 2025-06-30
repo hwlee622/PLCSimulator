@@ -1,6 +1,6 @@
 ﻿namespace PLCSimulator
 {
-    partial class UserControl_Contact
+    partial class UserControl_Bit
     {
         /// <summary> 
         /// 필수 디자이너 변수입니다.
@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel_Contact = new System.Windows.Forms.Panel();
-            this.dataGridView_Contact = new System.Windows.Forms.DataGridView();
+            this.dataGridView_Bit = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -39,42 +39,41 @@
             this.textBox_search = new System.Windows.Forms.TextBox();
             this.panel_control = new System.Windows.Forms.Panel();
             this.panel_Contact.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Contact)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Bit)).BeginInit();
             this.panel_control.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel_Contact
             // 
-            this.panel_Contact.Controls.Add(this.dataGridView_Contact);
+            this.panel_Contact.Controls.Add(this.dataGridView_Bit);
             this.panel_Contact.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_Contact.Location = new System.Drawing.Point(0, 58);
             this.panel_Contact.Name = "panel_Contact";
             this.panel_Contact.Size = new System.Drawing.Size(361, 178);
             this.panel_Contact.TabIndex = 4;
             // 
-            // dataGridView_Contact
+            // dataGridView_Bit
             // 
-            this.dataGridView_Contact.AllowUserToAddRows = false;
-            this.dataGridView_Contact.AllowUserToDeleteRows = false;
-            this.dataGridView_Contact.AllowUserToResizeColumns = false;
-            this.dataGridView_Contact.AllowUserToResizeRows = false;
-            this.dataGridView_Contact.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_Contact.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridView_Bit.AllowUserToAddRows = false;
+            this.dataGridView_Bit.AllowUserToDeleteRows = false;
+            this.dataGridView_Bit.AllowUserToResizeRows = false;
+            this.dataGridView_Bit.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_Bit.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2,
             this.Column3});
-            this.dataGridView_Contact.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView_Contact.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView_Contact.MultiSelect = false;
-            this.dataGridView_Contact.Name = "dataGridView_Contact";
-            this.dataGridView_Contact.RowHeadersVisible = false;
-            this.dataGridView_Contact.RowTemplate.Height = 23;
-            this.dataGridView_Contact.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView_Contact.Size = new System.Drawing.Size(361, 178);
-            this.dataGridView_Contact.TabIndex = 0;
-            this.dataGridView_Contact.VirtualMode = true;
-            this.dataGridView_Contact.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Contact_CellValueNeeded);
-            this.dataGridView_Contact.CellValuePushed += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Contact_CellValuePushed);
+            this.dataGridView_Bit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView_Bit.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView_Bit.MultiSelect = false;
+            this.dataGridView_Bit.Name = "dataGridView_Bit";
+            this.dataGridView_Bit.RowHeadersVisible = false;
+            this.dataGridView_Bit.RowTemplate.Height = 23;
+            this.dataGridView_Bit.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataGridView_Bit.Size = new System.Drawing.Size(361, 178);
+            this.dataGridView_Bit.TabIndex = 0;
+            this.dataGridView_Bit.VirtualMode = true;
+            this.dataGridView_Bit.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Contact_CellValueNeeded);
+            this.dataGridView_Bit.CellValuePushed += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Contact_CellValuePushed);
             // 
             // Column1
             // 
@@ -128,19 +127,19 @@
             this.panel_control.Size = new System.Drawing.Size(361, 58);
             this.panel_control.TabIndex = 0;
             // 
-            // UserControl_Contact
+            // UserControl_Bit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.Controls.Add(this.panel_Contact);
             this.Controls.Add(this.panel_control);
-            this.Name = "UserControl_Contact";
+            this.Name = "UserControl_Bit";
             this.Size = new System.Drawing.Size(361, 236);
             this.Load += new System.EventHandler(this.UserControl_Contact_Load);
             this.VisibleChanged += new System.EventHandler(this.UserControl_Contact_VisibleChanged);
             this.panel_Contact.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Contact)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Bit)).EndInit();
             this.panel_control.ResumeLayout(false);
             this.panel_control.PerformLayout();
             this.ResumeLayout(false);
@@ -150,7 +149,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panel_Contact;
-        private System.Windows.Forms.DataGridView dataGridView_Contact;
+        private System.Windows.Forms.DataGridView dataGridView_Bit;
         private System.Windows.Forms.Timer timer_gui_update;
         private System.Windows.Forms.Label label_search;
         private System.Windows.Forms.TextBox textBox_search;
