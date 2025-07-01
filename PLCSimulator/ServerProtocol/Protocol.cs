@@ -3,6 +3,7 @@
     public enum Protocol
     {
         Mewtocol,
-        UpperLink
+        UpperLink,
+        Modbus
     }
 }

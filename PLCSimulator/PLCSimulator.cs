@@ -21,6 +21,7 @@
 
         private MewtocolServer m_panasonicServer;
         private UpperLinkServer m_omronServer;
+        public ModbusSimulatorServer ModbusServer;
 
         public void Start()
         {
@@ -39,6 +40,10 @@
                 case Protocol.UpperLink:
                     m_omronServer = new UpperLinkServer(serverPort);
                     m_omronServer.Start();
+                    break;
+
+                case Protocol.Modbus:
+                    ModbusServer = new ModbusSimulatorServer(serverPort);
                     break;
 
                 default:

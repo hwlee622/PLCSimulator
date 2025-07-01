@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EasyModbus, Version=5.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EasyModbusTCP.5.6.0\lib\net40\EasyModbus.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -54,6 +57,7 @@
     </Compile>
     <Compile Include="MacroType.cs" />
     <Compile Include="Profile.cs" />
+    <Compile Include="ServerProtocol\ModbusSimulatorServer.cs" />
     <Compile Include="UserControls\DoubleBufferedPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -133,6 +137,7 @@
     <EmbeddedResource Include="UserControls\UserControl_Macro.resx">
       <DependentUpon>UserControl_Macro.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
