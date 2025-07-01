@@ -13,7 +13,10 @@ namespace PLCSimulator
             foreach (var key in DataManager.Instance.WordDataDict.Keys)
             {
                 if (text.StartsWith(key))
+                {
+                    code = key;
                     return DataManager.Instance.WordDataDict[key].ValidateAddress(text.Substring(key.Length), out index);
+                }
             }
             return false;
         }
@@ -26,7 +29,10 @@ namespace PLCSimulator
             foreach (var key in DataManager.Instance.BitDataDict.Keys)
             {
                 if (text.StartsWith(key))
+                {
+                    code = key;
                     return DataManager.Instance.BitDataDict[key].ValidateAddress(text.Substring(key.Length), out index);
+                }
             }
             return false;
         }
@@ -88,23 +94,6 @@ namespace PLCSimulator
                 case WordDataType.Hex:
                     return $"{data[0]:X2}";
             }
-        }
-
-        public static bool IsDTAddress(string text, out int address)
-        {
-            address = -1;
-            text = text.ToUpper();
-            if (text.Length >= 3 && text.StartsWith("DT") && int.TryParse(text.Substring(2), out address))
-                return true;
-            return false;
-        }
-
-        public static bool IsContactAddress(string text, out string contactCode, out int address, out int hex)
-        {
-            contactCode = string.Empty;
-            address = -1;
-            hex = -1;
-            return false;
         }
     }
 }

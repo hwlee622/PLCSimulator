@@ -144,7 +144,7 @@ namespace PLCSimulator
 
             public string GetAddress(int index)
             {
-                return index.ToString();
+                return $"{index:D5}";
             }
 
             public ushort[] GetData(int index, int length)

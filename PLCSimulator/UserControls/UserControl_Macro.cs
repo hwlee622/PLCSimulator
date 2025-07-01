@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace PLCSimulator
@@ -128,7 +127,7 @@ namespace PLCSimulator
                     {
                         context.MacroType = (MacroType)e.Value;
                         context.Address = string.Empty;
-                        context.Value = 0;
+                        context.Value = "0";
                     }
                 }
                 else if (e.ColumnIndex == 1)
@@ -140,10 +139,18 @@ namespace PLCSimulator
                     else
                     {
                         string sAddress = e.Value?.ToString().ToUpper();
-                        if (Util.IsDTAddress(sAddress, out int address))
-                            context.Address = $"DT{address:D5}";
-                        else if (Util.IsContactAddress(sAddress, out string contactCode, out address, out int hex))
-                            context.Address = $"{contactCode}{address:D3}{hex:X}";
+                        if (Util.ValidWordAddress(sAddress, out string code, out int index))
+                        {
+                            sAddress = DataManager.Instance.WordDataDict[code].GetAddress(index);
+                            context.Address = $"{code}{sAddress}";
+                            context.Value = "0";
+                        }
+                        else if (Util.ValidBitAddress(sAddress, out code, out index))
+                        {
+                            sAddress = DataManager.Instance.BitDataDict[code].GetAddress(index);
+                            context.Address = $"{code}{sAddress}";
+                            context.Value = "0";
+                        }
                     }
                 }
                 else if (e.ColumnIndex == 2)
@@ -151,19 +158,19 @@ namespace PLCSimulator
                     string sAddress = context.Address;
                     if (context.MacroType == MacroType.Delay)
                     {
-                        short.TryParse(e.Value?.ToString(), out short value);
-                        context.Value = (ushort)value;
+                        int.TryParse(e.Value?.ToString(), out var value);
+                        context.Value = value.ToString();
                     }
-                    else if (Util.IsDTAddress(sAddress, out _))
+                    else if (Util.ValidWordAddress(sAddress, out _, out _))
                     {
-                        short.TryParse(e.Value?.ToString(), out short value);
-                        context.Value = (ushort)value;
+                        ushort.TryParse(e.Value?.ToString(), out var value);
+                        context.Value = value.ToString();
                     }
-                    else if (Util.IsContactAddress(sAddress, out _, out _, out _))
+                    else if (Util.ValidBitAddress(sAddress, out _, out _))
                     {
-                        int.TryParse(e.Value?.ToString(), out int value);
+                        int.TryParse(e.Value?.ToString(), out var value);
                         value = value > 0 ? 1 : 0;
-                        context.Value = (ushort)value;
+                        context.Value = value.ToString();
                     }
                 }
 

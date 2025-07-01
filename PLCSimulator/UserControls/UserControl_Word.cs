@@ -8,6 +8,7 @@ namespace PLCSimulator
     {
         private readonly string _code;
         private ushort[] _prevData = new ushort[0];
+        private WordDataType _dataType = WordDataType.ASCII;
 
         public UserControl_Word()
         {
@@ -59,37 +60,15 @@ namespace PLCSimulator
                     return;
 
                 var data = wordData.GetData(e.RowIndex, 2);
-                string address = $"{_code}{wordData.GetAddress(e.RowIndex)}".ToUpper();
+                string sAddress = wordData.GetAddress(e.RowIndex);
+                sAddress = $"{_code}{sAddress}";
 
                 if (e.ColumnIndex == 0)
-                    e.Value = address;
+                    e.Value = sAddress;
                 else if (e.ColumnIndex == 1)
-                {
-                    if (radioButton_ASCII.Checked)
-                    {
-                        byte[] bitData = BitConverter.GetBytes(data[0]);
-                        if (BitConverter.IsLittleEndian)
-                            Array.Reverse(bitData);
-                        e.Value = Encoding.ASCII.GetString(bitData);
-                    }
-                    else if (radioButton_short.Checked)
-                    {
-                        e.Value = (short)data[0];
-                    }
-                    else if (radioButton_int.Checked)
-                    {
-                        if (e.RowIndex < wordData.DataLength - 1)
-                            e.Value = (data[1] << 16) | data[0];
-                        else
-                            e.Value = (int)data[0];
-                    }
-                    else if (radioButton_hex.Checked)
-                    {
-                        e.Value = $"{data[0]:X2}";
-                    }
-                }
+                    e.Value = Util.StringParseWordData(data, _dataType);
                 else if (e.ColumnIndex == 2)
-                    e.Value = ProfileRecipe.Instance.GetDescription(address);
+                    e.Value = ProfileRecipe.Instance.GetDescription(sAddress);
             }
             catch
             {
@@ -105,39 +84,14 @@ namespace PLCSimulator
                 if (e.RowIndex < 0 || e.RowIndex >= wordData.DataLength)
                     return;
 
-                string address = $"{_code}{wordData.GetAddress(e.RowIndex)}".ToUpper();
+                string sAddress = wordData.GetAddress(e.RowIndex);
+                sAddress = $"{_code}{sAddress}";
 
                 if (e.ColumnIndex == 1)
                 {
-                    string text = e.Value?.ToString();
-                    ushort[] data = wordData.GetData(e.RowIndex, 2);
-                    if (radioButton_ASCII.Checked)
-                    {
-                        if (text.Length % 2 != 0)
-                            text += "\0\0";
-                        text = text.Substring(0, 2);
-                        data[0] = (ushort)(text[0] << 8 | text[1]);
-                    }
-                    else if (radioButton_short.Checked)
-                    {
-                        short.TryParse(text, out short value);
-                        data[0] = (ushort)value;
-                    }
-                    else if (radioButton_int.Checked)
-                    {
-                        int.TryParse(text, out int value);
-                        data[0] = (ushort)(value & 0xFFFF);
-                        data[1] = (ushort)((value >> 16) & 0x0FFFF);
-                    }
-                    else if (radioButton_hex.Checked)
-                    {
-                        if (text.Length % 4 != 0)
-                            text += "\0\0\0\0";
-                        text = text.Substring(0, 4);
-                        data[0] = Convert.ToUInt16(text, 16);
-                    }
-
+                    var data = Util.UShortParseWordData(e.Value?.ToString(), _dataType);
                     wordData.SetData(e.RowIndex, data);
+
                     if (e.RowIndex > 0)
                         dataGridView_Word.InvalidateRow(e.RowIndex - 1);
                     dataGridView_Word.InvalidateRow(e.RowIndex);
@@ -146,7 +100,7 @@ namespace PLCSimulator
                 }
                 else if (e.ColumnIndex == 2)
                 {
-                    ProfileRecipe.Instance.SetDescription(address, e.Value?.ToString());
+                    ProfileRecipe.Instance.SetDescription(sAddress, e.Value?.ToString());
                     ProfileRecipe.Instance.Save();
                 }
             }
@@ -185,16 +139,16 @@ namespace PLCSimulator
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (!int.TryParse(textBox_search.Text, out int index))
+                    if (!DataManager.Instance.WordDataDict.TryGetValue(_code, out var wordData))
                         return;
 
-                    if (index < 0 || index >= dataGridView_Word.RowCount)
-                        return;
-
-                    dataGridView_Word.ClearSelection();
-                    dataGridView_Word.CurrentCell = dataGridView_Word.Rows[index].Cells[0];
-                    dataGridView_Word.Rows[index].Cells[0].Selected = true;
-                    dataGridView_Word.FirstDisplayedScrollingRowIndex = index;
+                    if (wordData.ValidateAddress(textBox_search.Text, out int index))
+                    {
+                        dataGridView_Word.ClearSelection();
+                        dataGridView_Word.CurrentCell = dataGridView_Word.Rows[index].Cells[0];
+                        dataGridView_Word.Rows[index].Cells[0].Selected = true;
+                        dataGridView_Word.FirstDisplayedScrollingRowIndex = index;
+                    }
                 }
             }
             catch
@@ -206,6 +160,15 @@ namespace PLCSimulator
         {
             try
             {
+                if (radioButton_ASCII.Checked)
+                    _dataType = WordDataType.ASCII;
+                else if (radioButton_short.Checked)
+                    _dataType = WordDataType.Short;
+                else if (radioButton_int.Checked)
+                    _dataType = WordDataType.Int;
+                else if (radioButton_hex.Checked)
+                    _dataType = WordDataType.Hex;
+
                 dataGridView_Word.Invalidate();
             }
             catch

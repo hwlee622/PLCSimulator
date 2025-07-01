@@ -52,6 +52,7 @@
     <Compile Include="BaseForm.Designer.cs">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MacroType.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="UserControls\DoubleBufferedPanel.cs">
       <SubType>Component</SubType>

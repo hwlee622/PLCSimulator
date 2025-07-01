@@ -3,15 +3,6 @@ using System.Threading;
 
 namespace PLCSimulator
 {
-    public enum MacroType
-    {
-        Delay,
-        SetValue,
-        WaitValue,
-        Increase,
-        Decrease,
-    }
-
     public class MacroManager
     {
         public MacroManager(MacroInfo[] macroInfoArray)
@@ -169,120 +160,85 @@ namespace PLCSimulator
 
         private bool RunDelay(MacroContext context)
         {
-            Thread.Sleep(context.Value);
+            int.TryParse(context.Value, out var value);
+            Thread.Sleep(value);
             return true;
         }
 
         private bool RunSetValue(MacroContext context)
         {
-            if (Util.IsDTAddress(context.Address, out int address))
+            if (Util.ValidWordAddress(context.Address, out string code, out int index))
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
-                    return false;
-
-                ushort[] value = new ushort[1] { context.Value };
-                dataArea.SetData(address, value);
+                ushort.TryParse(context.Value, out var value);
+                DataManager.Instance.WordDataDict[code].SetData(index, new ushort[] { value });
                 return true;
             }
-            else if (Util.IsContactAddress(context.Address, out string contactCode, out address, out int hex))
+            else if (Util.ValidBitAddress(context.Address, out code, out index))
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(contactCode, out var contactArea))
-                    return false;
-
-                int newValue = context.Value > 0 ? 1 : 0;
-                int mask = 1 << hex;
-                var singleData = contactArea.GetData(address, 1);
-                singleData[0] = newValue > 0 ? (ushort)(singleData[0] | mask) : (ushort)(singleData[0] & ~mask);
-                contactArea.SetData(address, singleData);
+                int.TryParse(context.Value, out var value);
+                DataManager.Instance.BitDataDict[code].SetData(index, new bool[] { value > 0 });
                 return true;
             }
-            else
-                return false;
+            return false;
         }
 
         private bool RunWaitValue(MacroContext context)
         {
-            if (Util.IsDTAddress(context.Address, out int address))
+            if (Util.ValidWordAddress(context.Address, out string code, out int index))
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
-                    return false;
-
-                var data = dataArea.GetData(address, 1)[0];
-                if (data == context.Value)
+                ushort.TryParse(context.Value, out var value);
+                var data = DataManager.Instance.WordDataDict[code].GetData(index, 1)[0];
+                if (data == value)
                     return true;
-                else
-                    return false;
             }
-            else if (Util.IsContactAddress(context.Address, out string contactCode, out address, out int hex))
+            else if (Util.ValidBitAddress(context.Address, out code, out index))
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(contactCode, out var contactArea))
-                    return false;
-
-                var dataBlock = contactArea.GetData(address, 1)[0];
-                var data = (dataBlock >> hex) & 1;
-                if (data == context.Value)
+                int.TryParse(context.Value, out var value);
+                var data = DataManager.Instance.BitDataDict[code].GetData(index, 1)[0];
+                if ((data ? 1 : 0) == value)
                     return true;
-                else
-                    return false;
             }
-            else
-                return false;
+            return false;
         }
 
         private bool RunIncrease(MacroContext context)
         {
-            if (Util.IsDTAddress(context.Address, out int address))
+            if (Util.ValidWordAddress(context.Address, out string code, out int index))
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
-                    return false;
-
-                ushort[] value = dataArea.GetData(address, 1);
-                value[0] = (ushort)(value[0] + context.Value);
-                dataArea.SetData(address, value);
+                int.TryParse(context.Value, out var value);
+                var data = DataManager.Instance.WordDataDict[code].GetData(index, 1);
+                data[0] = (ushort)(data[0] + value);
+                DataManager.Instance.WordDataDict[code].SetData(index, data);
                 return true;
             }
-            else if (Util.IsContactAddress(context.Address, out string contactCode, out address, out int hex))
+            else if (Util.ValidBitAddress(context.Address, out code, out index))
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(contactCode, out var contactArea))
-                    return false;
-
-                int mask = 1 << hex;
-                var singleData = contactArea.GetData(address, 1);
-                int newValue = singleData[0] << hex > 0 ? 1 : 0;
-                singleData[0] = newValue > 0 ? (ushort)(singleData[0] | mask) : (ushort)(singleData[0] & ~mask);
-                contactArea.SetData(address, singleData);
+                var data = DataManager.Instance.BitDataDict[code].GetData(index, 1);
+                data[0] = !data[0];
+                DataManager.Instance.BitDataDict[code].SetData(index, data);
                 return true;
             }
-            else
-                return false;
+            return false;
         }
 
         private bool RunDecrease(MacroContext context)
         {
-            if (Util.IsDTAddress(context.Address, out int address))
+            if (Util.ValidWordAddress(context.Address, out string code, out int index))
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
-                    return false;
-
-                ushort[] value = dataArea.GetData(address, 1);
-                value[0] = (ushort)(value[0] - context.Value);
-                dataArea.SetData(address, value);
+                int.TryParse(context.Value, out var value);
+                var data = DataManager.Instance.WordDataDict[code].GetData(index, 1);
+                data[0] = (ushort)(data[0] - value);
+                DataManager.Instance.WordDataDict[code].SetData(index, data);
                 return true;
             }
-            else if (Util.IsContactAddress(context.Address, out string contactCode, out address, out int hex))
+            else if (Util.ValidBitAddress(context.Address, out code, out index))
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(contactCode, out var contactArea))
-                    return false;
-
-                int mask = 1 << hex;
-                var singleData = contactArea.GetData(address, 1);
-                int newValue = singleData[0] << hex > 0 ? 1 : 0;
-                singleData[0] = newValue > 0 ? (ushort)(singleData[0] | mask) : (ushort)(singleData[0] & ~mask);
-                contactArea.SetData(address, singleData);
+                var data = DataManager.Instance.BitDataDict[code].GetData(index, 1);
+                data[0] = !data[0];
+                DataManager.Instance.BitDataDict[code].SetData(index, data);
                 return true;
             }
-            else
-                return false;
+            return false;
         }
     }
 }

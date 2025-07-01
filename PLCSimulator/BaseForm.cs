@@ -6,10 +6,6 @@ namespace PLCSimulator
 {
     public partial class BaseForm : Form
     {
-        private UserControl_Word m_dataAreaUserControl;
-        private UserControl_Bit m_rAreaUserControl;
-        private UserControl_Bit m_xAreaUserControl;
-        private UserControl_Bit m_yAreaUserControl;
         private UserControl_Favorites m_favoriteUserControl;
         private UserControl_Macro m_macroUserControl;
 
@@ -46,12 +42,12 @@ namespace PLCSimulator
             panel_tab.Controls.Add(m_macroUserControl);
             m_macroUserControl.Dock = DockStyle.Fill;
 
-            AddBitDataControl();
             AddWordDataControl();
+            AddBitDataControl();
 
             foreach (Control control in panel_tab.Controls)
                 control.Hide();
-            m_dataAreaUserControl.Show();
+            m_favoriteUserControl.Show();
         }
 
         private void AddBitDataControl()
@@ -61,6 +57,9 @@ namespace PLCSimulator
                 var uc = new UserControl_Bit(key);
                 panel_tab.Controls.Add(uc);
                 uc.Dock = DockStyle.Fill;
+
+                var btn = GetMenuButton(uc, key);
+                flowLayoutPanel_menu.Controls.Add(btn);
             }
         }
 
@@ -71,7 +70,38 @@ namespace PLCSimulator
                 var uc = new UserControl_Word(key);
                 panel_tab.Controls.Add(uc);
                 uc.Dock = DockStyle.Fill;
+
+                var btn = GetMenuButton(uc, key);
+                flowLayoutPanel_menu.Controls.Add(btn);
             }
+        }
+
+        private Button GetMenuButton(UserControl uc, string code)
+        {
+            var btn = new Button();
+            btn.BackColor = SystemColors.ButtonShadow;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.Font = new Font("Verdata", 12F);
+            btn.ForeColor = Color.White;
+            btn.Size = new Size(69, 41);
+            btn.TabStop = false;
+            btn.Text = code;
+            btn.UseVisualStyleBackColor = false;
+            btn.Click += Btn_Click;
+
+            void Btn_Click(object sender, EventArgs e)
+            {
+                if (uc.Visible && panel_tab.Controls[0] == uc)
+                    return;
+
+                HidePanel();
+
+                uc.BringToFront();
+                uc.Show();
+                SetSelectedButtonColor(sender, e);
+            }
+
+            return btn;
         }
 
         private void BaseForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -93,54 +123,6 @@ namespace PLCSimulator
         private void 종료ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void button_Data_Click(object sender, EventArgs e)
-        {
-            if (m_dataAreaUserControl.Visible && panel_tab.Controls[0] == m_dataAreaUserControl)
-                return;
-
-            HidePanel();
-
-            m_dataAreaUserControl.BringToFront();
-            m_dataAreaUserControl.Show();
-            SetSelectedButtonColor(sender, e);
-        }
-
-        private void button_contactR_Click(object sender, EventArgs e)
-        {
-            if (m_rAreaUserControl.Visible && panel_tab.Controls[0] == m_rAreaUserControl)
-                return;
-
-            HidePanel();
-
-            m_rAreaUserControl.BringToFront();
-            m_rAreaUserControl.Show();
-            SetSelectedButtonColor(sender, e);
-        }
-
-        private void button_contactX_Click(object sender, EventArgs e)
-        {
-            if (m_xAreaUserControl.Visible && panel_tab.Controls[0] == m_xAreaUserControl)
-                return;
-
-            HidePanel();
-
-            m_xAreaUserControl.BringToFront();
-            m_xAreaUserControl.Show();
-            SetSelectedButtonColor(sender, e);
-        }
-
-        private void button_contactY_Click(object sender, EventArgs e)
-        {
-            if (m_yAreaUserControl.Visible && panel_tab.Controls[0] == m_yAreaUserControl)
-                return;
-
-            HidePanel();
-
-            m_yAreaUserControl.BringToFront();
-            m_yAreaUserControl.Show();
-            SetSelectedButtonColor(sender, e);
         }
 
         private void button_Favorite_Click(object sender, EventArgs e)
@@ -184,11 +166,12 @@ namespace PLCSimulator
 
         private void ResetButtonColor()
         {
-            foreach (Control control in panel_Menu.Controls)
-            {
+            foreach (Control control in flowLayoutPanel_menu.Controls)
                 if (control is Button)
                     control.BackColor = SystemColors.ButtonShadow;
-            }
+            foreach (Control control in panel_SubMenu.Controls)
+                if (control is Button)
+                    control.BackColor = SystemColors.ButtonShadow;
         }
     }
 }

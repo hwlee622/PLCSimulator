@@ -43,6 +43,6 @@ namespace PLCSimulator
         public string Address = string.Empty;
 
         [XmlAttribute]
-        public ushort Value = 0;
+        public string Value = "0";
     }
 }

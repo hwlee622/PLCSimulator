@@ -58,14 +58,15 @@ namespace PLCSimulator
                     return;
 
                 var data = bitData.GetData(e.RowIndex, 1);
-                string address = $"{_code}{bitData.GetAddress(e.RowIndex)}".ToUpper();
+                string sAddress = bitData.GetAddress(e.RowIndex);
+                sAddress = $"{_code}{sAddress}";
 
                 if (e.ColumnIndex == 0)
-                    e.Value = address;
+                    e.Value = sAddress;
                 else if (e.ColumnIndex == 1)
                     e.Value = data[0] ? 1 : 0;
                 else if (e.ColumnIndex == 2)
-                    e.Value = ProfileRecipe.Instance.GetDescription(address);
+                    e.Value = ProfileRecipe.Instance.GetDescription(sAddress);
             }
             catch
             {
@@ -81,7 +82,8 @@ namespace PLCSimulator
                 if (e.RowIndex < 0 || e.RowIndex >= bitData.DataLength)
                     return;
 
-                string address = $"{_code}{bitData.GetAddress(e.RowIndex)}".ToUpper();
+                string sAddress = bitData.GetAddress(e.RowIndex);
+                sAddress = $"{_code}{sAddress}";
                 
                 if (e.ColumnIndex == 1)
                 {
@@ -91,7 +93,7 @@ namespace PLCSimulator
                 }
                 else if (e.ColumnIndex == 2)
                 {
-                    ProfileRecipe.Instance.SetDescription(address, e.Value?.ToString());
+                    ProfileRecipe.Instance.SetDescription(sAddress, e.Value?.ToString());
                     ProfileRecipe.Instance.Save();
                 }
                 dataGridView_Bit.InvalidateRow(e.RowIndex);
@@ -105,7 +107,7 @@ namespace PLCSimulator
         {
             try
             {
-                if (DataManager.Instance.BitDataDict.TryGetValue(_code, out var bitData))
+                if (!DataManager.Instance.BitDataDict.TryGetValue(_code, out var bitData))
                     return;
 
                 var data = bitData.GetData(0, bitData.DataLength);
@@ -125,33 +127,16 @@ namespace PLCSimulator
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    int address = 0;
-                    int hex = 0;
-
-                    if (string.IsNullOrEmpty(textBox_search.Text))
-                        return;
-                    if (textBox_search.Text.Length == 1)
-                    {
-                        if (!int.TryParse(textBox_search.Text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out hex))
-                            return;
-                    }
-                    else
-                    {
-                        if (!int.TryParse(textBox_search.Text.Substring(0, textBox_search.Text.Length - 1), out address))
-                            return;
-                        if (!int.TryParse(textBox_search.Text.Substring(textBox_search.Text.Length - 1, 1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out hex))
-                            return;
-                    }
-
-                    int index = address * 16 + hex;
-
-                    if (index < 0 || index >= dataGridView_Bit.RowCount)
+                    if (!DataManager.Instance.BitDataDict.TryGetValue(_code, out var bitData))
                         return;
 
-                    dataGridView_Bit.ClearSelection();
-                    dataGridView_Bit.CurrentCell = dataGridView_Bit.Rows[index].Cells[0];
-                    dataGridView_Bit.Rows[index].Cells[0].Selected = true;
-                    dataGridView_Bit.FirstDisplayedScrollingRowIndex = index;
+                    if (bitData.ValidateAddress(textBox_search.Text, out int index))
+                    {
+                        dataGridView_Bit.ClearSelection();
+                        dataGridView_Bit.CurrentCell = dataGridView_Bit.Rows[index].Cells[0];
+                        dataGridView_Bit.Rows[index].Cells[0].Selected = true;
+                        dataGridView_Bit.FirstDisplayedScrollingRowIndex = index;
+                    }
                 }
             }
             catch
