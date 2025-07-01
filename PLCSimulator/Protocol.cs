@@ -4,6 +4,7 @@
     {
         Mewtocol,
         UpperLink,
-        Modbus
+        ModbusTcp,
+        ModbusUdp
     }
 }

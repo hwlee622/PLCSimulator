@@ -42,8 +42,9 @@
                     m_omronServer.Start();
                     break;
 
-                case Protocol.Modbus:
-                    ModbusServer = new ModbusSimulatorServer(serverPort);
+                case Protocol.ModbusTcp:
+                case Protocol.ModbusUdp:
+                    ModbusServer = new ModbusSimulatorServer(serverPort, selectedProtocol == Protocol.ModbusUdp);
                     break;
 
                 default:
