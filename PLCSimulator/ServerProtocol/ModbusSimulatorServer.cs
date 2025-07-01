@@ -12,10 +12,11 @@ namespace PLCSimulator
 
         private ModbusServer m_server;
 
-        public ModbusSimulatorServer(int port)
+        public ModbusSimulatorServer(int port, bool udpFlag)
         {
             m_server = new ModbusServer()
             {
+                UDPFlag = udpFlag,
                 Port = port,
                 LocalIPAddress = IPAddress.Any
             };

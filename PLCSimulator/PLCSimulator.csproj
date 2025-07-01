@@ -77,7 +77,7 @@
     <Compile Include="Util\DataManager.cs" />
     <Compile Include="FileSaveLoad\ProfileRecipe.cs" />
     <Compile Include="ServerProtocol\UpperLinkServer.cs" />
-    <Compile Include="ServerProtocol\Protocol.cs" />
+    <Compile Include="Protocol.cs" />
     <Compile Include="UserControls\UserControl_Word.cs">
       <SubType>UserControl</SubType>
     </Compile>
