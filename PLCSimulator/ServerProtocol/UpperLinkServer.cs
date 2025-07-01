@@ -6,6 +6,8 @@ namespace PLCSimulator
 {
     public class UpperLinkServer
     {
+        public const string DM = "DM";
+
         private ServerComm m_comm;
 
         public UpperLinkServer(int port)
@@ -15,6 +17,8 @@ namespace PLCSimulator
             m_comm.SetETX(Encoding.ASCII.GetBytes(new char[] { '*', (char)0x0D }));
             m_comm.OnError += ex => LogWriter.Instance.LogError(ex);
             m_comm.OnReceiveMessage += MessageHandler;
+
+            DataManager.Instance.WordDataDict.Add(DM, new DataManager.WordData(50000));
         }
 
         public void Start()
@@ -77,16 +81,14 @@ namespace PLCSimulator
         {
             if (command.Length != 17)
                 return ReplyError(command, 14);
-            else if (!int.TryParse(command.Substring(5, 4), out int startAddress) || !int.TryParse(command.Substring(9, 4), out int length))
+            else if (!DataManager.Instance.WordDataDict.TryGetValue(DM, out var wordData) ||
+                     !int.TryParse(command.Substring(5, 4), out int startAddress) || !int.TryParse(command.Substring(9, 4), out int length))
                 return ReplyError(command, 14);
-            else if (startAddress >= DataManager.MaxDataAreaAddress || startAddress + length - 1 >= DataManager.MaxDataAreaAddress)
+            else if (startAddress >= wordData.DataLength || startAddress + length - 1 >= wordData.DataLength)
                 return ReplyError(command, 15);
             else
             {
-                if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
-                    return ReplyError(command, 14);
-
-                var data = dataArea.GetData(startAddress, length);
+                var data = wordData.GetData(startAddress, length);
 
                 StringBuilder sb = new StringBuilder();
                 sb.Append(command.Substring(0, 5));
@@ -109,14 +111,13 @@ namespace PLCSimulator
         {
             if (command.Length < 17 || ((command.Length - 13) % 4) != 0)
                 return ReplyError(command, 14);
-            else if (!int.TryParse(command.Substring(5, 4), out int startAddress))
+            else if (!DataManager.Instance.WordDataDict.TryGetValue(DM, out var wordData) ||
+                     !int.TryParse(command.Substring(5, 4), out int startAddress))
                 return ReplyError(command, 14);
-            else if (startAddress >= DataManager.MaxDataAreaAddress)
-                return ReplyError(command, 15);
             else
             {
                 int length = (command.Length - 13) / 4;
-                if (startAddress + length - 1 >= DataManager.MaxDataAreaAddress)
+                if (startAddress >= wordData.DataLength || startAddress + length - 1 >= wordData.DataLength)
                     return ReplyError(command, 15);
 
                 ushort[] value = new ushort[length];
@@ -128,10 +129,7 @@ namespace PLCSimulator
                     value[i] = singleValue;
                 }
 
-                if (!DataManager.Instance.PlcArea.TryGetValue(DataManager.DataCode, out var dataArea))
-                    return ReplyError(command, 14);
-
-                dataArea.SetData(startAddress, value);
+                wordData.SetData(startAddress, value);
 
                 StringBuilder sb = new StringBuilder();
                 sb.Append(command.Substring(0, 5));

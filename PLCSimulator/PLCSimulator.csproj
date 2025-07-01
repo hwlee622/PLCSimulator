@@ -52,6 +52,7 @@
     <Compile Include="BaseForm.Designer.cs">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MacroType.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="UserControls\DoubleBufferedPanel.cs">
       <SubType>Component</SubType>
@@ -73,20 +74,20 @@
     <Compile Include="FileSaveLoad\ProfileRecipe.cs" />
     <Compile Include="ServerProtocol\UpperLinkServer.cs" />
     <Compile Include="ServerProtocol\Protocol.cs" />
-    <Compile Include="UserControls\UserControl_Data.cs">
+    <Compile Include="UserControls\UserControl_Word.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\UserControl_Data.Designer.cs">
-      <DependentUpon>UserControl_Data.cs</DependentUpon>
+    <Compile Include="UserControls\UserControl_Word.Designer.cs">
+      <DependentUpon>UserControl_Word.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DoubleBufferedListView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UserControls\UserControl_Contact.cs">
+    <Compile Include="UserControls\UserControl_Bit.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\UserControl_Contact.Designer.cs">
-      <DependentUpon>UserControl_Contact.cs</DependentUpon>
+    <Compile Include="UserControls\UserControl_Bit.Designer.cs">
+      <DependentUpon>UserControl_Bit.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UserControl_Favorites.cs">
       <SubType>UserControl</SubType>
@@ -103,6 +104,7 @@
     <Compile Include="ServerComm\ServerComm.cs" />
     <Compile Include="ServerComm\ServerCommUdp.cs" />
     <Compile Include="Util\Util.cs" />
+    <Compile Include="WordDataType.cs" />
     <EmbeddedResource Include="BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -119,11 +121,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UserControls\UserControl_Contact.resx">
-      <DependentUpon>UserControl_Contact.cs</DependentUpon>
+    <EmbeddedResource Include="UserControls\UserControl_Bit.resx">
+      <DependentUpon>UserControl_Bit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\UserControl_Data.resx">
-      <DependentUpon>UserControl_Data.cs</DependentUpon>
+    <EmbeddedResource Include="UserControls\UserControl_Word.resx">
+      <DependentUpon>UserControl_Word.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\UserControl_Favorites.resx">
       <DependentUpon>UserControl_Favorites.cs</DependentUpon>
@@ -148,8 +150,6 @@
     <Content Include="ReadMe.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\YJ LINK.ico" />
-    <Content Include="Resources\YJ LINK.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

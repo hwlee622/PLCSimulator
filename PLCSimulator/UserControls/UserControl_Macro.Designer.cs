@@ -59,7 +59,6 @@
             // 
             this.dataGridView_Macro.AllowUserToAddRows = false;
             this.dataGridView_Macro.AllowUserToDeleteRows = false;
-            this.dataGridView_Macro.AllowUserToResizeColumns = false;
             this.dataGridView_Macro.AllowUserToResizeRows = false;
             this.dataGridView_Macro.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_Macro.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
