@@ -35,10 +35,10 @@
             this.화면열기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.종료ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button_Favorite = new System.Windows.Forms.Button();
-            this.panel_tab = new System.Windows.Forms.DoubleBufferedPanel();
             this.panel_SubMenu = new System.Windows.Forms.Panel();
             this.button_Macro = new System.Windows.Forms.Button();
             this.flowLayoutPanel_menu = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel_tab = new System.Windows.Forms.DoubleBufferedPanel();
             this.contextMenuStrip_system.SuspendLayout();
             this.panel_SubMenu.SuspendLayout();
             this.SuspendLayout();
@@ -88,15 +88,6 @@
             this.button_Favorite.UseVisualStyleBackColor = false;
             this.button_Favorite.Click += new System.EventHandler(this.button_Favorite_Click);
             // 
-            // panel_tab
-            // 
-            this.panel_tab.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.panel_tab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_tab.Location = new System.Drawing.Point(0, 58);
-            this.panel_tab.Name = "panel_tab";
-            this.panel_tab.Size = new System.Drawing.Size(393, 345);
-            this.panel_tab.TabIndex = 1;
-            // 
             // panel_SubMenu
             // 
             this.panel_SubMenu.Controls.Add(this.button_Favorite);
@@ -131,6 +122,15 @@
             this.flowLayoutPanel_menu.Padding = new System.Windows.Forms.Padding(6);
             this.flowLayoutPanel_menu.Size = new System.Drawing.Size(393, 58);
             this.flowLayoutPanel_menu.TabIndex = 3;
+            // 
+            // panel_tab
+            // 
+            this.panel_tab.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.panel_tab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel_tab.Location = new System.Drawing.Point(0, 58);
+            this.panel_tab.Name = "panel_tab";
+            this.panel_tab.Size = new System.Drawing.Size(393, 345);
+            this.panel_tab.TabIndex = 1;
             // 
             // BaseForm
             // 
