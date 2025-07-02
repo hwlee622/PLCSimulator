@@ -182,7 +182,7 @@ namespace PLCSimulator
                     for (int j = 0; j < 16; j++)
                     {
                         int value = data[j] ? 1 : 0;
-                        blockData[i] = (ushort)(blockData[i] << 1 & value);
+                        blockData[i] = (ushort)(blockData[i] | value << j);
                     }
                 }                
 
