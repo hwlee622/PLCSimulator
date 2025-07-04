@@ -5,7 +5,7 @@ PLC Simulator는 Panasonic, Omron, Modbus 등 다양한 PLC의 가상 환경을 
 ---
 ## 주요 기능
 
-* **다양한 PLC 지원**: Panasonic (R, X, Y 접점, DT 영역), Omron, Modbus (Coil, Holding Register 등) 등 여러 종류의 PLC 가상 환경을 제공합니다.
+* **다양한 PLC 지원**: Panasonic , Omron, Modbus PLC의 가상 환경을 제공합니다.
 * **가상 영역 정보 제공**: 각 PLC 종류별로 정의된 가상 영역 정보를 통해 실제 PLC처럼 값을 읽거나 쓸 수 있습니다.
 * **간편한 통신 테스트**: PLC와 통신하는 프로그램을 개발할 때 복잡한 실제 PLC 구성 없이 빠르고 쉽게 테스트할 수 있습니다.
 * **즐겨찾기 기능**: 자주 확인하거나 필요한 PLC 영역만 선택하여 볼 수 있어 효율적인 모니터링이 가능합니다.
