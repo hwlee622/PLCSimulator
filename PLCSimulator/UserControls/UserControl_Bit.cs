@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Windows.Forms;
 
 namespace PLCSimulator
@@ -84,7 +83,7 @@ namespace PLCSimulator
 
                 string sAddress = bitData.GetAddress(e.RowIndex);
                 sAddress = $"{_code}{sAddress}";
-                
+
                 if (e.ColumnIndex == 1)
                 {
                     int.TryParse(e.Value?.ToString(), out int newValue);

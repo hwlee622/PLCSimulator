@@ -8,6 +8,7 @@ namespace PLCSimulator
     {
         private UserControl_Favorites m_favoriteUserControl;
         private UserControl_Macro m_macroUserControl;
+        private UserControl_Sync m_syncUserControl;
 
         public BaseForm()
         {
@@ -41,6 +42,10 @@ namespace PLCSimulator
             m_macroUserControl = new UserControl_Macro(PLCSimulator.Instance.MacroManager);
             panel_tab.Controls.Add(m_macroUserControl);
             m_macroUserControl.Dock = DockStyle.Fill;
+
+            m_syncUserControl = new UserControl_Sync(PLCSimulator.Instance.SyncManager);
+            panel_tab.Controls.Add(m_syncUserControl);
+            m_syncUserControl.Dock = DockStyle.Fill;
 
             AddWordDataControl();
             AddBitDataControl();
@@ -140,12 +145,29 @@ namespace PLCSimulator
         private void button_Macro_Click(object sender, EventArgs e)
         {
             if (m_macroUserControl.Visible)
-                m_macroUserControl.Hide();
+                HideAdditionalControl();
             else
             {
                 m_macroUserControl.BringToFront();
                 m_macroUserControl.Show();
             }
+        }
+
+        private void button_Sync_Click(object sender, EventArgs e)
+        {
+            if (m_syncUserControl.Visible)
+                HideAdditionalControl();
+            else
+            {
+                m_syncUserControl.BringToFront();
+                m_syncUserControl.Show();
+            }
+        }
+
+        private void HideAdditionalControl()
+        {
+            m_macroUserControl.Hide();
+            m_syncUserControl.Hide();
         }
 
         private void HidePanel()

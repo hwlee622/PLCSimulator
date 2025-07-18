@@ -45,7 +45,7 @@ namespace CommInterface
                 m_sendQueue.Enqueue(message);
         }
 
-        List<byte> m_buffer = new List<byte>();
+        private List<byte> m_buffer = new List<byte>();
 
         protected override async Task BufferTask(CancellationToken token)
         {

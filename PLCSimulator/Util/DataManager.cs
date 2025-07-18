@@ -38,7 +38,8 @@ namespace PLCSimulator
             private bool _hexAddress;
             private ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
-            public int DataLength { get { return _data.Length; } }
+            public int DataLength
+            { get { return _data.Length; } }
 
             public bool ValidateAddress(string text, out int index)
             {
@@ -135,7 +136,8 @@ namespace PLCSimulator
             private ushort[] _data;
             private ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
-            public int DataLength { get { return _data.Length; } }
+            public int DataLength
+            { get { return _data.Length; } }
 
             public bool ValidateAddress(string text, out int index)
             {

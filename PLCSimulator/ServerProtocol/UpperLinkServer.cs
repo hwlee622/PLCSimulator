@@ -1,6 +1,6 @@
-﻿using System;
+﻿using CommInterface;
+using System;
 using System.Text;
-using CommInterface;
 
 namespace PLCSimulator
 {

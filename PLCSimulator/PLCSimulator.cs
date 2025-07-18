@@ -28,7 +28,6 @@
         {
             MacroManager = new MacroManager(ProfileRecipe.Instance.ProfileInfo.MacroInfoArray);
             SyncManager = SyncManager.Instance;
-            SyncManager.ReConnect();
 
             Protocol selectedProtocol = ProfileRecipe.Instance.ProfileInfo.Protocol;
             int serverPort = ProfileRecipe.Instance.ProfileInfo.Port;

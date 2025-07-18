@@ -25,6 +25,7 @@ namespace PLCSimulator
         #endregion Singleton
 
         #region InputComm
+
         public class InputComm : IDisposable
         {
             private string[] m_address;
@@ -102,9 +103,11 @@ namespace PLCSimulator
                 }
             }
         }
-        #endregion
+
+        #endregion InputComm
 
         #region OutputComm
+
         private class OutputComm : IDisposable
         {
             private string[] m_address;
@@ -177,7 +180,8 @@ namespace PLCSimulator
                 }
             }
         }
-        #endregion
+
+        #endregion OutputComm
 
         private OutputComm m_outputComm;
         private InputComm m_inputComm;
@@ -196,9 +200,11 @@ namespace PLCSimulator
 
         private void ConnectAll()
         {
-            var info = ProfileRecipe.Instance.ProfileInfo.SyncMasterInfo;
-            m_outputComm = new OutputComm(info.OutputAddress.ToArray(), info.SyncPlc);
-            m_inputComm = new InputComm(info.InputAddress.ToArray(), info.MyPlc);
+            var info = ProfileRecipe.Instance.ProfileInfo.SyncManagerInfo;
+            if (!string.IsNullOrEmpty(info.SyncPlc))
+                m_outputComm = new OutputComm(info.OutputAddress.ToArray(), info.SyncPlc);
+            if (!string.IsNullOrEmpty(info.MyPlc))
+                m_inputComm = new InputComm(info.InputAddress.ToArray(), info.MyPlc);
         }
     }
 }

@@ -39,6 +39,7 @@
             this.button_Macro = new System.Windows.Forms.Button();
             this.flowLayoutPanel_menu = new System.Windows.Forms.FlowLayoutPanel();
             this.panel_tab = new System.Windows.Forms.DoubleBufferedPanel();
+            this.button_Sync = new System.Windows.Forms.Button();
             this.contextMenuStrip_system.SuspendLayout();
             this.panel_SubMenu.SuspendLayout();
             this.SuspendLayout();
@@ -90,6 +91,7 @@
             // 
             // panel_SubMenu
             // 
+            this.panel_SubMenu.Controls.Add(this.button_Sync);
             this.panel_SubMenu.Controls.Add(this.button_Favorite);
             this.panel_SubMenu.Controls.Add(this.button_Macro);
             this.panel_SubMenu.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -132,6 +134,22 @@
             this.panel_tab.Size = new System.Drawing.Size(393, 345);
             this.panel_tab.TabIndex = 1;
             // 
+            // button_Sync
+            // 
+            this.button_Sync.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_Sync.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.button_Sync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_Sync.Font = new System.Drawing.Font("Verdana", 12F);
+            this.button_Sync.ForeColor = System.Drawing.Color.White;
+            this.button_Sync.Location = new System.Drawing.Point(237, 8);
+            this.button_Sync.Name = "button_Sync";
+            this.button_Sync.Size = new System.Drawing.Size(69, 41);
+            this.button_Sync.TabIndex = 5;
+            this.button_Sync.TabStop = false;
+            this.button_Sync.Text = "Sync";
+            this.button_Sync.UseVisualStyleBackColor = false;
+            this.button_Sync.Click += new System.EventHandler(this.button_Sync_Click);
+            // 
             // BaseForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -164,6 +182,7 @@
         private System.Windows.Forms.Button button_Macro;
         private System.Windows.Forms.DoubleBufferedPanel panel_tab;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel_menu;
+        private System.Windows.Forms.Button button_Sync;
     }
 }
 
