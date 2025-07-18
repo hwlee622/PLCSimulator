@@ -101,7 +101,7 @@ namespace PLCSimulator
                     if (string.IsNullOrEmpty(sAddress))
                     {
                         _addressList.RemoveAt(e.RowIndex);
-                        dataGridView_Data.RowCount--;
+                        dataGridView_Data.RowCount = _addressList.Count + 1;
                         return;
                     }
 

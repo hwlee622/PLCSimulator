@@ -63,6 +63,11 @@ namespace PLCSimulator
                 m_comm = null;
             }
 
+            public bool IsConnected()
+            {
+                return m_comm.IsConnected();
+            }
+
             private void OnReceiveMessage(byte[] bytes)
             {
                 try
@@ -161,6 +166,16 @@ namespace PLCSimulator
                 m_outputComm = new SyncComm(info.OutputAddress.ToArray(), info.SyncPlc, false);
             if (!string.IsNullOrEmpty(info.MyPlc))
                 m_inputComm = new SyncComm(info.InputAddress.ToArray(), info.MyPlc, true);
+        }
+
+        public bool IsInputConnected()
+        {
+            return m_inputComm != null && m_inputComm.IsConnected();
+        }
+
+        public bool IsOutputConnected()
+        {
+            return m_outputComm != null && m_outputComm.IsConnected();
         }
     }
 }
