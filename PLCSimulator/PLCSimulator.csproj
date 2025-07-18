@@ -55,9 +55,19 @@
     <Compile Include="BaseForm.Designer.cs">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MacroType.cs" />
+    <Compile Include="ClientComm\CommPipeClient.cs" />
+    <Compile Include="ClientComm\Comm.cs" />
+    <Compile Include="ClientComm\CommPipeServer.cs" />
     <Compile Include="Profile.cs" />
+    <Compile Include="ServerComm\ServerCommPipe.cs" />
     <Compile Include="ServerProtocol\ModbusSimulatorServer.cs" />
+    <Compile Include="UserControls\UserControl_Sync.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UserControl_Sync.Designer.cs">
+      <DependentUpon>UserControl_Sync.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Util\SyncManager.cs" />
     <Compile Include="UserControls\DoubleBufferedPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -127,6 +137,9 @@
     </Compile>
     <EmbeddedResource Include="UserControls\UserControl_Bit.resx">
       <DependentUpon>UserControl_Bit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UserControl_Sync.resx">
+      <DependentUpon>UserControl_Sync.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\UserControl_Word.resx">
       <DependentUpon>UserControl_Word.cs</DependentUpon>

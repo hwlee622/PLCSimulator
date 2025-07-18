@@ -3,6 +3,15 @@ using System.Threading;
 
 namespace PLCSimulator
 {
+    public enum MacroType
+    {
+        Delay,
+        SetValue,
+        WaitValue,
+        Increase,
+        Decrease,
+    }
+
     public class MacroManager
     {
         public MacroManager(MacroInfo[] macroInfoArray)

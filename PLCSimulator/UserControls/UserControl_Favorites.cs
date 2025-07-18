@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 
 namespace PLCSimulator
@@ -95,7 +94,6 @@ namespace PLCSimulator
             {
                 if (e.RowIndex < 0 || e.RowIndex > _addressList.Count)
                     return;
-
 
                 if (e.ColumnIndex == 0)
                 {

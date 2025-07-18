@@ -49,17 +49,20 @@ namespace PLCSimulator
                         text += '\0';
                     data[0] = (ushort)(text[0] << 8 | text[1]);
                     break;
+
                 case WordDataType.Short:
                     data = new ushort[1];
                     short.TryParse(text, out short shortValue);
                     data[0] = (ushort)shortValue;
                     break;
+
                 case WordDataType.Int:
                     data = new ushort[2];
                     int.TryParse(text, out int intValue);
                     data[0] = (ushort)(intValue & 0xFFFF);
                     data[1] = (ushort)((intValue >> 16) & 0x0FFFF);
                     break;
+
                 case WordDataType.Hex:
                     data = new ushort[1];
                     if (text.Length % 4 != 0)
@@ -87,10 +90,13 @@ namespace PLCSimulator
                     if (BitConverter.IsLittleEndian)
                         Array.Reverse(bitData);
                     return Encoding.ASCII.GetString(bitData);
+
                 case WordDataType.Short:
                     return ((short)tempData[0]).ToString();
+
                 case WordDataType.Int:
                     return ((tempData[1] << 16) | tempData[0]).ToString();
+
                 case WordDataType.Hex:
                     return $"{data[0]:X2}";
             }

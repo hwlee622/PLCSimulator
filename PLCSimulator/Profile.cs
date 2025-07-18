@@ -12,12 +12,21 @@ namespace PLCSimulator
         public List<string> FavoriteAddress = new List<string>();
         public List<Description> DescriptionList = new List<Description>();
         public MacroInfo[] MacroInfoArray = new MacroInfo[10];
+        public SyncManagerInfo SyncManagerInfo = new SyncManagerInfo();
 
         public Profile()
         {
             for (int i = 0; i < MacroInfoArray.Length; i++)
                 MacroInfoArray[i] = new MacroInfo();
         }
+    }
+
+    public class SyncManagerInfo
+    {
+        public string MyPlc = string.Empty;
+        public string SyncPlc = string.Empty;
+        public List<string> InputAddress = new List<string>();
+        public List<string> OutputAddress = new List<string>();
     }
 
     public class Description

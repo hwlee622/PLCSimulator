@@ -111,7 +111,7 @@ namespace PLCSimulator
             if (command.Length != 15)
                 return ReplyError(command, 41);
             else if (!DataManager.Instance.BitDataDict.TryGetValue($"{command[7]}", out var bitData) || !int.TryParse(command.Substring(8, 3), out int address) ||
-                     !TryParseHexToInt(command.Substring(11,1), out int hex))
+                     !TryParseHexToInt(command.Substring(11, 1), out int hex))
                 return ReplyError(command, 61);
             else
             {
@@ -183,7 +183,7 @@ namespace PLCSimulator
                         int value = data[j] ? 1 : 0;
                         blockData[i] = (ushort)(blockData[i] | value << j);
                     }
-                }                
+                }
 
                 StringBuilder sb = new StringBuilder();
                 sb.Append(command.Substring(0, 3));
@@ -207,7 +207,7 @@ namespace PLCSimulator
             if (command.Length != 16)
                 return ReplyError(command, 41);
             else if (!DataManager.Instance.BitDataDict.TryGetValue($"{command[7]}", out var bitData) || !int.TryParse(command.Substring(8, 3), out int address) ||
-                     !TryParseHexToInt(command.Substring(11,1), out int hex))
+                     !TryParseHexToInt(command.Substring(11, 1), out int hex))
                 return ReplyError(command, 61);
             else
             {
