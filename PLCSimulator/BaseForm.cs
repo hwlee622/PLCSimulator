@@ -144,7 +144,7 @@ namespace PLCSimulator
 
         private void button_Macro_Click(object sender, EventArgs e)
         {
-            if (m_macroUserControl.Visible)
+            if (m_macroUserControl.Visible && panel_tab.Controls[0] == m_macroUserControl)
                 HideAdditionalControl();
             else
             {
@@ -155,7 +155,7 @@ namespace PLCSimulator
 
         private void button_Sync_Click(object sender, EventArgs e)
         {
-            if (m_syncUserControl.Visible)
+            if (m_syncUserControl.Visible && panel_tab.Controls[0] == m_syncUserControl)
                 HideAdditionalControl();
             else
             {
