@@ -34,16 +34,18 @@
             this.panel_input = new System.Windows.Forms.Panel();
             this.dataGridView_Input = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textBox_myPlc = new System.Windows.Forms.TextBox();
             this.label_input = new System.Windows.Forms.Label();
             this.panel_output = new System.Windows.Forms.Panel();
             this.dataGridView_Output = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textBox_syncPlc = new System.Windows.Forms.TextBox();
             this.label_output = new System.Windows.Forms.Label();
             this.timer_gui_update = new System.Windows.Forms.Timer(this.components);
+            this.label_input_connected = new System.Windows.Forms.Label();
+            this.label_output_connected = new System.Windows.Forms.Label();
             this.panel_control.SuspendLayout();
             this.panel_input.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Input)).BeginInit();
@@ -75,6 +77,7 @@
             // 
             this.panel_input.Controls.Add(this.dataGridView_Input);
             this.panel_input.Controls.Add(this.textBox_myPlc);
+            this.panel_input.Controls.Add(this.label_input_connected);
             this.panel_input.Controls.Add(this.label_input);
             this.panel_input.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel_input.Location = new System.Drawing.Point(0, 32);
@@ -90,7 +93,7 @@
             this.dataGridView_Input.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_Input.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn2,
-            this.Column1});
+            this.dataGridViewTextBoxColumn4});
             this.dataGridView_Input.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_Input.Location = new System.Drawing.Point(0, 41);
             this.dataGridView_Input.MultiSelect = false;
@@ -110,11 +113,11 @@
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.Width = 78;
             // 
-            // Column1
+            // dataGridViewTextBoxColumn4
             // 
-            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column1.HeaderText = "Description";
-            this.Column1.Name = "Column1";
+            this.dataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn4.HeaderText = "Description";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             // 
             // textBox_myPlc
             // 
@@ -132,10 +135,11 @@
             this.label_input.Name = "label_input";
             this.label_input.Size = new System.Drawing.Size(180, 20);
             this.label_input.TabIndex = 1;
-            this.label_input.Text = "Prev Sync Name";
+            this.label_input.Text = "    Prev Sync Name";
             // 
             // panel_output
             // 
+            this.panel_output.Controls.Add(this.label_output_connected);
             this.panel_output.Controls.Add(this.dataGridView_Output);
             this.panel_output.Controls.Add(this.textBox_syncPlc);
             this.panel_output.Controls.Add(this.label_output);
@@ -153,7 +157,7 @@
             this.dataGridView_Output.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_Output.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
-            this.Column2});
+            this.dataGridViewTextBoxColumn3});
             this.dataGridView_Output.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_Output.Location = new System.Drawing.Point(0, 41);
             this.dataGridView_Output.MultiSelect = false;
@@ -173,11 +177,11 @@
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.Width = 78;
             // 
-            // Column2
+            // dataGridViewTextBoxColumn3
             // 
-            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column2.HeaderText = "Description";
-            this.Column2.Name = "Column2";
+            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn3.HeaderText = "Description";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             // 
             // textBox_syncPlc
             // 
@@ -195,11 +199,27 @@
             this.label_output.Name = "label_output";
             this.label_output.Size = new System.Drawing.Size(180, 20);
             this.label_output.TabIndex = 2;
-            this.label_output.Text = "Next Sync Name";
+            this.label_output.Text = "    Next Sync Name";
             // 
             // timer_gui_update
             // 
             this.timer_gui_update.Tick += new System.EventHandler(this.timer_gui_update_Tick);
+            // 
+            // label_input_connected
+            // 
+            this.label_input_connected.BackColor = System.Drawing.Color.Tomato;
+            this.label_input_connected.Location = new System.Drawing.Point(4, 1);
+            this.label_input_connected.Name = "label_input_connected";
+            this.label_input_connected.Size = new System.Drawing.Size(9, 9);
+            this.label_input_connected.TabIndex = 8;
+            // 
+            // label_output_connected
+            // 
+            this.label_output_connected.BackColor = System.Drawing.Color.Tomato;
+            this.label_output_connected.Location = new System.Drawing.Point(4, 1);
+            this.label_output_connected.Name = "label_output_connected";
+            this.label_output_connected.Size = new System.Drawing.Size(9, 9);
+            this.label_output_connected.TabIndex = 9;
             // 
             // UserControl_Sync
             // 
@@ -239,8 +259,10 @@
         private System.Windows.Forms.DataGridView dataGridView_Output;
         private System.Windows.Forms.Timer timer_gui_update;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.Label label_input_connected;
+        private System.Windows.Forms.Label label_output_connected;
     }
 }

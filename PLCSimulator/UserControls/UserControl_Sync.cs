@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PLCSimulator
@@ -99,7 +100,7 @@ namespace PLCSimulator
                     if (string.IsNullOrEmpty(sAddress))
                     {
                         _managerInfo.InputAddress.RemoveAt(e.RowIndex);
-                        dataGridView_Input.RowCount--;
+                        dataGridView_Input.RowCount = _managerInfo.InputAddress.Count + 1;
                         return;
                     }
 
@@ -171,7 +172,7 @@ namespace PLCSimulator
                     if (string.IsNullOrEmpty(sAddress))
                     {
                         _managerInfo.OutputAddress.RemoveAt(e.RowIndex);
-                        dataGridView_Input.RowCount--;
+                        dataGridView_Output.RowCount = _managerInfo.OutputAddress.Count + 1;
                         return;
                     }
 
@@ -231,6 +232,8 @@ namespace PLCSimulator
         {
             try
             {
+                label_input_connected.BackColor = _syncManager.IsInputConnected() ? Color.Lime : Color.Tomato;
+                label_output_connected.BackColor = _syncManager.IsOutputConnected() ? Color.Lime : Color.Tomato;
             }
             catch
             {
