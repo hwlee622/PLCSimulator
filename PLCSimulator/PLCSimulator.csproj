@@ -58,11 +58,10 @@
     <Compile Include="ClientComm\CommPipeClient.cs" />
     <Compile Include="ClientComm\Comm.cs" />
     <Compile Include="ClientComm\CommPipeServer.cs" />
-    <Compile Include="MacroType.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="ServerComm\ServerCommPipe.cs" />
     <Compile Include="ServerProtocol\ModbusSimulatorServer.cs" />
-    <Compile Include="SyncManager.cs" />
+    <Compile Include="Util\SyncManager.cs" />
     <Compile Include="UserControls\DoubleBufferedPanel.cs">
       <SubType>Component</SubType>
     </Compile>
