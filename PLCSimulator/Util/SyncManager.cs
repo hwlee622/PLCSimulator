@@ -24,25 +24,30 @@ namespace PLCSimulator
 
         #endregion Singleton
 
-        #region InputComm
+        #region SyncComm
 
-        public class InputComm : IDisposable
+        public class SyncComm : IDisposable
         {
             private string[] m_address;
             private string m_pipeName;
+            private ushort[] m_preData;
 
             private Comm m_comm;
             private CancellationTokenSource m_cts = new CancellationTokenSource();
 
-            public InputComm(string[] address, string pipeName)
+            public SyncComm(string[] address, string pipeName, bool server)
             {
                 m_address = address;
                 m_pipeName = pipeName;
+                m_preData = new ushort[m_address.Length];
 
-                m_comm = new CommPipeServer(m_pipeName);
+                if (server)
+                    m_comm = new CommPipeServer(m_pipeName);
+                else
+                    m_comm = new CommPipeClient(m_pipeName);
                 m_comm.SetSTX(Encoding.ASCII.GetBytes(new char[] { (char)0x02 }));
                 m_comm.SetETX(Encoding.ASCII.GetBytes(new char[] { (char)0x03 }));
-                m_comm.OnReceiveMessage += OnRecevieMessage;
+                m_comm.OnReceiveMessage += OnReceiveMessage;
                 m_comm.Start();
                 Task.Run(() => SendMessage(m_cts.Token));
             }
@@ -52,13 +57,13 @@ namespace PLCSimulator
                 m_cts.Cancel();
                 if (m_comm != null)
                 {
-                    m_comm.OnReceiveMessage -= OnRecevieMessage;
+                    m_comm.OnReceiveMessage -= OnReceiveMessage;
                     m_comm.Stop();
                 }
                 m_comm = null;
             }
 
-            private void OnRecevieMessage(byte[] bytes)
+            private void OnReceiveMessage(byte[] bytes)
             {
                 try
                 {
@@ -69,6 +74,9 @@ namespace PLCSimulator
                     {
                         var address = m_address[i];
                         var value = Convert.ToUInt16(message.Substring(i * 4, 4), 16);
+                        if (m_preData[i] == value)
+                            continue;
+
                         if (string.IsNullOrEmpty(address))
                             continue;
 
@@ -80,62 +88,10 @@ namespace PLCSimulator
                         {
                             DataManager.Instance.BitDataDict[code].SetData(index, new bool[] { value > 0 });
                         }
+                        m_preData[i] = value;
                     }
                 }
                 catch { }
-            }
-
-            private async Task SendMessage(CancellationToken token)
-            {
-                while (!token.IsCancellationRequested)
-                {
-                    try
-                    {
-                        await Task.Delay(20);
-                        if (token.IsCancellationRequested)
-                            continue;
-
-                        var message = $"{(char)0x02}{(char)0x03}";
-                        var bytes = Encoding.ASCII.GetBytes(message);
-                        m_comm.SendMessage(bytes);
-                    }
-                    catch { }
-                }
-            }
-        }
-
-        #endregion InputComm
-
-        #region OutputComm
-
-        private class OutputComm : IDisposable
-        {
-            private string[] m_address;
-            private string m_pipeName;
-
-            private Comm m_comm;
-            private CancellationTokenSource m_cts = new CancellationTokenSource();
-
-            public OutputComm(string[] address, string pipeName)
-            {
-                m_address = address;
-                m_pipeName = pipeName;
-
-                m_comm = new CommPipeClient(m_pipeName);
-                m_comm.SetSTX(Encoding.ASCII.GetBytes(new char[] { (char)0x02 }));
-                m_comm.SetETX(Encoding.ASCII.GetBytes(new char[] { (char)0x03 }));
-                m_comm.Start();
-                Task.Run(() => SendMessage(m_cts.Token));
-            }
-
-            public void Dispose()
-            {
-                m_cts.Cancel();
-                if (m_comm != null)
-                {
-                    m_comm.Stop();
-                }
-                m_comm = null;
             }
 
             private async Task SendMessage(CancellationToken token)
@@ -181,10 +137,10 @@ namespace PLCSimulator
             }
         }
 
-        #endregion OutputComm
+        #endregion SyncComm
 
-        private OutputComm m_outputComm;
-        private InputComm m_inputComm;
+        private SyncComm m_outputComm;
+        private SyncComm m_inputComm;
 
         public void ReConnect()
         {
@@ -202,9 +158,9 @@ namespace PLCSimulator
         {
             var info = ProfileRecipe.Instance.ProfileInfo.SyncManagerInfo;
             if (!string.IsNullOrEmpty(info.SyncPlc))
-                m_outputComm = new OutputComm(info.OutputAddress.ToArray(), info.SyncPlc);
+                m_outputComm = new SyncComm(info.OutputAddress.ToArray(), info.SyncPlc, false);
             if (!string.IsNullOrEmpty(info.MyPlc))
-                m_inputComm = new InputComm(info.InputAddress.ToArray(), info.MyPlc);
+                m_inputComm = new SyncComm(info.InputAddress.ToArray(), info.MyPlc, true);
         }
     }
 }

@@ -33,17 +33,17 @@
             this.panel_control = new System.Windows.Forms.Panel();
             this.panel_input = new System.Windows.Forms.Panel();
             this.dataGridView_Input = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textBox_myPlc = new System.Windows.Forms.TextBox();
             this.label_input = new System.Windows.Forms.Label();
             this.panel_output = new System.Windows.Forms.Panel();
             this.dataGridView_Output = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textBox_syncPlc = new System.Windows.Forms.TextBox();
             this.label_output = new System.Windows.Forms.Label();
             this.timer_gui_update = new System.Windows.Forms.Timer(this.components);
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel_control.SuspendLayout();
             this.panel_input.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Input)).BeginInit();
@@ -104,6 +104,18 @@
             this.dataGridView_Input.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Input_CellValueNeeded);
             this.dataGridView_Input.CellValuePushed += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Input_CellValuePushed);
             // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "Address";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.Width = 78;
+            // 
+            // Column1
+            // 
+            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column1.HeaderText = "Description";
+            this.Column1.Name = "Column1";
+            // 
             // textBox_myPlc
             // 
             this.textBox_myPlc.Dock = System.Windows.Forms.DockStyle.Top;
@@ -120,7 +132,7 @@
             this.label_input.Name = "label_input";
             this.label_input.Size = new System.Drawing.Size(180, 20);
             this.label_input.TabIndex = 1;
-            this.label_input.Text = "Input Sync";
+            this.label_input.Text = "Prev Sync Name";
             // 
             // panel_output
             // 
@@ -155,6 +167,18 @@
             this.dataGridView_Output.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Output_CellValueNeeded);
             this.dataGridView_Output.CellValuePushed += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Output_CellValuePushed);
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Address";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Width = 78;
+            // 
+            // Column2
+            // 
+            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column2.HeaderText = "Description";
+            this.Column2.Name = "Column2";
+            // 
             // textBox_syncPlc
             // 
             this.textBox_syncPlc.Dock = System.Windows.Forms.DockStyle.Top;
@@ -171,35 +195,11 @@
             this.label_output.Name = "label_output";
             this.label_output.Size = new System.Drawing.Size(180, 20);
             this.label_output.TabIndex = 2;
-            this.label_output.Text = "Output Sync";
+            this.label_output.Text = "Next Sync Name";
             // 
             // timer_gui_update
             // 
             this.timer_gui_update.Tick += new System.EventHandler(this.timer_gui_update_Tick);
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Address";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.Width = 78;
-            // 
-            // Column1
-            // 
-            this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column1.HeaderText = "Description";
-            this.Column1.Name = "Column1";
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Address";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.Width = 78;
-            // 
-            // Column2
-            // 
-            this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column2.HeaderText = "Description";
-            this.Column2.Name = "Column2";
             // 
             // UserControl_Sync
             // 
