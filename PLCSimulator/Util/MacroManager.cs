@@ -178,8 +178,8 @@ namespace PLCSimulator
         {
             if (Util.ValidWordAddress(context.Address, out string code, out int index))
             {
-                ushort.TryParse(context.Value, out var value);
-                DataManager.Instance.WordDataDict[code].SetData(index, new ushort[] { value });
+                short.TryParse(context.Value, out var value);
+                DataManager.Instance.WordDataDict[code].SetData(index, new ushort[] { (ushort)value });
                 return true;
             }
             else if (Util.ValidBitAddress(context.Address, out code, out index))
@@ -195,8 +195,8 @@ namespace PLCSimulator
         {
             if (Util.ValidWordAddress(context.Address, out string code, out int index))
             {
-                ushort.TryParse(context.Value, out var value);
-                var data = DataManager.Instance.WordDataDict[code].GetData(index, 1)[0];
+                short.TryParse(context.Value, out var value);
+                var data = (short)DataManager.Instance.WordDataDict[code].GetData(index, 1)[0];
                 if (data == value)
                     return true;
             }
