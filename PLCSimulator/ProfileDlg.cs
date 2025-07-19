@@ -58,6 +58,7 @@ namespace PLCSimulator
                 ProfileRecipe.Instance.ProfileInfo.Protocol = protocol;
             if (int.TryParse(textBox_Port.Text, out int port))
                 ProfileRecipe.Instance.ProfileInfo.Port = port;
+            ProfileRecipe.Instance.ProfileInfo.PortName = textBox_Port.Text;
             ProfileRecipe.Instance.Save();
 
             DialogResult = DialogResult.OK;

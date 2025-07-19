@@ -13,13 +13,24 @@ namespace PLCSimulator
 
         private ServerComm m_comm;
 
-        public MewtocolServer(int port)
+        public MewtocolServer(int port) : base()
         {
             m_comm = new ServerCommUdp(port);
             m_comm.SetETX(Encoding.ASCII.GetBytes(new char[] { (char)0x0D }));
             m_comm.OnError += ex => LogWriter.Instance.LogError(ex);
             m_comm.OnReceiveMessage += MessageHandler;
+        }
 
+        public MewtocolServer(string portName) : base()
+        {
+            m_comm = new ServerCommSerial(portName);
+            m_comm.SetETX(Encoding.ASCII.GetBytes(new char[] { (char)0x0D }));
+            m_comm.OnError += ex => LogWriter.Instance.LogError(ex);
+            m_comm.OnReceiveMessage += MessageHandler;
+        }
+
+        public MewtocolServer()
+        {
             DataManager.Instance.BitDataDict.Add(R, new DataManager.BitData(1600, true));
             DataManager.Instance.BitDataDict.Add(X, new DataManager.BitData(1600, true));
             DataManager.Instance.BitDataDict.Add(Y, new DataManager.BitData(1600, true));

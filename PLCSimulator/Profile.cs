@@ -6,8 +6,9 @@ namespace PLCSimulator
     [XmlRoot("Profile")]
     public class Profile
     {
-        public Protocol Protocol = Protocol.Mewtocol;
+        public Protocol Protocol = Protocol.MewtocolUdp;
         public int Port;
+        public string PortName;
 
         public List<string> FavoriteAddress = new List<string>();
         public List<Description> DescriptionList = new List<Description>();

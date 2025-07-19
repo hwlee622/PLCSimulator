@@ -2,8 +2,9 @@
 {
     public enum Protocol
     {
-        Mewtocol,
-        UpperLink,
+        MewtocolUdp,
+        MewtocolSerial,
+        UpperLinkUdp,
         ModbusTcp,
         ModbusUdp
     }

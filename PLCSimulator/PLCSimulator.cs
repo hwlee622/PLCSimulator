@@ -31,15 +31,21 @@
 
             Protocol selectedProtocol = ProfileRecipe.Instance.ProfileInfo.Protocol;
             int serverPort = ProfileRecipe.Instance.ProfileInfo.Port;
+            string serverPortName = ProfileRecipe.Instance.ProfileInfo.PortName;
 
             switch (selectedProtocol)
             {
-                case Protocol.Mewtocol:
+                case Protocol.MewtocolUdp:
                     m_panasonicServer = new MewtocolServer(serverPort);
                     m_panasonicServer.Start();
                     break;
 
-                case Protocol.UpperLink:
+                case Protocol.MewtocolSerial:
+                    m_panasonicServer = new MewtocolServer(serverPortName);
+                    m_panasonicServer.Start();
+                    break;
+
+                case Protocol.UpperLinkUdp:
                     m_omronServer = new UpperLinkServer(serverPort);
                     m_omronServer.Start();
                     break;
