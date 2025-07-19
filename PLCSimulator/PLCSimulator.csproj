@@ -60,6 +60,7 @@
     <Compile Include="ClientComm\CommPipeServer.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="ServerComm\ServerCommPipe.cs" />
+    <Compile Include="ServerComm\ServerCommSerial.cs" />
     <Compile Include="ServerProtocol\ModbusSimulatorServer.cs" />
     <Compile Include="UserControls\UserControl_Sync.cs">
       <SubType>UserControl</SubType>
