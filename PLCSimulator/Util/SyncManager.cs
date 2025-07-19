@@ -147,10 +147,10 @@ namespace PLCSimulator
         private SyncComm m_outputComm;
         private SyncComm m_inputComm;
 
-        public void ReConnect()
+        public void ReConnect(string prevSyncName, string nextSyncName)
         {
             DisconnectAll();
-            ConnectAll();
+            ConnectAll(prevSyncName, nextSyncName);
         }
 
         private void DisconnectAll()
@@ -159,13 +159,13 @@ namespace PLCSimulator
             m_inputComm?.Dispose();
         }
 
-        private void ConnectAll()
+        private void ConnectAll(string prevSyncName, string nextSyncName)
         {
             var info = ProfileRecipe.Instance.ProfileInfo.SyncManagerInfo;
-            if (!string.IsNullOrEmpty(info.SyncPlc))
-                m_outputComm = new SyncComm(info.OutputAddress.ToArray(), info.SyncPlc, false);
-            if (!string.IsNullOrEmpty(info.MyPlc))
-                m_inputComm = new SyncComm(info.InputAddress.ToArray(), info.MyPlc, true);
+            if (!string.IsNullOrEmpty(prevSyncName))
+                m_outputComm = new SyncComm(info.OutputAddress.ToArray(), prevSyncName, false);
+            if (!string.IsNullOrEmpty(nextSyncName))
+                m_inputComm = new SyncComm(info.InputAddress.ToArray(), nextSyncName, true);
         }
 
         public bool IsInputConnected()

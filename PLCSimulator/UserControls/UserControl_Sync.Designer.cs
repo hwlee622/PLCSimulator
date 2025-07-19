@@ -35,13 +35,13 @@
             this.dataGridView_Input = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.textBox_myPlc = new System.Windows.Forms.TextBox();
+            this.textBox_prevSyncName = new System.Windows.Forms.TextBox();
             this.label_input = new System.Windows.Forms.Label();
             this.panel_output = new System.Windows.Forms.Panel();
             this.dataGridView_Output = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.textBox_syncPlc = new System.Windows.Forms.TextBox();
+            this.textBox_nextSyncName = new System.Windows.Forms.TextBox();
             this.label_output = new System.Windows.Forms.Label();
             this.timer_gui_update = new System.Windows.Forms.Timer(this.components);
             this.label_input_connected = new System.Windows.Forms.Label();
@@ -76,7 +76,7 @@
             // panel_input
             // 
             this.panel_input.Controls.Add(this.dataGridView_Input);
-            this.panel_input.Controls.Add(this.textBox_myPlc);
+            this.panel_input.Controls.Add(this.textBox_prevSyncName);
             this.panel_input.Controls.Add(this.label_input_connected);
             this.panel_input.Controls.Add(this.label_input);
             this.panel_input.Dock = System.Windows.Forms.DockStyle.Left;
@@ -121,11 +121,11 @@
             // 
             // textBox_myPlc
             // 
-            this.textBox_myPlc.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox_myPlc.Location = new System.Drawing.Point(0, 20);
-            this.textBox_myPlc.Name = "textBox_myPlc";
-            this.textBox_myPlc.Size = new System.Drawing.Size(180, 21);
-            this.textBox_myPlc.TabIndex = 6;
+            this.textBox_prevSyncName.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox_prevSyncName.Location = new System.Drawing.Point(0, 20);
+            this.textBox_prevSyncName.Name = "textBox_myPlc";
+            this.textBox_prevSyncName.Size = new System.Drawing.Size(180, 21);
+            this.textBox_prevSyncName.TabIndex = 6;
             // 
             // label_input
             // 
@@ -141,7 +141,7 @@
             // 
             this.panel_output.Controls.Add(this.label_output_connected);
             this.panel_output.Controls.Add(this.dataGridView_Output);
-            this.panel_output.Controls.Add(this.textBox_syncPlc);
+            this.panel_output.Controls.Add(this.textBox_nextSyncName);
             this.panel_output.Controls.Add(this.label_output);
             this.panel_output.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel_output.Location = new System.Drawing.Point(181, 32);
@@ -185,11 +185,11 @@
             // 
             // textBox_syncPlc
             // 
-            this.textBox_syncPlc.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox_syncPlc.Location = new System.Drawing.Point(0, 20);
-            this.textBox_syncPlc.Name = "textBox_syncPlc";
-            this.textBox_syncPlc.Size = new System.Drawing.Size(180, 21);
-            this.textBox_syncPlc.TabIndex = 6;
+            this.textBox_nextSyncName.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox_nextSyncName.Location = new System.Drawing.Point(0, 20);
+            this.textBox_nextSyncName.Name = "textBox_syncPlc";
+            this.textBox_nextSyncName.Size = new System.Drawing.Size(180, 21);
+            this.textBox_nextSyncName.TabIndex = 6;
             // 
             // label_output
             // 
@@ -253,8 +253,8 @@
         private System.Windows.Forms.Panel panel_output;
         private System.Windows.Forms.Label label_input;
         private System.Windows.Forms.Label label_output;
-        private System.Windows.Forms.TextBox textBox_myPlc;
-        private System.Windows.Forms.TextBox textBox_syncPlc;
+        private System.Windows.Forms.TextBox textBox_prevSyncName;
+        private System.Windows.Forms.TextBox textBox_nextSyncName;
         private System.Windows.Forms.DataGridView dataGridView_Input;
         private System.Windows.Forms.DataGridView dataGridView_Output;
         private System.Windows.Forms.Timer timer_gui_update;
