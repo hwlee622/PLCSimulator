@@ -31,26 +31,26 @@
             this.components = new System.ComponentModel.Container();
             this.button_Reconnect = new System.Windows.Forms.Button();
             this.panel_control = new System.Windows.Forms.Panel();
-            this.panel_input = new System.Windows.Forms.Panel();
-            this.dataGridView_Input = new System.Windows.Forms.DataGridView();
+            this.panel_prev = new System.Windows.Forms.Panel();
+            this.dataGridView_Prev = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textBox_prevSyncName = new System.Windows.Forms.TextBox();
             this.label_input = new System.Windows.Forms.Label();
-            this.panel_output = new System.Windows.Forms.Panel();
-            this.dataGridView_Output = new System.Windows.Forms.DataGridView();
+            this.panel_next = new System.Windows.Forms.Panel();
+            this.dataGridView_Next = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textBox_nextSyncName = new System.Windows.Forms.TextBox();
             this.label_output = new System.Windows.Forms.Label();
             this.timer_gui_update = new System.Windows.Forms.Timer(this.components);
-            this.label_input_connected = new System.Windows.Forms.Label();
-            this.label_output_connected = new System.Windows.Forms.Label();
+            this.label_prev_connected = new System.Windows.Forms.Label();
+            this.label_next_connected = new System.Windows.Forms.Label();
             this.panel_control.SuspendLayout();
-            this.panel_input.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Input)).BeginInit();
-            this.panel_output.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Output)).BeginInit();
+            this.panel_prev.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Prev)).BeginInit();
+            this.panel_next.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Next)).BeginInit();
             this.SuspendLayout();
             // 
             // button_Reconnect
@@ -75,37 +75,37 @@
             // 
             // panel_input
             // 
-            this.panel_input.Controls.Add(this.dataGridView_Input);
-            this.panel_input.Controls.Add(this.textBox_prevSyncName);
-            this.panel_input.Controls.Add(this.label_input_connected);
-            this.panel_input.Controls.Add(this.label_input);
-            this.panel_input.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel_input.Location = new System.Drawing.Point(0, 32);
-            this.panel_input.Name = "panel_input";
-            this.panel_input.Size = new System.Drawing.Size(180, 297);
-            this.panel_input.TabIndex = 7;
+            this.panel_prev.Controls.Add(this.dataGridView_Prev);
+            this.panel_prev.Controls.Add(this.textBox_prevSyncName);
+            this.panel_prev.Controls.Add(this.label_prev_connected);
+            this.panel_prev.Controls.Add(this.label_input);
+            this.panel_prev.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel_prev.Location = new System.Drawing.Point(0, 32);
+            this.panel_prev.Name = "panel_input";
+            this.panel_prev.Size = new System.Drawing.Size(180, 297);
+            this.panel_prev.TabIndex = 7;
             // 
             // dataGridView_Input
             // 
-            this.dataGridView_Input.AllowUserToAddRows = false;
-            this.dataGridView_Input.AllowUserToDeleteRows = false;
-            this.dataGridView_Input.AllowUserToResizeRows = false;
-            this.dataGridView_Input.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_Input.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridView_Prev.AllowUserToAddRows = false;
+            this.dataGridView_Prev.AllowUserToDeleteRows = false;
+            this.dataGridView_Prev.AllowUserToResizeRows = false;
+            this.dataGridView_Prev.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_Prev.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn4});
-            this.dataGridView_Input.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView_Input.Location = new System.Drawing.Point(0, 41);
-            this.dataGridView_Input.MultiSelect = false;
-            this.dataGridView_Input.Name = "dataGridView_Input";
-            this.dataGridView_Input.RowHeadersVisible = false;
-            this.dataGridView_Input.RowTemplate.Height = 23;
-            this.dataGridView_Input.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView_Input.Size = new System.Drawing.Size(180, 256);
-            this.dataGridView_Input.TabIndex = 8;
-            this.dataGridView_Input.VirtualMode = true;
-            this.dataGridView_Input.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Input_CellValueNeeded);
-            this.dataGridView_Input.CellValuePushed += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Input_CellValuePushed);
+            this.dataGridView_Prev.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView_Prev.Location = new System.Drawing.Point(0, 41);
+            this.dataGridView_Prev.MultiSelect = false;
+            this.dataGridView_Prev.Name = "dataGridView_Input";
+            this.dataGridView_Prev.RowHeadersVisible = false;
+            this.dataGridView_Prev.RowTemplate.Height = 23;
+            this.dataGridView_Prev.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataGridView_Prev.Size = new System.Drawing.Size(180, 256);
+            this.dataGridView_Prev.TabIndex = 8;
+            this.dataGridView_Prev.VirtualMode = true;
+            this.dataGridView_Prev.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Prev_CellValueNeeded);
+            this.dataGridView_Prev.CellValuePushed += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Prev_CellValuePushed);
             // 
             // dataGridViewTextBoxColumn2
             // 
@@ -139,37 +139,37 @@
             // 
             // panel_output
             // 
-            this.panel_output.Controls.Add(this.label_output_connected);
-            this.panel_output.Controls.Add(this.dataGridView_Output);
-            this.panel_output.Controls.Add(this.textBox_nextSyncName);
-            this.panel_output.Controls.Add(this.label_output);
-            this.panel_output.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel_output.Location = new System.Drawing.Point(181, 32);
-            this.panel_output.Name = "panel_output";
-            this.panel_output.Size = new System.Drawing.Size(180, 297);
-            this.panel_output.TabIndex = 8;
+            this.panel_next.Controls.Add(this.label_next_connected);
+            this.panel_next.Controls.Add(this.dataGridView_Next);
+            this.panel_next.Controls.Add(this.textBox_nextSyncName);
+            this.panel_next.Controls.Add(this.label_output);
+            this.panel_next.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel_next.Location = new System.Drawing.Point(181, 32);
+            this.panel_next.Name = "panel_output";
+            this.panel_next.Size = new System.Drawing.Size(180, 297);
+            this.panel_next.TabIndex = 8;
             // 
             // dataGridView_Output
             // 
-            this.dataGridView_Output.AllowUserToAddRows = false;
-            this.dataGridView_Output.AllowUserToDeleteRows = false;
-            this.dataGridView_Output.AllowUserToResizeRows = false;
-            this.dataGridView_Output.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_Output.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridView_Next.AllowUserToAddRows = false;
+            this.dataGridView_Next.AllowUserToDeleteRows = false;
+            this.dataGridView_Next.AllowUserToResizeRows = false;
+            this.dataGridView_Next.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_Next.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn3});
-            this.dataGridView_Output.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView_Output.Location = new System.Drawing.Point(0, 41);
-            this.dataGridView_Output.MultiSelect = false;
-            this.dataGridView_Output.Name = "dataGridView_Output";
-            this.dataGridView_Output.RowHeadersVisible = false;
-            this.dataGridView_Output.RowTemplate.Height = 23;
-            this.dataGridView_Output.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView_Output.Size = new System.Drawing.Size(180, 256);
-            this.dataGridView_Output.TabIndex = 7;
-            this.dataGridView_Output.VirtualMode = true;
-            this.dataGridView_Output.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Output_CellValueNeeded);
-            this.dataGridView_Output.CellValuePushed += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Output_CellValuePushed);
+            this.dataGridView_Next.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView_Next.Location = new System.Drawing.Point(0, 41);
+            this.dataGridView_Next.MultiSelect = false;
+            this.dataGridView_Next.Name = "dataGridView_Output";
+            this.dataGridView_Next.RowHeadersVisible = false;
+            this.dataGridView_Next.RowTemplate.Height = 23;
+            this.dataGridView_Next.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataGridView_Next.Size = new System.Drawing.Size(180, 256);
+            this.dataGridView_Next.TabIndex = 7;
+            this.dataGridView_Next.VirtualMode = true;
+            this.dataGridView_Next.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Next_CellValueNeeded);
+            this.dataGridView_Next.CellValuePushed += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.dataGridView_Next_CellValuePushed);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -207,27 +207,27 @@
             // 
             // label_input_connected
             // 
-            this.label_input_connected.BackColor = System.Drawing.Color.Tomato;
-            this.label_input_connected.Location = new System.Drawing.Point(4, 1);
-            this.label_input_connected.Name = "label_input_connected";
-            this.label_input_connected.Size = new System.Drawing.Size(9, 9);
-            this.label_input_connected.TabIndex = 8;
+            this.label_prev_connected.BackColor = System.Drawing.Color.Tomato;
+            this.label_prev_connected.Location = new System.Drawing.Point(4, 1);
+            this.label_prev_connected.Name = "label_input_connected";
+            this.label_prev_connected.Size = new System.Drawing.Size(9, 9);
+            this.label_prev_connected.TabIndex = 8;
             // 
             // label_output_connected
             // 
-            this.label_output_connected.BackColor = System.Drawing.Color.Tomato;
-            this.label_output_connected.Location = new System.Drawing.Point(4, 1);
-            this.label_output_connected.Name = "label_output_connected";
-            this.label_output_connected.Size = new System.Drawing.Size(9, 9);
-            this.label_output_connected.TabIndex = 9;
+            this.label_next_connected.BackColor = System.Drawing.Color.Tomato;
+            this.label_next_connected.Location = new System.Drawing.Point(4, 1);
+            this.label_next_connected.Name = "label_output_connected";
+            this.label_next_connected.Size = new System.Drawing.Size(9, 9);
+            this.label_next_connected.TabIndex = 9;
             // 
             // UserControl_Sync
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.Controls.Add(this.panel_output);
-            this.Controls.Add(this.panel_input);
+            this.Controls.Add(this.panel_next);
+            this.Controls.Add(this.panel_prev);
             this.Controls.Add(this.panel_control);
             this.Name = "UserControl_Sync";
             this.Size = new System.Drawing.Size(361, 329);
@@ -235,12 +235,12 @@
             this.VisibleChanged += new System.EventHandler(this.UserControl_Sync_VisibleChanged);
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.UserControl_Sync_Layout);
             this.panel_control.ResumeLayout(false);
-            this.panel_input.ResumeLayout(false);
-            this.panel_input.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Input)).EndInit();
-            this.panel_output.ResumeLayout(false);
-            this.panel_output.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Output)).EndInit();
+            this.panel_prev.ResumeLayout(false);
+            this.panel_prev.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Prev)).EndInit();
+            this.panel_next.ResumeLayout(false);
+            this.panel_next.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Next)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -249,20 +249,20 @@
 
         private System.Windows.Forms.Button button_Reconnect;
         private System.Windows.Forms.Panel panel_control;
-        private System.Windows.Forms.Panel panel_input;
-        private System.Windows.Forms.Panel panel_output;
+        private System.Windows.Forms.Panel panel_prev;
+        private System.Windows.Forms.Panel panel_next;
         private System.Windows.Forms.Label label_input;
         private System.Windows.Forms.Label label_output;
         private System.Windows.Forms.TextBox textBox_prevSyncName;
         private System.Windows.Forms.TextBox textBox_nextSyncName;
-        private System.Windows.Forms.DataGridView dataGridView_Input;
-        private System.Windows.Forms.DataGridView dataGridView_Output;
+        private System.Windows.Forms.DataGridView dataGridView_Prev;
+        private System.Windows.Forms.DataGridView dataGridView_Next;
         private System.Windows.Forms.Timer timer_gui_update;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.Label label_input_connected;
-        private System.Windows.Forms.Label label_output_connected;
+        private System.Windows.Forms.Label label_prev_connected;
+        private System.Windows.Forms.Label label_next_connected;
     }
 }

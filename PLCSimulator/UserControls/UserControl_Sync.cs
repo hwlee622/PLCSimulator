@@ -20,8 +20,8 @@ namespace PLCSimulator
             try
             {
                 _managerInfo = ProfileRecipe.Instance.ProfileInfo.SyncManagerInfo;
-                dataGridView_Input.RowCount = _managerInfo.InputAddress.Count + 1;
-                dataGridView_Output.RowCount = _managerInfo.OutputAddress.Count + 1;
+                dataGridView_Prev.RowCount = _managerInfo.PrevSyncAddress.Count + 1;
+                dataGridView_Next.RowCount = _managerInfo.NextSyncAddress.Count + 1;
             }
             catch
             {
@@ -44,8 +44,8 @@ namespace PLCSimulator
             try
             {
                 var width = Width / 2;
-                panel_input.Width = width;
-                panel_output.Width = width;
+                panel_prev.Width = width;
+                panel_next.Width = width;
             }
             catch
             {
@@ -65,14 +65,14 @@ namespace PLCSimulator
             }
         }
 
-        private void dataGridView_Input_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
+        private void dataGridView_Prev_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
             try
             {
-                if (e.RowIndex < 0 || e.RowIndex >= _managerInfo.InputAddress.Count)
+                if (e.RowIndex < 0 || e.RowIndex >= _managerInfo.PrevSyncAddress.Count)
                     return;
 
-                string address = _managerInfo.InputAddress[e.RowIndex].ToUpper();
+                string address = _managerInfo.PrevSyncAddress[e.RowIndex].ToUpper();
 
                 if (e.ColumnIndex == 0)
                     e.Value = address;
@@ -84,11 +84,11 @@ namespace PLCSimulator
             }
         }
 
-        private void dataGridView_Input_CellValuePushed(object sender, DataGridViewCellValueEventArgs e)
+        private void dataGridView_Prev_CellValuePushed(object sender, DataGridViewCellValueEventArgs e)
         {
             try
             {
-                if (e.RowIndex < 0 || e.RowIndex > _managerInfo.InputAddress.Count)
+                if (e.RowIndex < 0 || e.RowIndex > _managerInfo.PrevSyncAddress.Count)
                     return;
 
                 if (e.ColumnIndex == 0)
@@ -96,8 +96,8 @@ namespace PLCSimulator
                     string sAddress = e.Value?.ToString().ToUpper();
                     if (string.IsNullOrEmpty(sAddress))
                     {
-                        _managerInfo.InputAddress.RemoveAt(e.RowIndex);
-                        dataGridView_Input.RowCount = _managerInfo.InputAddress.Count + 1;
+                        _managerInfo.PrevSyncAddress.RemoveAt(e.RowIndex);
+                        dataGridView_Prev.RowCount = _managerInfo.PrevSyncAddress.Count + 1;
                         return;
                     }
 
@@ -114,37 +114,37 @@ namespace PLCSimulator
                     else
                         return;
 
-                    if (e.RowIndex < _managerInfo.InputAddress.Count)
-                        _managerInfo.InputAddress[e.RowIndex] = sAddress;
+                    if (e.RowIndex < _managerInfo.PrevSyncAddress.Count)
+                        _managerInfo.PrevSyncAddress[e.RowIndex] = sAddress;
                     else
-                        _managerInfo.InputAddress.Add(sAddress);
+                        _managerInfo.PrevSyncAddress.Add(sAddress);
                 }
                 else if (e.ColumnIndex == 1)
                 {
-                    if (e.RowIndex >= _managerInfo.InputAddress.Count)
+                    if (e.RowIndex >= _managerInfo.PrevSyncAddress.Count)
                         return;
 
-                    string sAddress = _managerInfo.InputAddress[e.RowIndex];
+                    string sAddress = _managerInfo.PrevSyncAddress[e.RowIndex];
                     SetDescription(sAddress, e.Value?.ToString());
                 }
 
-                if (e.RowIndex == dataGridView_Input.RowCount - 1)
-                    dataGridView_Input.RowCount++;
-                dataGridView_Input.InvalidateRow(e.RowIndex);
+                if (e.RowIndex == dataGridView_Prev.RowCount - 1)
+                    dataGridView_Prev.RowCount++;
+                dataGridView_Prev.InvalidateRow(e.RowIndex);
             }
             catch
             {
             }
         }
 
-        private void dataGridView_Output_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
+        private void dataGridView_Next_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
             try
             {
-                if (e.RowIndex < 0 || e.RowIndex >= _managerInfo.OutputAddress.Count)
+                if (e.RowIndex < 0 || e.RowIndex >= _managerInfo.NextSyncAddress.Count)
                     return;
 
-                string address = _managerInfo.OutputAddress[e.RowIndex].ToUpper();
+                string address = _managerInfo.NextSyncAddress[e.RowIndex].ToUpper();
 
                 if (e.ColumnIndex == 0)
                     e.Value = address;
@@ -156,11 +156,11 @@ namespace PLCSimulator
             }
         }
 
-        private void dataGridView_Output_CellValuePushed(object sender, DataGridViewCellValueEventArgs e)
+        private void dataGridView_Next_CellValuePushed(object sender, DataGridViewCellValueEventArgs e)
         {
             try
             {
-                if (e.RowIndex < 0 || e.RowIndex > _managerInfo.OutputAddress.Count)
+                if (e.RowIndex < 0 || e.RowIndex > _managerInfo.NextSyncAddress.Count)
                     return;
 
                 if (e.ColumnIndex == 0)
@@ -168,8 +168,8 @@ namespace PLCSimulator
                     string sAddress = e.Value?.ToString().ToUpper();
                     if (string.IsNullOrEmpty(sAddress))
                     {
-                        _managerInfo.OutputAddress.RemoveAt(e.RowIndex);
-                        dataGridView_Output.RowCount = _managerInfo.OutputAddress.Count + 1;
+                        _managerInfo.NextSyncAddress.RemoveAt(e.RowIndex);
+                        dataGridView_Next.RowCount = _managerInfo.NextSyncAddress.Count + 1;
                         return;
                     }
 
@@ -186,23 +186,23 @@ namespace PLCSimulator
                     else
                         return;
 
-                    if (e.RowIndex < _managerInfo.OutputAddress.Count)
-                        _managerInfo.OutputAddress[e.RowIndex] = sAddress;
+                    if (e.RowIndex < _managerInfo.NextSyncAddress.Count)
+                        _managerInfo.NextSyncAddress[e.RowIndex] = sAddress;
                     else
-                        _managerInfo.OutputAddress.Add(sAddress);
+                        _managerInfo.NextSyncAddress.Add(sAddress);
                 }
                 else if (e.ColumnIndex == 1)
                 {
-                    if (e.RowIndex >= _managerInfo.OutputAddress.Count)
+                    if (e.RowIndex >= _managerInfo.NextSyncAddress.Count)
                         return;
 
-                    string sAddress = _managerInfo.OutputAddress[e.RowIndex];
+                    string sAddress = _managerInfo.NextSyncAddress[e.RowIndex];
                     SetDescription(sAddress, e.Value?.ToString());
                 }
 
-                if (e.RowIndex == dataGridView_Output.RowCount - 1)
-                    dataGridView_Output.RowCount++;
-                dataGridView_Output.InvalidateRow(e.RowIndex);
+                if (e.RowIndex == dataGridView_Next.RowCount - 1)
+                    dataGridView_Next.RowCount++;
+                dataGridView_Next.InvalidateRow(e.RowIndex);
             }
             catch
             {
@@ -229,8 +229,8 @@ namespace PLCSimulator
         {
             try
             {
-                label_input_connected.BackColor = _syncManager.IsInputConnected() ? Color.Lime : Color.Tomato;
-                label_output_connected.BackColor = _syncManager.IsOutputConnected() ? Color.Lime : Color.Tomato;
+                label_prev_connected.BackColor = _syncManager.IsPrevConnected() ? Color.Lime : Color.Tomato;
+                label_next_connected.BackColor = _syncManager.IsNextConnected() ? Color.Lime : Color.Tomato;
             }
             catch
             {

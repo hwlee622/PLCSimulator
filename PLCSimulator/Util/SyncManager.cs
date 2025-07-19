@@ -65,7 +65,7 @@ namespace PLCSimulator
 
             public bool IsConnected()
             {
-                return m_comm.IsConnected();
+                return m_comm != null && m_comm.IsConnected();
             }
 
             private void OnReceiveMessage(byte[] bytes)
@@ -144,8 +144,8 @@ namespace PLCSimulator
 
         #endregion SyncComm
 
-        private SyncComm m_outputComm;
-        private SyncComm m_inputComm;
+        private SyncComm m_nextSyncComm;
+        private SyncComm m_prevSyncComm;
 
         public void ReConnect(string prevSyncName, string nextSyncName)
         {
@@ -155,27 +155,29 @@ namespace PLCSimulator
 
         private void DisconnectAll()
         {
-            m_outputComm?.Dispose();
-            m_inputComm?.Dispose();
+            m_nextSyncComm?.Dispose();
+            m_prevSyncComm?.Dispose();
+            m_nextSyncComm = null;
+            m_prevSyncComm = null;
         }
 
         private void ConnectAll(string prevSyncName, string nextSyncName)
         {
             var info = ProfileRecipe.Instance.ProfileInfo.SyncManagerInfo;
             if (!string.IsNullOrEmpty(prevSyncName))
-                m_outputComm = new SyncComm(info.OutputAddress.ToArray(), prevSyncName, false);
+                m_prevSyncComm = new SyncComm(info.PrevSyncAddress.ToArray(), prevSyncName, true);
             if (!string.IsNullOrEmpty(nextSyncName))
-                m_inputComm = new SyncComm(info.InputAddress.ToArray(), nextSyncName, true);
+                m_nextSyncComm = new SyncComm(info.NextSyncAddress.ToArray(), nextSyncName, false);
         }
 
-        public bool IsInputConnected()
+        public bool IsPrevConnected()
         {
-            return m_inputComm != null && m_inputComm.IsConnected();
+            return m_prevSyncComm != null && m_prevSyncComm.IsConnected();
         }
 
-        public bool IsOutputConnected()
+        public bool IsNextConnected()
         {
-            return m_outputComm != null && m_outputComm.IsConnected();
+            return m_nextSyncComm != null && m_nextSyncComm.IsConnected();
         }
     }
 }
