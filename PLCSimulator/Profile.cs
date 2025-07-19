@@ -23,8 +23,8 @@ namespace PLCSimulator
 
     public class SyncManagerInfo
     {
-        public List<string> InputAddress = new List<string>();
-        public List<string> OutputAddress = new List<string>();
+        public List<string> PrevSyncAddress = new List<string>();
+        public List<string> NextSyncAddress = new List<string>();
     }
 
     public class Description
