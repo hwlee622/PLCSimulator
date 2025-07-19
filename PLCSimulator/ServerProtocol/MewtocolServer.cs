@@ -13,7 +13,7 @@ namespace PLCSimulator
 
         private ServerComm m_comm;
 
-        public MewtocolServer(int port) : base()
+        public MewtocolServer(int port) : this()
         {
             m_comm = new ServerCommUdp(port);
             m_comm.SetETX(Encoding.ASCII.GetBytes(new char[] { (char)0x0D }));
@@ -21,7 +21,7 @@ namespace PLCSimulator
             m_comm.OnReceiveMessage += MessageHandler;
         }
 
-        public MewtocolServer(string portName) : base()
+        public MewtocolServer(string portName) : this()
         {
             m_comm = new ServerCommSerial(portName);
             m_comm.SetETX(Encoding.ASCII.GetBytes(new char[] { (char)0x0D }));

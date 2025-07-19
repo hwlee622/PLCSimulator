@@ -28,7 +28,10 @@ namespace PLCSimulator
         {
             ProfileRecipe.Instance.Load(comboBox_Profile.SelectedItem.ToString());
             comboBox_Protocol.SelectedIndex = (int)ProfileRecipe.Instance.ProfileInfo.Protocol;
-            textBox_Port.Text = ProfileRecipe.Instance.ProfileInfo.Port.ToString();
+            if (ProfileRecipe.Instance.ProfileInfo.Protocol.ToString().Contains("Serial"))
+                textBox_Port.Text = ProfileRecipe.Instance.ProfileInfo.PortName;
+            else
+                textBox_Port.Text = ProfileRecipe.Instance.ProfileInfo.Port.ToString();
         }
 
         private void button_Start_Click(object sender, EventArgs e)
