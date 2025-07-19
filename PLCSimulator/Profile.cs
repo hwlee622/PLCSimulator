@@ -23,8 +23,6 @@ namespace PLCSimulator
 
     public class SyncManagerInfo
     {
-        public string MyPlc = string.Empty;
-        public string SyncPlc = string.Empty;
         public List<string> InputAddress = new List<string>();
         public List<string> OutputAddress = new List<string>();
     }

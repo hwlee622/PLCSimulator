@@ -22,9 +22,6 @@ namespace PLCSimulator
                 _managerInfo = ProfileRecipe.Instance.ProfileInfo.SyncManagerInfo;
                 dataGridView_Input.RowCount = _managerInfo.InputAddress.Count + 1;
                 dataGridView_Output.RowCount = _managerInfo.OutputAddress.Count + 1;
-
-                textBox_myPlc.Text = _managerInfo.MyPlc;
-                textBox_syncPlc.Text = _managerInfo.SyncPlc;
             }
             catch
             {
@@ -59,9 +56,9 @@ namespace PLCSimulator
         {
             try
             {
-                _managerInfo.MyPlc = textBox_myPlc.Text;
-                _managerInfo.SyncPlc = textBox_syncPlc.Text;
-                _syncManager.ReConnect();
+                var prevSyncName = textBox_prevSyncName.Text;
+                var nextSyncName = textBox_nextSyncName.Text;
+                _syncManager.ReConnect(prevSyncName, nextSyncName);
             }
             catch
             {
