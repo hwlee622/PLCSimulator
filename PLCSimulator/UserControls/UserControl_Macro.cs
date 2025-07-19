@@ -163,7 +163,7 @@ namespace PLCSimulator
                     }
                     else if (Util.ValidWordAddress(sAddress, out _, out _))
                     {
-                        ushort.TryParse(e.Value?.ToString(), out var value);
+                        short.TryParse(e.Value?.ToString(), out var value);
                         context.Value = value.ToString();
                     }
                     else if (Util.ValidBitAddress(sAddress, out _, out _))
