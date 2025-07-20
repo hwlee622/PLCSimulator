@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace PLCSimulator
 {
@@ -36,9 +37,7 @@ namespace PLCSimulator
             {
                 m_ctsArray[index] = new CancellationTokenSource();
                 MacroStepArray[index] = 0;
-                Thread macroThread = new Thread(() => RunMacro(m_ctsArray[index].Token, index));
-                macroThread.IsBackground = true;
-                macroThread.Start();
+                Task.Run(() => RunMacro(m_ctsArray[index].Token, index));
             }
         }
 
@@ -119,7 +118,7 @@ namespace PLCSimulator
             MacroInfoArray[index].MacroContextList.RemoveAt(removeIndex);
         }
 
-        private void RunMacro(CancellationToken token, int index)
+        private async Task RunMacro(CancellationToken token, int index)
         {
             try
             {
@@ -131,10 +130,10 @@ namespace PLCSimulator
                         break;
 
                     var context = macroContextList[step];
-                    if (RunMacroType(context))
+                    if (await RunMacroType(context))
                         MacroStepArray[index] = (step + 1) % macroContextList.Count;
                     else
-                        Thread.Sleep(20);
+                        await Task.Delay(20);
                 }
             }
             catch (Exception ex)
@@ -143,12 +142,12 @@ namespace PLCSimulator
             }
         }
 
-        private bool RunMacroType(MacroContext context)
+        private async Task<bool> RunMacroType(MacroContext context)
         {
             switch (context.MacroType)
             {
                 case MacroType.Delay:
-                    return RunDelay(context);
+                    return await RunDelay(context);
 
                 case MacroType.SetValue:
                     return RunSetValue(context);
@@ -167,10 +166,10 @@ namespace PLCSimulator
             }
         }
 
-        private bool RunDelay(MacroContext context)
+        private async Task<bool> RunDelay(MacroContext context)
         {
             int.TryParse(context.Value, out var value);
-            Thread.Sleep(value);
+            await Task.Delay(value);
             return true;
         }
 
