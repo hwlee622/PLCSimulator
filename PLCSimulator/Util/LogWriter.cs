@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace PLCSimulator
 {
@@ -19,9 +19,7 @@ namespace PLCSimulator
 
         private LogWriter()
         {
-            m_logThread = new Thread(RecordLog);
-            m_logThread.IsBackground = true;
-            m_logThread.Start();
+            Task.Run(() => RecordLog());
         }
 
         #endregion Singleton
@@ -34,7 +32,6 @@ namespace PLCSimulator
 
         public Action<string> OnLog;
         private ConcurrentQueue<string> m_logMessageQueue = new ConcurrentQueue<string>();
-        private Thread m_logThread;
 
         public void Log(string log)
         {
@@ -48,14 +45,14 @@ namespace PLCSimulator
             Log($"{ex.Message}\r\n{ex.StackTrace}");
         }
 
-        private void RecordLog()
+        private async Task RecordLog()
         {
             string filePath = Path.Combine(FolderName, FileName);
             while (true)
             {
                 try
                 {
-                    Thread.Sleep(10);
+                    await Task.Delay(10);
 
                     if (m_logMessageQueue.Count == 0)
                         continue;
