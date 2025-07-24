@@ -34,12 +34,12 @@
             this.contextMenuStrip_system = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.화면열기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.종료ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button_Favorite = new System.Windows.Forms.Button();
+            this.button_Favorite = new UntabButton();
             this.panel_SubMenu = new System.Windows.Forms.Panel();
-            this.button_Macro = new System.Windows.Forms.Button();
+            this.button_Macro = new UntabButton();
             this.flowLayoutPanel_menu = new System.Windows.Forms.FlowLayoutPanel();
             this.panel_tab = new System.Windows.Forms.DoubleBufferedPanel();
-            this.button_Sync = new System.Windows.Forms.Button();
+            this.button_Sync = new UntabButton();
             this.contextMenuStrip_system.SuspendLayout();
             this.panel_SubMenu.SuspendLayout();
             this.SuspendLayout();

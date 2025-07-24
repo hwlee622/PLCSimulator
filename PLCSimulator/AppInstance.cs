@@ -1,18 +1,18 @@
 ﻿namespace PLCSimulator
 {
-    public class PLCSimulator
+    public class AppInstance
     {
         #region Singleton
 
-        public static PLCSimulator Instance
+        public static AppInstance Instance
         { get { return InstanceHolder.Instance; } }
 
         private static class InstanceHolder
         {
-            public static PLCSimulator Instance = new PLCSimulator();
+            public static AppInstance Instance = new AppInstance();
         }
 
-        private PLCSimulator()
+        private AppInstance()
         { }
 
         #endregion Singleton
