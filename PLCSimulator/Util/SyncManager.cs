@@ -170,6 +170,32 @@ namespace PLCSimulator
                 m_nextSyncComm = new SyncComm(info.NextSyncAddress.ToArray(), nextSyncName, false);
         }
 
+        public void DisConnectPrevSync()
+        {
+            m_prevSyncComm?.Dispose();
+            m_prevSyncComm = null;
+        }
+
+        public void DisconnectNextSync()
+        {
+            m_nextSyncComm?.Dispose();
+            m_nextSyncComm = null;
+        }
+
+        public void ConnectPrevSync(string prevSyncName)
+        {
+            var info = ProfileRecipe.Instance.ProfileInfo.SyncManagerInfo;
+            if (!string.IsNullOrEmpty(prevSyncName))
+                m_prevSyncComm = new SyncComm(info.PrevSyncAddress.ToArray(), prevSyncName, true);
+        }
+
+        public void ConnectNextSync(string nextSyncName)
+        {
+            var info = ProfileRecipe.Instance.ProfileInfo.SyncManagerInfo;
+            if (!string.IsNullOrEmpty(nextSyncName))
+                m_nextSyncComm = new SyncComm(info.NextSyncAddress.ToArray(), nextSyncName, false);
+        }
+
         public bool IsPrevConnected()
         {
             return m_prevSyncComm != null && m_prevSyncComm.IsConnected();
@@ -178,6 +204,16 @@ namespace PLCSimulator
         public bool IsNextConnected()
         {
             return m_nextSyncComm != null && m_nextSyncComm.IsConnected();
+        }
+
+        public bool IsPrevOpened()
+        {
+            return m_prevSyncComm != null;
+        }
+
+        public bool IsNextOpened()
+        {
+            return m_nextSyncComm != null;
         }
     }
 }
