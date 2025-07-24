@@ -34,12 +34,12 @@
             this.contextMenuStrip_system = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.화면열기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.종료ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button_Favorite = new UntabButton();
+            this.button_Favorite = new PLCSimulator.UntabButton();
             this.panel_SubMenu = new System.Windows.Forms.Panel();
-            this.button_Macro = new UntabButton();
+            this.button_Sync = new PLCSimulator.UntabButton();
+            this.button_Macro = new PLCSimulator.UntabButton();
             this.flowLayoutPanel_menu = new System.Windows.Forms.FlowLayoutPanel();
             this.panel_tab = new System.Windows.Forms.DoubleBufferedPanel();
-            this.button_Sync = new UntabButton();
             this.contextMenuStrip_system.SuspendLayout();
             this.panel_SubMenu.SuspendLayout();
             this.SuspendLayout();
@@ -87,7 +87,6 @@
             this.button_Favorite.TabStop = false;
             this.button_Favorite.Text = "";
             this.button_Favorite.UseVisualStyleBackColor = false;
-            this.button_Favorite.Click += new System.EventHandler(this.button_Favorite_Click);
             // 
             // panel_SubMenu
             // 
@@ -99,6 +98,21 @@
             this.panel_SubMenu.Name = "panel_SubMenu";
             this.panel_SubMenu.Size = new System.Drawing.Size(393, 58);
             this.panel_SubMenu.TabIndex = 2;
+            // 
+            // button_Sync
+            // 
+            this.button_Sync.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_Sync.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.button_Sync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_Sync.Font = new System.Drawing.Font("Verdana", 12F);
+            this.button_Sync.ForeColor = System.Drawing.Color.White;
+            this.button_Sync.Location = new System.Drawing.Point(237, 8);
+            this.button_Sync.Name = "button_Sync";
+            this.button_Sync.Size = new System.Drawing.Size(69, 41);
+            this.button_Sync.TabIndex = 5;
+            this.button_Sync.TabStop = false;
+            this.button_Sync.Text = "Sync";
+            this.button_Sync.UseVisualStyleBackColor = false;
             // 
             // button_Macro
             // 
@@ -114,7 +128,6 @@
             this.button_Macro.TabStop = false;
             this.button_Macro.Text = "Macro";
             this.button_Macro.UseVisualStyleBackColor = false;
-            this.button_Macro.Click += new System.EventHandler(this.button_Macro_Click);
             // 
             // flowLayoutPanel_menu
             // 
@@ -133,22 +146,6 @@
             this.panel_tab.Name = "panel_tab";
             this.panel_tab.Size = new System.Drawing.Size(393, 345);
             this.panel_tab.TabIndex = 1;
-            // 
-            // button_Sync
-            // 
-            this.button_Sync.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_Sync.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.button_Sync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_Sync.Font = new System.Drawing.Font("Verdana", 12F);
-            this.button_Sync.ForeColor = System.Drawing.Color.White;
-            this.button_Sync.Location = new System.Drawing.Point(237, 8);
-            this.button_Sync.Name = "button_Sync";
-            this.button_Sync.Size = new System.Drawing.Size(69, 41);
-            this.button_Sync.TabIndex = 5;
-            this.button_Sync.TabStop = false;
-            this.button_Sync.Text = "Sync";
-            this.button_Sync.UseVisualStyleBackColor = false;
-            this.button_Sync.Click += new System.EventHandler(this.button_Sync_Click);
             // 
             // BaseForm
             // 
@@ -177,12 +174,12 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip_system;
         private System.Windows.Forms.ToolStripMenuItem 화면열기ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 종료ToolStripMenuItem;
-        private System.Windows.Forms.Button button_Favorite;
         private System.Windows.Forms.Panel panel_SubMenu;
-        private System.Windows.Forms.Button button_Macro;
         private System.Windows.Forms.DoubleBufferedPanel panel_tab;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel_menu;
-        private System.Windows.Forms.Button button_Sync;
+        private UntabButton button_Favorite;
+        private UntabButton button_Macro;
+        private UntabButton button_Sync;
     }
 }
 

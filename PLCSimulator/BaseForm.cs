@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -6,9 +7,7 @@ namespace PLCSimulator
 {
     public partial class BaseForm : Form
     {
-        private UserControl_Favorites m_favoriteUserControl;
-        private UserControl_Macro m_macroUserControl;
-        private UserControl_Sync m_syncUserControl;
+        private Dictionary<Button, UserControl> m_tabDict = new Dictionary<Button, UserControl>();
 
         public BaseForm()
         {
@@ -17,54 +16,37 @@ namespace PLCSimulator
 
         private void BaseForm_Load(object sender, EventArgs e)
         {
-            using (ProfileDlg dlg = new ProfileDlg())
+            try
             {
-                if (dlg.ShowDialog() == DialogResult.Cancel)
+                using (ProfileDlg dlg = new ProfileDlg())
                 {
-                    Application.Exit();
-                    return;
+                    if (dlg.ShowDialog() == DialogResult.Cancel)
+                    {
+                        Application.Exit();
+                        return;
+                    }
                 }
+
+                AppInstance.Instance.Start();
+
+                IniHandler ihandler = new IniHandler("Setting/Config.ini");
+                string sMewtocolPort = ihandler.GetProfilesString("PanasonicPLC", "Port");
+                string sUpperLinkPort = ihandler.GetProfilesString("OmronPLC", "Port");
+
+                Text = $"{Text} {ProfileRecipe.Instance.ProfileInfo.Protocol} : {ProfileRecipe.Instance.ProfileInfo.Port}";
+                notifyIcon_system.Text = Text;
+
+                AddTab(button_Favorite, new UserControl_Favorites());
+                AddTab(button_Macro, new UserControl_Macro(AppInstance.Instance.MacroManager));
+                AddTab(button_Sync, new UserControl_Sync(AppInstance.Instance.SyncManager));
+
+                AddWordDataControl();
+                AddBitDataControl();
+
+                button_Tab_Click(button_Favorite, null);
             }
-
-            AppInstance.Instance.Start();
-
-            IniHandler ihandler = new IniHandler("Setting/Config.ini");
-            string sMewtocolPort = ihandler.GetProfilesString("PanasonicPLC", "Port");
-            string sUpperLinkPort = ihandler.GetProfilesString("OmronPLC", "Port");
-
-            Text = $"{Text} {ProfileRecipe.Instance.ProfileInfo.Protocol} : {ProfileRecipe.Instance.ProfileInfo.Port}";
-            notifyIcon_system.Text = Text;
-
-            m_favoriteUserControl = new UserControl_Favorites();
-            panel_tab.Controls.Add(m_favoriteUserControl);
-            m_favoriteUserControl.Dock = DockStyle.Fill;
-
-            m_macroUserControl = new UserControl_Macro(AppInstance.Instance.MacroManager);
-            panel_tab.Controls.Add(m_macroUserControl);
-            m_macroUserControl.Dock = DockStyle.Fill;
-
-            m_syncUserControl = new UserControl_Sync(AppInstance.Instance.SyncManager);
-            panel_tab.Controls.Add(m_syncUserControl);
-            m_syncUserControl.Dock = DockStyle.Fill;
-
-            AddWordDataControl();
-            AddBitDataControl();
-
-            foreach (Control control in panel_tab.Controls)
-                control.Hide();
-            m_favoriteUserControl.Show();
-        }
-
-        private void AddBitDataControl()
-        {
-            foreach (var key in DataManager.Instance.BitDataDict.Keys)
+            catch
             {
-                var uc = new UserControl_Bit(key);
-                panel_tab.Controls.Add(uc);
-                uc.Dock = DockStyle.Fill;
-
-                var btn = GetMenuButton(uc, key);
-                flowLayoutPanel_menu.Controls.Add(btn);
             }
         }
 
@@ -72,16 +54,21 @@ namespace PLCSimulator
         {
             foreach (var key in DataManager.Instance.WordDataDict.Keys)
             {
-                var uc = new UserControl_Word(key);
-                panel_tab.Controls.Add(uc);
-                uc.Dock = DockStyle.Fill;
-
-                var btn = GetMenuButton(uc, key);
-                flowLayoutPanel_menu.Controls.Add(btn);
+                var btn = GetMenuButton(key);
+                AddTab(btn, new UserControl_Word(key));
             }
         }
 
-        private Button GetMenuButton(UserControl uc, string code)
+        private void AddBitDataControl()
+        {
+            foreach (var key in DataManager.Instance.BitDataDict.Keys)
+            {
+                var btn = GetMenuButton(key);
+                AddTab(btn, new UserControl_Bit(key));
+            }
+        }
+
+        private Button GetMenuButton(string code)
         {
             var btn = new UntabButton();
             btn.BackColor = SystemColors.ButtonShadow;
@@ -92,21 +79,36 @@ namespace PLCSimulator
             btn.TabStop = false;
             btn.Text = code;
             btn.UseVisualStyleBackColor = false;
-            btn.Click += Btn_Click;
+            flowLayoutPanel_menu.Controls.Add(btn);
+            return btn;
+        }
 
-            void Btn_Click(object sender, EventArgs e)
+        private void AddTab(Button button, UserControl tabControl)
+        {
+            m_tabDict[button] = tabControl;
+            tabControl.Dock = DockStyle.Fill;
+            panel_tab.Controls.Add(tabControl);
+            button.Click += button_Tab_Click;
+        }
+
+        public void button_Tab_Click(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            if (button == null || !m_tabDict.ContainsKey(button))
+                return;
+            var tab = m_tabDict[button];
+            if (tab == null || panel_tab.Controls[0] == tab)
+                return;
+
+            foreach (var item in m_tabDict)
             {
-                if (uc.Visible && panel_tab.Controls[0] == uc)
-                    return;
-
-                HidePanel();
-
-                uc.BringToFront();
-                uc.Show();
-                SetSelectedButtonColor(sender, e);
+                item.Key.BackColor = SystemColors.ButtonShadow;
+                item.Value.Hide();
             }
 
-            return btn;
+            button.BackColor = SystemColors.ControlLight;
+            tab.BringToFront();
+            tab.Show();
         }
 
         private void BaseForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -128,72 +130,6 @@ namespace PLCSimulator
         private void 종료ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void button_Favorite_Click(object sender, EventArgs e)
-        {
-            if (m_favoriteUserControl.Visible && panel_tab.Controls[0] == m_favoriteUserControl)
-                return;
-
-            HidePanel();
-
-            m_favoriteUserControl.BringToFront();
-            m_favoriteUserControl.Show();
-            SetSelectedButtonColor(sender, e);
-        }
-
-        private void button_Macro_Click(object sender, EventArgs e)
-        {
-            if (m_macroUserControl.Visible && panel_tab.Controls[0] == m_macroUserControl)
-                HideAdditionalControl();
-            else
-            {
-                m_macroUserControl.BringToFront();
-                m_macroUserControl.Show();
-            }
-        }
-
-        private void button_Sync_Click(object sender, EventArgs e)
-        {
-            if (m_syncUserControl.Visible && panel_tab.Controls[0] == m_syncUserControl)
-                HideAdditionalControl();
-            else
-            {
-                m_syncUserControl.BringToFront();
-                m_syncUserControl.Show();
-            }
-        }
-
-        private void HideAdditionalControl()
-        {
-            m_macroUserControl.Hide();
-            m_syncUserControl.Hide();
-        }
-
-        private void HidePanel()
-        {
-            foreach (Control control in panel_tab.Controls)
-                control.Hide();
-        }
-
-        private void SetSelectedButtonColor(object sender, EventArgs e)
-        {
-            if (sender is Button)
-            {
-                ResetButtonColor();
-                Button button = (Button)sender;
-                button.BackColor = SystemColors.ControlLight;
-            }
-        }
-
-        private void ResetButtonColor()
-        {
-            foreach (Control control in flowLayoutPanel_menu.Controls)
-                if (control is Button)
-                    control.BackColor = SystemColors.ButtonShadow;
-            foreach (Control control in panel_SubMenu.Controls)
-                if (control is Button)
-                    control.BackColor = SystemColors.ButtonShadow;
         }
     }
 }
