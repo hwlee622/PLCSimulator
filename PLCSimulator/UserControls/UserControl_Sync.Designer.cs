@@ -29,23 +29,24 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.button_Reconnect = new System.Windows.Forms.Button();
+            this.button_NextSync = new System.Windows.Forms.Button();
             this.panel_control = new System.Windows.Forms.Panel();
+            this.button_PrevSync = new System.Windows.Forms.Button();
             this.panel_prev = new System.Windows.Forms.Panel();
             this.dataGridView_Prev = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textBox_prevSyncName = new System.Windows.Forms.TextBox();
+            this.label_prev_connected = new System.Windows.Forms.Label();
             this.label_input = new System.Windows.Forms.Label();
             this.panel_next = new System.Windows.Forms.Panel();
+            this.label_next_connected = new System.Windows.Forms.Label();
             this.dataGridView_Next = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textBox_nextSyncName = new System.Windows.Forms.TextBox();
             this.label_output = new System.Windows.Forms.Label();
             this.timer_gui_update = new System.Windows.Forms.Timer(this.components);
-            this.label_prev_connected = new System.Windows.Forms.Label();
-            this.label_next_connected = new System.Windows.Forms.Label();
             this.panel_control.SuspendLayout();
             this.panel_prev.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Prev)).BeginInit();
@@ -53,27 +54,38 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Next)).BeginInit();
             this.SuspendLayout();
             // 
-            // button_Reconnect
+            // button_NextSync
             // 
-            this.button_Reconnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_Reconnect.Location = new System.Drawing.Point(283, 3);
-            this.button_Reconnect.Name = "button_Reconnect";
-            this.button_Reconnect.Size = new System.Drawing.Size(75, 23);
-            this.button_Reconnect.TabIndex = 5;
-            this.button_Reconnect.Text = "Reconnect";
-            this.button_Reconnect.UseVisualStyleBackColor = true;
-            this.button_Reconnect.Click += new System.EventHandler(this.button_Reconnect_Click);
+            this.button_NextSync.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_NextSync.Location = new System.Drawing.Point(274, 3);
+            this.button_NextSync.Name = "button_NextSync";
+            this.button_NextSync.Size = new System.Drawing.Size(84, 23);
+            this.button_NextSync.TabIndex = 5;
+            this.button_NextSync.Text = "Connect";
+            this.button_NextSync.UseVisualStyleBackColor = true;
+            this.button_NextSync.Click += new System.EventHandler(this.button_NextSync_Click);
             // 
             // panel_control
             // 
-            this.panel_control.Controls.Add(this.button_Reconnect);
+            this.panel_control.Controls.Add(this.button_PrevSync);
+            this.panel_control.Controls.Add(this.button_NextSync);
             this.panel_control.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel_control.Location = new System.Drawing.Point(0, 0);
             this.panel_control.Name = "panel_control";
             this.panel_control.Size = new System.Drawing.Size(361, 32);
             this.panel_control.TabIndex = 6;
             // 
-            // panel_input
+            // button_PrevSync
+            // 
+            this.button_PrevSync.Location = new System.Drawing.Point(3, 3);
+            this.button_PrevSync.Name = "button_PrevSync";
+            this.button_PrevSync.Size = new System.Drawing.Size(84, 23);
+            this.button_PrevSync.TabIndex = 6;
+            this.button_PrevSync.Text = "Connect";
+            this.button_PrevSync.UseVisualStyleBackColor = true;
+            this.button_PrevSync.Click += new System.EventHandler(this.button_PrevSync_Click);
+            // 
+            // panel_prev
             // 
             this.panel_prev.Controls.Add(this.dataGridView_Prev);
             this.panel_prev.Controls.Add(this.textBox_prevSyncName);
@@ -81,11 +93,11 @@
             this.panel_prev.Controls.Add(this.label_input);
             this.panel_prev.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel_prev.Location = new System.Drawing.Point(0, 32);
-            this.panel_prev.Name = "panel_input";
+            this.panel_prev.Name = "panel_prev";
             this.panel_prev.Size = new System.Drawing.Size(180, 297);
             this.panel_prev.TabIndex = 7;
             // 
-            // dataGridView_Input
+            // dataGridView_Prev
             // 
             this.dataGridView_Prev.AllowUserToAddRows = false;
             this.dataGridView_Prev.AllowUserToDeleteRows = false;
@@ -97,7 +109,7 @@
             this.dataGridView_Prev.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_Prev.Location = new System.Drawing.Point(0, 41);
             this.dataGridView_Prev.MultiSelect = false;
-            this.dataGridView_Prev.Name = "dataGridView_Input";
+            this.dataGridView_Prev.Name = "dataGridView_Prev";
             this.dataGridView_Prev.RowHeadersVisible = false;
             this.dataGridView_Prev.RowTemplate.Height = 23;
             this.dataGridView_Prev.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -119,13 +131,21 @@
             this.dataGridViewTextBoxColumn4.HeaderText = "Description";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             // 
-            // textBox_myPlc
+            // textBox_prevSyncName
             // 
             this.textBox_prevSyncName.Dock = System.Windows.Forms.DockStyle.Top;
             this.textBox_prevSyncName.Location = new System.Drawing.Point(0, 20);
-            this.textBox_prevSyncName.Name = "textBox_myPlc";
+            this.textBox_prevSyncName.Name = "textBox_prevSyncName";
             this.textBox_prevSyncName.Size = new System.Drawing.Size(180, 21);
             this.textBox_prevSyncName.TabIndex = 6;
+            // 
+            // label_prev_connected
+            // 
+            this.label_prev_connected.BackColor = System.Drawing.Color.Tomato;
+            this.label_prev_connected.Location = new System.Drawing.Point(4, 1);
+            this.label_prev_connected.Name = "label_prev_connected";
+            this.label_prev_connected.Size = new System.Drawing.Size(9, 9);
+            this.label_prev_connected.TabIndex = 8;
             // 
             // label_input
             // 
@@ -137,7 +157,7 @@
             this.label_input.TabIndex = 1;
             this.label_input.Text = "    Prev Sync Name";
             // 
-            // panel_output
+            // panel_next
             // 
             this.panel_next.Controls.Add(this.label_next_connected);
             this.panel_next.Controls.Add(this.dataGridView_Next);
@@ -145,11 +165,19 @@
             this.panel_next.Controls.Add(this.label_output);
             this.panel_next.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel_next.Location = new System.Drawing.Point(181, 32);
-            this.panel_next.Name = "panel_output";
+            this.panel_next.Name = "panel_next";
             this.panel_next.Size = new System.Drawing.Size(180, 297);
             this.panel_next.TabIndex = 8;
             // 
-            // dataGridView_Output
+            // label_next_connected
+            // 
+            this.label_next_connected.BackColor = System.Drawing.Color.Tomato;
+            this.label_next_connected.Location = new System.Drawing.Point(4, 1);
+            this.label_next_connected.Name = "label_next_connected";
+            this.label_next_connected.Size = new System.Drawing.Size(9, 9);
+            this.label_next_connected.TabIndex = 9;
+            // 
+            // dataGridView_Next
             // 
             this.dataGridView_Next.AllowUserToAddRows = false;
             this.dataGridView_Next.AllowUserToDeleteRows = false;
@@ -161,7 +189,7 @@
             this.dataGridView_Next.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_Next.Location = new System.Drawing.Point(0, 41);
             this.dataGridView_Next.MultiSelect = false;
-            this.dataGridView_Next.Name = "dataGridView_Output";
+            this.dataGridView_Next.Name = "dataGridView_Next";
             this.dataGridView_Next.RowHeadersVisible = false;
             this.dataGridView_Next.RowTemplate.Height = 23;
             this.dataGridView_Next.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -183,11 +211,11 @@
             this.dataGridViewTextBoxColumn3.HeaderText = "Description";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             // 
-            // textBox_syncPlc
+            // textBox_nextSyncName
             // 
             this.textBox_nextSyncName.Dock = System.Windows.Forms.DockStyle.Top;
             this.textBox_nextSyncName.Location = new System.Drawing.Point(0, 20);
-            this.textBox_nextSyncName.Name = "textBox_syncPlc";
+            this.textBox_nextSyncName.Name = "textBox_nextSyncName";
             this.textBox_nextSyncName.Size = new System.Drawing.Size(180, 21);
             this.textBox_nextSyncName.TabIndex = 6;
             // 
@@ -204,22 +232,6 @@
             // timer_gui_update
             // 
             this.timer_gui_update.Tick += new System.EventHandler(this.timer_gui_update_Tick);
-            // 
-            // label_input_connected
-            // 
-            this.label_prev_connected.BackColor = System.Drawing.Color.Tomato;
-            this.label_prev_connected.Location = new System.Drawing.Point(4, 1);
-            this.label_prev_connected.Name = "label_input_connected";
-            this.label_prev_connected.Size = new System.Drawing.Size(9, 9);
-            this.label_prev_connected.TabIndex = 8;
-            // 
-            // label_output_connected
-            // 
-            this.label_next_connected.BackColor = System.Drawing.Color.Tomato;
-            this.label_next_connected.Location = new System.Drawing.Point(4, 1);
-            this.label_next_connected.Name = "label_output_connected";
-            this.label_next_connected.Size = new System.Drawing.Size(9, 9);
-            this.label_next_connected.TabIndex = 9;
             // 
             // UserControl_Sync
             // 
@@ -247,7 +259,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button_Reconnect;
+        private System.Windows.Forms.Button button_NextSync;
         private System.Windows.Forms.Panel panel_control;
         private System.Windows.Forms.Panel panel_prev;
         private System.Windows.Forms.Panel panel_next;
@@ -264,5 +276,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.Label label_prev_connected;
         private System.Windows.Forms.Label label_next_connected;
+        private System.Windows.Forms.Button button_PrevSync;
     }
 }

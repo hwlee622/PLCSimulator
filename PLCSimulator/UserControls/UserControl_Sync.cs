@@ -52,13 +52,30 @@ namespace PLCSimulator
             }
         }
 
-        private void button_Reconnect_Click(object sender, EventArgs e)
+        private void button_PrevSync_Click(object sender, EventArgs e)
         {
             try
             {
                 var prevSyncName = textBox_prevSyncName.Text;
+                if (_syncManager.IsPrevOpened())
+                    _syncManager.DisConnectPrevSync();
+                else
+                    _syncManager.ConnectPrevSync(prevSyncName);
+            }
+            catch
+            {
+            }
+        }
+
+        private void button_NextSync_Click(object sender, EventArgs e)
+        {
+            try
+            {
                 var nextSyncName = textBox_nextSyncName.Text;
-                _syncManager.ReConnect(prevSyncName, nextSyncName);
+                if (_syncManager.IsNextOpened())
+                    _syncManager.DisconnectNextSync();
+                else
+                    _syncManager.ConnectNextSync(nextSyncName);
             }
             catch
             {
@@ -230,7 +247,10 @@ namespace PLCSimulator
             try
             {
                 label_prev_connected.BackColor = _syncManager.IsPrevConnected() ? Color.Lime : Color.Tomato;
+                button_PrevSync.Text = _syncManager.IsPrevOpened() ? "Disconnect" : "Connect";
+
                 label_next_connected.BackColor = _syncManager.IsNextConnected() ? Color.Lime : Color.Tomato;
+                button_NextSync.Text = _syncManager.IsNextOpened() ? "Disconnect" : "Connect";
             }
             catch
             {
