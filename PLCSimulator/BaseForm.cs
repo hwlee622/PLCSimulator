@@ -26,7 +26,7 @@ namespace PLCSimulator
                 }
             }
 
-            PLCSimulator.Instance.Start();
+            AppInstance.Instance.Start();
 
             IniHandler ihandler = new IniHandler("Setting/Config.ini");
             string sMewtocolPort = ihandler.GetProfilesString("PanasonicPLC", "Port");
@@ -39,11 +39,11 @@ namespace PLCSimulator
             panel_tab.Controls.Add(m_favoriteUserControl);
             m_favoriteUserControl.Dock = DockStyle.Fill;
 
-            m_macroUserControl = new UserControl_Macro(PLCSimulator.Instance.MacroManager);
+            m_macroUserControl = new UserControl_Macro(AppInstance.Instance.MacroManager);
             panel_tab.Controls.Add(m_macroUserControl);
             m_macroUserControl.Dock = DockStyle.Fill;
 
-            m_syncUserControl = new UserControl_Sync(PLCSimulator.Instance.SyncManager);
+            m_syncUserControl = new UserControl_Sync(AppInstance.Instance.SyncManager);
             panel_tab.Controls.Add(m_syncUserControl);
             m_syncUserControl.Dock = DockStyle.Fill;
 
@@ -83,7 +83,7 @@ namespace PLCSimulator
 
         private Button GetMenuButton(UserControl uc, string code)
         {
-            var btn = new Button();
+            var btn = new UntabButton();
             btn.BackColor = SystemColors.ButtonShadow;
             btn.FlatStyle = FlatStyle.Flat;
             btn.Font = new Font("Verdata", 12F);
@@ -111,7 +111,7 @@ namespace PLCSimulator
 
         private void BaseForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            PLCSimulator.Instance.Stop();
+            AppInstance.Instance.Stop();
             ProfileRecipe.Instance.Save();
         }
 

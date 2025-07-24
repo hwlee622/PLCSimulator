@@ -58,6 +58,9 @@
     <Compile Include="ClientComm\CommPipeClient.cs" />
     <Compile Include="ClientComm\Comm.cs" />
     <Compile Include="ClientComm\CommPipeServer.cs" />
+    <Compile Include="UserControls\UntabButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Profile.cs" />
     <Compile Include="ServerComm\ServerCommPipe.cs" />
     <Compile Include="ServerComm\ServerCommSerial.cs" />
@@ -113,7 +116,7 @@
     <Compile Include="Util\IniHandler.cs" />
     <Compile Include="Util\LogWriter.cs" />
     <Compile Include="ServerProtocol\MewtocolServer.cs" />
-    <Compile Include="PLCSimulator.cs" />
+    <Compile Include="AppInstance.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerComm\ServerComm.cs" />
