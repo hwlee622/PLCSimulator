@@ -36,9 +36,9 @@ namespace PLCSimulator
                 Text = $"{Text} {ProfileRecipe.Instance.ProfileInfo.Protocol} : {ProfileRecipe.Instance.ProfileInfo.Port}";
                 notifyIcon_system.Text = Text;
 
-                AddTab(button_Favorite, new UserControl_Favorites());
                 AddTab(button_Macro, new UserControl_Macro(AppInstance.Instance.MacroManager));
                 AddTab(button_Sync, new UserControl_Sync(AppInstance.Instance.SyncManager));
+                AddTab(button_Favorite, new UserControl_Favorites());
 
                 AddWordDataControl();
                 AddBitDataControl();
