@@ -14,6 +14,7 @@ namespace PLCSimulator
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new BaseForm());
+            Environment.Exit(0);
         }
     }
 }
