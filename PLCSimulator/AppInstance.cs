@@ -26,7 +26,7 @@
 
         public void Start()
         {
-            MacroManager = new MacroManager(ProfileRecipe.Instance.ProfileInfo.MacroInfoArray);
+            MacroManager = new MacroManager(DataManager.Instance, ProfileRecipe.Instance.ProfileInfo.MacroInfoArray);
             SyncManager = SyncManager.Instance;
 
             Protocol selectedProtocol = ProfileRecipe.Instance.ProfileInfo.Protocol;
@@ -64,7 +64,7 @@
         {
             if (MacroManager != null)
                 for (int i = 0; i < MacroManager.GetAllMacroLength(); i++)
-                    MacroManager.StopMacro(i);
+                    MacroManager.GetMacro(i).Stop();
 
             m_panasonicServer?.Stop();
             m_omronServer?.Stop();
