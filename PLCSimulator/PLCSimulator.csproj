@@ -58,6 +58,8 @@
     <Compile Include="ClientComm\CommPipeClient.cs" />
     <Compile Include="ClientComm\Comm.cs" />
     <Compile Include="ClientComm\CommPipeServer.cs" />
+    <Compile Include="MacroManager\Macro.cs" />
+    <Compile Include="MacroManager\MacroType.cs" />
     <Compile Include="UserControls\UntabButton.cs">
       <SubType>Component</SubType>
     </Compile>

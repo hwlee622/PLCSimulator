@@ -6,7 +6,7 @@ namespace PLCSimulator
     public partial class UserControl_Macro : UserControl
     {
         private MacroManager m_macroManager;
-        private int m_selectedIndex = 0;
+        private Macro m_selectedMacro;
 
         public UserControl_Macro(MacroManager macroManager)
         {
@@ -32,6 +32,12 @@ namespace PLCSimulator
             }
         }
 
+        private void InvalidateGridView()
+        {
+            dataGridView_Macro.RowCount = m_selectedMacro.GetMacroContextList().Count;
+            dataGridView_Macro.Invalidate();
+        }
+
         private void comboBox_Macro_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -40,9 +46,8 @@ namespace PLCSimulator
                 if (cb == null)
                     return;
 
-                m_selectedIndex = cb.SelectedIndex;
-                dataGridView_Macro.RowCount = m_macroManager.GetMacroCount(m_selectedIndex);
-                dataGridView_Macro.Invalidate();
+                m_selectedMacro = m_macroManager.GetMacro(cb.SelectedIndex);
+                InvalidateGridView();
             }
             catch
             {
@@ -64,29 +69,16 @@ namespace PLCSimulator
         {
             try
             {
-                bool isRunning = m_macroManager.IsRunMacro(m_selectedIndex);
-                if (isRunning)
-                {
-                    button_RunMacro.Text = "Stop";
-                    dataGridView_Macro.ReadOnly = true;
+                var isRunning = m_selectedMacro.IsRun();
+                var contextList = m_selectedMacro.GetMacroContextList();
+                var context = contextList[m_selectedMacro.MacroStep];
 
-                    int step = m_macroManager.GetMacroStep(m_selectedIndex);
-                    var context = m_macroManager.GetMacroContext(m_selectedIndex, step);
-                    if (m_macroManager.GetMacroCount(m_selectedIndex) <= step || context == null)
-                        return;
+                button_RunMacro.Text = isRunning ? "Stop" : "Start";
+                dataGridView_Macro.ReadOnly = isRunning;
+                label_Step.Text = isRunning ? $"{context.MacroType} : {context.Address} To {context.Value}" : "Step";
 
-                    label_Step.Text = $"{context.MacroType} : {context.Address} To {context.Value}";
-
-                    if (step < dataGridView_Macro.Rows.Count)
-                        dataGridView_Macro.CurrentCell = dataGridView_Macro.Rows[step].Cells[2];
-                }
-                else
-                {
-                    button_RunMacro.Text = "Start";
-                    dataGridView_Macro.ReadOnly = false;
-
-                    label_Step.Text = "Step";
-                }
+                if (isRunning && m_selectedMacro.MacroStep < dataGridView_Macro.Rows.Count)
+                    dataGridView_Macro.CurrentCell = dataGridView_Macro.Rows[m_selectedMacro.MacroStep].Cells[2];
             }
             catch
             {
@@ -97,16 +89,18 @@ namespace PLCSimulator
         {
             try
             {
-                var context = m_macroManager.GetMacroContext(m_selectedIndex, e.RowIndex);
-                if (e.RowIndex < 0 || e.RowIndex >= m_macroManager.GetMacroCount(m_selectedIndex) || context == null)
+                var contextList = m_selectedMacro.GetMacroContextList();
+                var rowIndex = e.RowIndex;
+                var columnIndex = e.ColumnIndex;
+                if (contextList == null || contextList.Count <= rowIndex || rowIndex < 0)
                     return;
 
-                if (e.ColumnIndex == 0)
-                    e.Value = context.MacroType;
-                else if (e.ColumnIndex == 1)
-                    e.Value = context.Address;
-                else if (e.ColumnIndex == 2)
-                    e.Value = context.Value;
+                if (columnIndex == 0)
+                    e.Value = contextList[rowIndex].MacroType;
+                else if (columnIndex == 1)
+                    e.Value = contextList[rowIndex].Address;
+                else if (columnIndex == 2)
+                    e.Value = contextList[rowIndex].Value;
             }
             catch
             {
@@ -117,61 +111,75 @@ namespace PLCSimulator
         {
             try
             {
-                var context = m_macroManager.GetMacroContext(m_selectedIndex, e.RowIndex);
-                if (e.RowIndex < 0 || e.RowIndex >= m_macroManager.GetMacroCount(m_selectedIndex) || context == null)
+                var contextList = m_selectedMacro.GetMacroContextList();
+                var rowIndex = e.RowIndex;
+                var columnIndex = e.ColumnIndex;
+                if (contextList == null || contextList.Count <= rowIndex || rowIndex < 0)
                     return;
 
                 if (e.ColumnIndex == 0)
                 {
-                    if (context.MacroType != (MacroType)e.Value)
+                    // Change Macro Type, reset Address and Value
+                    if (contextList[rowIndex].MacroType != (MacroType)e.Value)
                     {
-                        context.MacroType = (MacroType)e.Value;
-                        context.Address = string.Empty;
-                        context.Value = "0";
+                        contextList[rowIndex].MacroType = (MacroType)e.Value;
+                        contextList[rowIndex].Address = string.Empty;
+                        contextList[rowIndex].Value = "0";
                     }
                 }
                 else if (e.ColumnIndex == 1)
                 {
-                    if (context.MacroType == MacroType.Delay)
+                    if (contextList[rowIndex].MacroType == MacroType.Delay)
                     {
-                        context.Address = string.Empty;
+                        // For Delay, clear Address
+                        contextList[rowIndex].Address = string.Empty;
                     }
                     else
                     {
-                        string sAddress = e.Value?.ToString().ToUpper();
-                        if (Util.ValidWordAddress(sAddress, out string code, out int index))
+                        // Validate and set Address
+                        var sAddress = e.Value?.ToString().ToUpper();
+                        if (Util.ValidWordAddress(sAddress, out var code, out var index))
                         {
                             sAddress = DataManager.Instance.WordDataDict[code].GetAddress(index);
-                            context.Address = $"{code}{sAddress}";
-                            context.Value = "0";
+                            contextList[rowIndex].Address = $"{code}{sAddress}";
+                            contextList[rowIndex].Value = "0";
                         }
                         else if (Util.ValidBitAddress(sAddress, out code, out index))
                         {
                             sAddress = DataManager.Instance.BitDataDict[code].GetAddress(index);
-                            context.Address = $"{code}{sAddress}";
-                            context.Value = "0";
+                            contextList[rowIndex].Address = $"{code}{sAddress}";
+                            contextList[rowIndex].Value = "0";
                         }
                     }
                 }
                 else if (e.ColumnIndex == 2)
                 {
-                    string sAddress = context.Address;
-                    if (context.MacroType == MacroType.Delay)
+                    var sAddress = contextList[rowIndex].Address;
+                    var sValue = "0";
+                    if (contextList[rowIndex].MacroType == MacroType.Delay)
                     {
                         int.TryParse(e.Value?.ToString(), out var value);
-                        context.Value = value.ToString();
+                        sValue = value.ToString();
+                    }
+                    else if (contextList[rowIndex].MacroType == MacroType.CopyValue)
+                    {
+                        if (Util.ValidWordAddress(sAddress, out _, out _) && Util.ValidWordAddress(e.Value?.ToString(), out var code, out var index))
+                            sValue = $"{code}{DataManager.Instance.WordDataDict[code].GetAddress(index)}";
+                        else if (Util.ValidBitAddress(sAddress, out _, out _) && Util.ValidBitAddress(e.Value?.ToString(), out code, out index))
+                            sValue = $"{code}{DataManager.Instance.BitDataDict[code].GetAddress(index)}";
                     }
                     else if (Util.ValidWordAddress(sAddress, out _, out _))
                     {
                         short.TryParse(e.Value?.ToString(), out var value);
-                        context.Value = value.ToString();
+                        sValue = value.ToString();
                     }
                     else if (Util.ValidBitAddress(sAddress, out _, out _))
                     {
                         int.TryParse(e.Value?.ToString(), out var value);
                         value = value > 0 ? 1 : 0;
-                        context.Value = value.ToString();
+                        sValue = value.ToString();
                     }
+                    contextList[rowIndex].Value = sValue;
                 }
 
                 dataGridView_Macro.InvalidateRow(e.RowIndex);
@@ -185,10 +193,10 @@ namespace PLCSimulator
         {
             try
             {
-                if (!m_macroManager.IsRunMacro(m_selectedIndex))
-                    m_macroManager.RunMacro(m_selectedIndex);
+                if (m_selectedMacro.IsRun() == true)
+                    m_selectedMacro.Stop();
                 else
-                    m_macroManager.StopMacro(m_selectedIndex);
+                    m_selectedMacro.Run();
             }
             catch
             {
@@ -199,17 +207,16 @@ namespace PLCSimulator
         {
             try
             {
-                if (m_macroManager.IsRunMacro(m_selectedIndex))
+                if (m_selectedMacro.IsRun() == true)
                     return;
 
-                int index = 0;
+                var index = 0;
                 if (dataGridView_Macro.SelectedCells.Count > 0)
                     index = dataGridView_Macro.SelectedCells[0].RowIndex;
 
-                m_macroManager.AddMacroContext(m_selectedIndex, index);
+                m_selectedMacro.AddMacroContext(index);
 
-                dataGridView_Macro.RowCount = m_macroManager.GetMacroCount(m_selectedIndex);
-                dataGridView_Macro.Invalidate();
+                InvalidateGridView();
             }
             catch
             {
@@ -220,16 +227,15 @@ namespace PLCSimulator
         {
             try
             {
-                if (m_macroManager.IsRunMacro(m_selectedIndex))
+                if (m_selectedMacro.IsRun() == true)
                     return;
                 if (dataGridView_Macro.SelectedCells.Count == 0)
                     return;
 
-                int removeIndex = dataGridView_Macro.SelectedCells[0].RowIndex;
-                m_macroManager.RemoveMacroContext(m_selectedIndex, removeIndex);
+                int index = dataGridView_Macro.SelectedCells[0].RowIndex;
+                m_selectedMacro.RemoveMacroContext(index);
 
-                dataGridView_Macro.RowCount = m_macroManager.GetMacroCount(m_selectedIndex);
-                dataGridView_Macro.Invalidate();
+                InvalidateGridView();
             }
             catch
             {
