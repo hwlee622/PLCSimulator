@@ -83,8 +83,6 @@ namespace PLCSimulator
                 var maxMacroStep = _macroInfo.MacroContextList.Count;
                 while (token.IsCancellationRequested == false)
                 {
-                    await Task.Delay(20);
-
                     if (MacroStep >= maxMacroStep)
                         break;
 
@@ -94,6 +92,8 @@ namespace PLCSimulator
 
                     if (await macro(context) == true)
                         MacroStep = (MacroStep + 1) % maxMacroStep;
+                    else
+                        await Task.Delay(20);
                 }
             }
             catch (Exception ex)
@@ -109,102 +109,95 @@ namespace PLCSimulator
             return true;
         }
 
-        private async Task<bool> RunSetValue(MacroContext context)
+        private Task<bool> RunSetValue(MacroContext context)
         {
-            await Task.Delay(0);
             if (Util.ValidWordAddress(context.Address, out var code, out var index))
             {
                 short.TryParse(context.Value, out var value);
                 _dataManager.WordDataDict[code].SetData(index, new ushort[] { (ushort)value });
-                return true;
+                return Task.FromResult(true);
             }
             else if (Util.ValidBitAddress(context.Address, out code, out index))
             {
                 int.TryParse(context.Value, out var value);
                 _dataManager.BitDataDict[code].SetData(index, new bool[] { value > 0 });
-                return true;
+                return Task.FromResult(true);
             }
-            return false;
+            return Task.FromResult(false);
         }
 
-        private async Task<bool> RunWaitValue(MacroContext context)
+        private Task<bool> RunWaitValue(MacroContext context)
         {
-            await Task.Delay(0);
             if (Util.ValidWordAddress(context.Address, out var code, out var index))
             {
                 short.TryParse(context.Value, out var value);
                 var data = (short)_dataManager.WordDataDict[code].GetData(index, 1)[0];
-                if (data == value)
-                    return true;
+                return Task.FromResult(data == value);
             }
             else if (Util.ValidBitAddress(context.Address, out code, out index))
             {
                 int.TryParse(context.Value, out var value);
                 var data = _dataManager.BitDataDict[code].GetData(index, 1)[0];
-                if ((data ? 1 : 0) == value)
-                    return true;
+                return Task.FromResult((data ? 1 : 0) == value);
             }
-            return false;
+            return Task.FromResult(false);
         }
 
-        private async Task<bool> RunIncrease(MacroContext context)
+        private Task<bool> RunIncrease(MacroContext context)
         {
-            await Task.Delay(0);
             if (Util.ValidWordAddress(context.Address, out var code, out var index))
             {
                 int.TryParse(context.Value, out var value);
                 var data = _dataManager.WordDataDict[code].GetData(index, 1);
                 data[0] = (ushort)(data[0] + value);
                 _dataManager.WordDataDict[code].SetData(index, data);
-                return true;
+                return Task.FromResult(true);
             }
             else if (Util.ValidBitAddress(context.Address, out code, out index))
             {
                 var data = _dataManager.BitDataDict[code].GetData(index, 1);
                 data[0] = !data[0];
                 _dataManager.BitDataDict[code].SetData(index, data);
-                return true;
+                return Task.FromResult(true);
             }
-            return false;
+            return Task.FromResult(false);
         }
 
-        private async Task<bool> RunDecrease(MacroContext context)
+        private Task<bool> RunDecrease(MacroContext context)
         {
-            await Task.Delay(0);
             if (Util.ValidWordAddress(context.Address, out var code, out var index))
             {
                 int.TryParse(context.Value, out var value);
                 var data = _dataManager.WordDataDict[code].GetData(index, 1);
                 data[0] = (ushort)(data[0] - value);
                 _dataManager.WordDataDict[code].SetData(index, data);
-                return true;
+                return Task.FromResult(true);
             }
             else if (Util.ValidBitAddress(context.Address, out code, out index))
             {
                 var data = _dataManager.BitDataDict[code].GetData(index, 1);
                 data[0] = !data[0];
                 _dataManager.BitDataDict[code].SetData(index, data);
-                return true;
+                return Task.FromResult(true);
             }
-            return false;
+            return Task.FromResult(false);
         }
 
-        private async Task<bool> RunCopyValue(MacroContext context)
+        private Task<bool> RunCopyValue(MacroContext context)
         {
-            await Task.Delay(0);
             if (Util.ValidWordAddress(context.Address, out var destCode, out var destIndex) && Util.ValidWordAddress(context.Value, out var sourceCode, out var sourceIndex))
             {
                 var sourceData = _dataManager.WordDataDict[sourceCode].GetData(sourceIndex, 1);
                 _dataManager.WordDataDict[destCode].SetData(destIndex, sourceData);
-                return true;
+                return Task.FromResult(true);
             }
             else if (Util.ValidBitAddress(context.Address, out destCode, out destIndex) && Util.ValidBitAddress(context.Value, out sourceCode, out sourceIndex))
             {
                 var sourceData = _dataManager.BitDataDict[sourceCode].GetData(sourceIndex, 1);
                 _dataManager.BitDataDict[destCode].SetData(destIndex, sourceData);
-                return true;
+                return Task.FromResult(true);
             }
-            return false;
+            return Task.FromResult(false);
         }
     }
 }
