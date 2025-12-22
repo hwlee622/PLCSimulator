@@ -14,7 +14,7 @@ namespace PLCSimulator
 
         private ModbusServer m_server;
 
-        public ModbusSimulatorServer(int port, bool udpFlag)
+        public ModbusSimulatorServer(int port, bool udpFlag, int maxBitData, int maxWordData)
         {
             m_server = new ModbusServer()
             {
@@ -24,10 +24,10 @@ namespace PLCSimulator
             };
             m_server.Listen();
 
-            DataManager.Instance.BitDataDict.Add(COIL, new DataManager.BitData(10000));
-            DataManager.Instance.BitDataDict.Add(DISCRETE_INPUT, new DataManager.BitData(10000));
-            DataManager.Instance.WordDataDict.Add(INPUT_REGISTER, new DataManager.WordData(10000));
-            DataManager.Instance.WordDataDict.Add(HOLDING_REGISTER, new DataManager.WordData(10000));
+            DataManager.Instance.BitDataDict.Add(COIL, new DataManager.BitData(maxBitData));
+            DataManager.Instance.BitDataDict.Add(DISCRETE_INPUT, new DataManager.BitData(maxBitData));
+            DataManager.Instance.WordDataDict.Add(INPUT_REGISTER, new DataManager.WordData(maxWordData));
+            DataManager.Instance.WordDataDict.Add(HOLDING_REGISTER, new DataManager.WordData(maxWordData));
 
             Task.Run(() => SyncData());
         }

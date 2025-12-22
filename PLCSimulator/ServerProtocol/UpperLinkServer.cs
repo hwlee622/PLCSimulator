@@ -10,7 +10,7 @@ namespace PLCSimulator
 
         private ServerComm m_comm;
 
-        public UpperLinkServer(int port)
+        public UpperLinkServer(int port, int maxBitData, int maxWordData)
         {
             m_comm = new ServerCommUdp(port);
             m_comm.SetSTX(Encoding.ASCII.GetBytes(new char[] { '@' }));
@@ -18,7 +18,7 @@ namespace PLCSimulator
             m_comm.OnError += ex => LogWriter.Instance.LogError(ex);
             m_comm.OnReceiveMessage += MessageHandler;
 
-            DataManager.Instance.WordDataDict.Add(DM, new DataManager.WordData(50000));
+            DataManager.Instance.WordDataDict.Add(DM, new DataManager.WordData(maxWordData));
         }
 
         public void Start()
