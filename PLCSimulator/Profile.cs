@@ -9,6 +9,8 @@ namespace PLCSimulator
         public Protocol Protocol = Protocol.MewtocolUdp;
         public int Port;
         public string PortName;
+        public int MaxBitData = 1600;
+        public int MaxWordData = 50000;
 
         public List<string> FavoriteAddress = new List<string>();
         public List<Description> DescriptionList = new List<Description>();

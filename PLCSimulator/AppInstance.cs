@@ -26,6 +26,8 @@
 
         public void Start()
         {
+            var maxBitData = ProfileRecipe.Instance.ProfileInfo.MaxBitData;
+            var maxWordData = ProfileRecipe.Instance.ProfileInfo.MaxWordData;
             MacroManager = new MacroManager(DataManager.Instance, ProfileRecipe.Instance.ProfileInfo.MacroInfoArray);
             SyncManager = SyncManager.Instance;
 
@@ -36,23 +38,23 @@
             switch (selectedProtocol)
             {
                 case Protocol.MewtocolUdp:
-                    m_panasonicServer = new MewtocolServer(serverPort);
+                    m_panasonicServer = new MewtocolServer(serverPort, maxBitData, maxWordData);
                     m_panasonicServer.Start();
                     break;
 
                 case Protocol.MewtocolSerial:
-                    m_panasonicServer = new MewtocolServer(serverPortName);
+                    m_panasonicServer = new MewtocolServer(serverPortName, maxBitData, maxWordData);
                     m_panasonicServer.Start();
                     break;
 
                 case Protocol.UpperLinkUdp:
-                    m_omronServer = new UpperLinkServer(serverPort);
+                    m_omronServer = new UpperLinkServer(serverPort, maxBitData, maxWordData);
                     m_omronServer.Start();
                     break;
 
                 case Protocol.ModbusTcp:
                 case Protocol.ModbusUdp:
-                    ModbusServer = new ModbusSimulatorServer(serverPort, selectedProtocol == Protocol.ModbusUdp);
+                    ModbusServer = new ModbusSimulatorServer(serverPort, selectedProtocol == Protocol.ModbusUdp, maxBitData, maxWordData);
                     break;
 
                 default:

@@ -13,7 +13,7 @@ namespace PLCSimulator
 
         private ServerComm m_comm;
 
-        public MewtocolServer(int port) : this()
+        public MewtocolServer(int port, int maxBitData, int maxWordData) : this(maxBitData, maxWordData)
         {
             m_comm = new ServerCommUdp(port);
             m_comm.SetETX(Encoding.ASCII.GetBytes(new char[] { (char)0x0D }));
@@ -21,7 +21,7 @@ namespace PLCSimulator
             m_comm.OnReceiveMessage += MessageHandler;
         }
 
-        public MewtocolServer(string portName) : this()
+        public MewtocolServer(string portName, int maxBitData, int maxWordData) : this(maxBitData, maxWordData)
         {
             m_comm = new ServerCommSerial(portName);
             m_comm.SetETX(Encoding.ASCII.GetBytes(new char[] { (char)0x0D }));
@@ -29,12 +29,12 @@ namespace PLCSimulator
             m_comm.OnReceiveMessage += MessageHandler;
         }
 
-        public MewtocolServer()
+        public MewtocolServer(int maxBitData, int maxWordData)
         {
-            DataManager.Instance.BitDataDict.Add(R, new DataManager.BitData(1600, true));
-            DataManager.Instance.BitDataDict.Add(X, new DataManager.BitData(1600, true));
-            DataManager.Instance.BitDataDict.Add(Y, new DataManager.BitData(1600, true));
-            DataManager.Instance.WordDataDict.Add(DT, new DataManager.WordData(50000));
+            DataManager.Instance.BitDataDict.Add(R, new DataManager.BitData(maxBitData, true));
+            DataManager.Instance.BitDataDict.Add(X, new DataManager.BitData(maxBitData, true));
+            DataManager.Instance.BitDataDict.Add(Y, new DataManager.BitData(maxBitData, true));
+            DataManager.Instance.WordDataDict.Add(DT, new DataManager.WordData(maxWordData));
         }
 
         public void Start()

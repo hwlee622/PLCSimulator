@@ -32,6 +32,8 @@ namespace PLCSimulator
                 textBox_Port.Text = ProfileRecipe.Instance.ProfileInfo.PortName;
             else
                 textBox_Port.Text = ProfileRecipe.Instance.ProfileInfo.Port.ToString();
+            textBox_MaxBitData.Text = ProfileRecipe.Instance.ProfileInfo.MaxBitData.ToString();
+            textBox_MaxWordData.Text = ProfileRecipe.Instance.ProfileInfo.MaxWordData.ToString();
         }
 
         private void button_Start_Click(object sender, EventArgs e)
@@ -62,6 +64,10 @@ namespace PLCSimulator
             if (int.TryParse(textBox_Port.Text, out int port))
                 ProfileRecipe.Instance.ProfileInfo.Port = port;
             ProfileRecipe.Instance.ProfileInfo.PortName = textBox_Port.Text;
+            if (int.TryParse(textBox_MaxBitData.Text, out var maxBitData) && maxBitData > 0)
+                ProfileRecipe.Instance.ProfileInfo.MaxBitData = maxBitData;
+            if (int.TryParse(textBox_MaxWordData.Text, out var maxWordData) && maxWordData > 0)
+                ProfileRecipe.Instance.ProfileInfo.MaxWordData = maxWordData;
             ProfileRecipe.Instance.Save();
 
             DialogResult = DialogResult.OK;
